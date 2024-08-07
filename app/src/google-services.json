@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "645715538569",
+    "project_id": "tote2026-d3cab",
+    "storage_bucket": "tote2026-d3cab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645715538569:android:213d726d9979d34cc30c58",
+        "android_client_info": {
+          "package_name": "com.mu.tote2026"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2mvitW6HKTvf_rMyY-FLTrDa3oWPUzDU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
