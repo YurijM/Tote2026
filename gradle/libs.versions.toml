@@ -9,7 +9,11 @@ lifecycleRuntimeKtx = "2.8.4"
 activityCompose = "1.9.1"
 composeBom = "2024.06.00"
 
-googleGms = "4.4.2"
+gms = "4.4.2"
+ksp = "1.9.0-1.0.13"
+daggerHilt = "2.51.1"
+daggerCompiler = "2.51.1"
+hiltNavigation = "1.2.0"
 firebaseBom = "33.1.2"
 
 [libraries]
@@ -17,6 +21,10 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage-ktx" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx" }
+dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "daggerHilt" }
+hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigation" }
+dagger-compiler-ksp = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "daggerCompiler" }
+hilt-compiler-ksp = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "daggerCompiler" }
 
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -37,5 +45,6 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
-google-gms = { id = "com.google.gms.google-services", version.ref = "googleGms" }
-
+gms = { id = "com.google.gms.google-services", version.ref = "gms" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }

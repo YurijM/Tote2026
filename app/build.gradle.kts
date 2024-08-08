@@ -1,7 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.google.gms)
+    alias(libs.plugins.gms)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.dagger.hilt)
 }
 
 android {
@@ -53,6 +55,12 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.auth)
+
+    // Dagger Hilt
+    implementation(libs.dagger.hilt)
+    implementation(libs.hilt.navigation)
+    ksp(libs.dagger.compiler.ksp)
+    ksp(libs.hilt.compiler.ksp)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
