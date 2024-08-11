@@ -1,4 +1,4 @@
-package com.mu.tote2026.di
+package com.mu.tote2026.di.module
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class AppModule {
+object FirebaseModule {
     @Provides
     @Singleton
     fun provideFirebaseAuth() = FirebaseAuth.getInstance()
