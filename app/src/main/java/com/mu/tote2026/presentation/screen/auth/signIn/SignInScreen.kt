@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.screen.auth.signIn
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,12 +18,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
 @Composable
@@ -31,6 +34,8 @@ fun SignInScreen(
 ) {
     val isLoading = remember { mutableStateOf(false) }
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+    val error = remember { mutableStateOf("") }
 
     when (state.result) {
         is UiState.Loading -> {
@@ -38,10 +43,14 @@ fun SignInScreen(
         }
 
         is UiState.Success -> {
+            error.value = "OK"
             isLoading.value = false
         }
 
-        is UiState.Error -> {}
+        is UiState.Error -> {
+            toLog("error: ${error.value}")
+            error.value = (state.result as UiState.Error).error
+        }
 
         else -> {}
     }
@@ -97,6 +106,12 @@ fun SignInScreen(
             Text(text = "Авторизоваться")
         }
     }
+
+    if (error.value.isNotBlank()) {
+        Toast.makeText(context, error.value, Toast.LENGTH_LONG).show()
+        error.value = ""
+    }
+
     /*if (isLoading.value) {
         AppProgressBar()
     }*/

@@ -17,7 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.compose.rememberNavController
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mu.tote2026.presentation.navigation.NavGraph
 import com.mu.tote2026.ui.theme.Tote2026Theme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,13 +30,16 @@ class MainActivity : ComponentActivity() {
         //enableEdgeToEdge()
 
         setContent {
+            val navController = rememberNavController()
+
             Tote2026Theme {
                 Scaffold(
                     /*containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,*/
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
-                    MainScreen()
+                    //MainScreen()
+                    NavGraph(navController = navController)
                 }
             }
         }

@@ -62,6 +62,9 @@ dependencies {
     ksp(libs.dagger.compiler.ksp)
     ksp(libs.hilt.compiler.ksp)
 
+    // Navigation
+    implementation(libs.androidx.navigation)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
