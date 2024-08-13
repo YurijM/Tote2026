@@ -21,9 +21,9 @@ class AuthRepositoryImpl @Inject constructor(
             password
         ).addOnCompleteListener {
             if (it.isSuccessful) {
-                val user = auth.currentUser
+                /*val user = auth.currentUser
 
-                /*if (user != null) {
+                if (user != null) {
                     GAMBLER = GamblerModel(
                         gamblerId = user.uid,
                         email = email
@@ -73,5 +73,5 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getCurrentGamblerId(): String  = auth.currentUser?.uid ?: ""
+    override fun getCurrentGamblerId()  = auth.currentUser?.uid ?: ""
 }
