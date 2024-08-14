@@ -1,12 +1,15 @@
 package com.mu.tote2026.presentation.screen.auth.signIn
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -17,6 +20,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -48,55 +53,82 @@ fun SignInScreen(
         else -> {}
     }
 
+    Image(
+        painter = painterResource(id = R.drawable.field),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        alpha = .35f,
+        modifier = Modifier.fillMaxSize()
+    )
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        OutlinedTextField(
-            value = viewModel.email,
-            onValueChange = { newValue ->
-                viewModel.onEvent(SignInEvent.OnEmailChange(newValue))
-            },
-            singleLine = true,
-            label = { Text(text = "email") },
-            placeholder = { Text(text = "Введите адрес email") },
-            leadingIcon = {
-                Icon(
-                    painterResource(id = R.drawable.ic_email),
-                    contentDescription = null
-                )
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-        )
-        OutlinedTextField(
-            value = viewModel.password,
-            onValueChange = { newValue ->
-                viewModel.onEvent(SignInEvent.OnPasswordChange(newValue))
-            },
-            singleLine = true,
-            label = { Text(text = "Пароль") },
-            placeholder = { Text(text = "Введите пароль") },
-            leadingIcon = {
-                Icon(
-                    painterResource(id = R.drawable.ic_password),
-                    contentDescription = null
-                )
-            },
-            trailingIcon = {
-                Icon(
-                    painterResource(id = R.drawable.ic_eye),
-                    contentDescription = null
-                )
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            visualTransformation = PasswordVisualTransformation()
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(
-            onClick = { viewModel.onEvent(SignInEvent.OnSignIn) }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(1f)
         ) {
-            Text(text = "Авторизоваться")
+            OutlinedTextField(
+                value = viewModel.email,
+                onValueChange = { newValue ->
+                    viewModel.onEvent(SignInEvent.OnEmailChange(newValue))
+                },
+                singleLine = true,
+                label = { Text(text = "email") },
+                placeholder = { Text(text = "Введите адрес email") },
+                leadingIcon = {
+                    Icon(
+                        painterResource(id = R.drawable.ic_email),
+                        contentDescription = null
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            )
+            OutlinedTextField(
+                value = viewModel.password,
+                onValueChange = { newValue ->
+                    viewModel.onEvent(SignInEvent.OnPasswordChange(newValue))
+                },
+                singleLine = true,
+                label = { Text(text = "Пароль") },
+                placeholder = { Text(text = "Введите пароль") },
+                leadingIcon = {
+                    Icon(
+                        painterResource(id = R.drawable.ic_password),
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        painterResource(id = R.drawable.ic_eye),
+                        contentDescription = null
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                visualTransformation = PasswordVisualTransformation()
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Button(
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF007700)
+                ),
+                onClick = { viewModel.onEvent(SignInEvent.OnSignIn) }
+            ) {
+                Text(text = "Авторизоваться")
+            }
+        }
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier.weight(1f)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.field1),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 
