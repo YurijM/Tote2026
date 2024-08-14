@@ -9,7 +9,7 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     authUseCase: AuthUseCase
 ) : ViewModel() {
-    private var isAuth = false
+    var isAuth = false
 
     init {
         isAuth = authUseCase.getCurrentGamblerId().isNotBlank()
