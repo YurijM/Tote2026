@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.usecase.auth_usecase.AuthUseCase
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +37,7 @@ class SignInViewModel @Inject constructor(
                 viewModelScope.launch {
                     authUseCase.signIn(email, password).collect {
                         _state.value = SignInState(it)
+                        toLog("result: $it")
                     }
                 }
             }

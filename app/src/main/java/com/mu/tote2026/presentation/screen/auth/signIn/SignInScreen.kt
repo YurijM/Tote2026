@@ -35,7 +35,7 @@ import com.mu.tote2026.ui.common.UiState
 fun SignInScreen(
     viewModel:SignInViewModel = hiltViewModel()
 ) {
-    val isLoading = remember { mutableStateOf(false) }
+    val isLoading = remember { mutableStateOf(true) }
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
@@ -48,7 +48,9 @@ fun SignInScreen(
             isLoading.value = false
         }
 
-        is UiState.Error -> {}
+        is UiState.Error -> {
+            isLoading.value = false
+        }
 
         else -> {}
     }
@@ -112,7 +114,7 @@ fun SignInScreen(
             Spacer(modifier = Modifier.height(20.dp))
             Button(
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF007700)
+                    containerColor = Color(0xFF388E3C)
                 ),
                 onClick = { viewModel.onEvent(SignInEvent.OnSignIn) }
             ) {
@@ -140,4 +142,5 @@ fun SignInScreen(
     /*if (isLoading.value) {
         AppProgressBar()
     }*/
+
 }
