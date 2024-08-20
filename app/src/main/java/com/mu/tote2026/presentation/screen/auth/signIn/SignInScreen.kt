@@ -8,11 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -23,7 +20,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -37,9 +33,9 @@ import com.mu.tote2026.ui.common.UiState
 
 @Composable
 fun SignInScreen(
-    viewModel:SignInViewModel = hiltViewModel()
+    viewModel: SignInViewModel = hiltViewModel()
 ) {
-    val isLoading = remember { mutableStateOf(true) }
+    val isLoading = remember { mutableStateOf(false) }
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
 
@@ -76,7 +72,6 @@ fun SignInScreen(
             color = Color.Red
         )
     }*/
-    //AppProgressBar()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -129,19 +124,18 @@ fun SignInScreen(
             )
             Spacer(modifier = Modifier.height(20.dp))
             Button(
-                /*colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF388E3C)
-                ),*/
                 onClick = { viewModel.onEvent(SignInEvent.OnSignIn) }
             ) {
                 Text(text = "Авторизоваться")
             }
         }
         Column(
-            verticalArrangement = Arrangement.Bottom,
+            verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.weight(1f)
         ) {
-            AppProgressBar()
+            Box(modifier = Modifier.weight(1f)) {
+                if (isLoading.value) AppProgressBar()
+            }
             Image(
                 painter = painterResource(id = R.drawable.field1),
                 contentDescription = null,
@@ -155,9 +149,4 @@ fun SignInScreen(
         Toast.makeText(context, error.value, Toast.LENGTH_LONG).show()
         error.value = ""
     }*/
-
-    /*if (isLoading.value) {
-        AppProgressBar()
-    }*/
-
 }
