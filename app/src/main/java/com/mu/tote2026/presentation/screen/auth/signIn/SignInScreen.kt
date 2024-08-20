@@ -2,14 +2,17 @@ package com.mu.tote2026.presentation.screen.auth.signIn
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -29,6 +32,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
+import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.ui.common.UiState
 
 @Composable
@@ -55,13 +59,25 @@ fun SignInScreen(
         else -> {}
     }
 
-    Image(
+    /*Image(
         painter = painterResource(id = R.drawable.field),
         contentDescription = null,
         contentScale = ContentScale.Crop,
         alpha = .35f,
         modifier = Modifier.fillMaxSize()
-    )
+    )*/
+    /*Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(100.dp),
+            strokeWidth = 8.dp,
+            color = Color.Red
+        )
+    }*/
+    //AppProgressBar()
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -113,9 +129,9 @@ fun SignInScreen(
             )
             Spacer(modifier = Modifier.height(20.dp))
             Button(
-                colors = ButtonDefaults.buttonColors(
+                /*colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF388E3C)
-                ),
+                ),*/
                 onClick = { viewModel.onEvent(SignInEvent.OnSignIn) }
             ) {
                 Text(text = "Авторизоваться")
@@ -125,6 +141,7 @@ fun SignInScreen(
             verticalArrangement = Arrangement.Bottom,
             modifier = Modifier.weight(1f)
         ) {
+            AppProgressBar()
             Image(
                 painter = painterResource(id = R.drawable.field1),
                 contentDescription = null,

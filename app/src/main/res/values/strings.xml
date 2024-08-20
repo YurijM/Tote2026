@@ -3,4 +3,10 @@
 
     <string name="design">"Разработка"</string>
     <string name="company"><![CDATA[MU & C°]]></string>
+
+    <string name="error_field_is_empty">"Поле не заполнено"</string>
+    <string name="error_incorrect_email">"Некорректное значение email"</string>
+    <string name="error_unauthorized_email">"Неразрешённый email"</string>
+    <string name="error_field_contains_less_than_n_chars">"Поле содержит меньше %1$d символов"</string>
+    <string name="error_passwords_do_not_match">"Значения паролей не совпадают"</string>
 </resources>

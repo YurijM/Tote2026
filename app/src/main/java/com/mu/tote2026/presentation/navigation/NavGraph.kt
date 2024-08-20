@@ -5,7 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.mu.tote2026.presentation.navigation.destination.auth.signIn
 import com.mu.tote2026.presentation.navigation.destination.splash.splash
+import com.mu.tote2026.presentation.navigation.destination.test.test
 import com.mu.tote2026.presentation.utils.Route.SIGN_IN_SCREEN
+import com.mu.tote2026.presentation.utils.Route.TEST_SCREEN
 
 @Composable
 fun NavGraph(
@@ -15,6 +17,7 @@ fun NavGraph(
         navController = navController,
         startDestination = SIGN_IN_SCREEN
     ) {
+        test()
         splash()
         signIn()
     }
