@@ -1,26 +1,24 @@
 package com.mu.tote2026.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-
-private val DarkColorScheme = darkColorScheme(
-    background = Color8,
-    onSurface = Color1,
-    primary = Color4,
-)
 
 private val LightColorScheme = lightColorScheme(
     background = Color1,
-    onSurface = Color8,
+    surface = Color0,
+    onSurface = Color9,
     primary = Color6,
+    onPrimary = Color0,
+)
+private val DarkColorScheme = darkColorScheme(
+    background = Color8,
+    surface = Color9,
+    onSurface = Color0,
+    primary = Color4,
+    onPrimary = Color9,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

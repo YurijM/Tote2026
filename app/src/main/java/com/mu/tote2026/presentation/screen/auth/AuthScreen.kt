@@ -40,8 +40,8 @@ fun PreviewAuth() {
 
 @Composable
 fun AuthScreen(
-    onSignUpClick: () -> Unit,
-    onSignInClick: () -> Unit,
+    toSignUp: () -> Unit,
+    toSignIn: () -> Unit,
 ) {
     Surface(
         modifier = Modifier
@@ -56,7 +56,7 @@ fun AuthScreen(
             LogonButton(
                 R.string.sign_up,
                 onClick = {
-                    onSignUpClick()
+                    toSignUp()
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -69,7 +69,7 @@ fun AuthScreen(
             LogonButton(
                 R.string.sign_in,
                 onClick = {
-                    onSignInClick()
+                    toSignIn()
                 }
             )
         }

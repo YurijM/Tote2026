@@ -3,6 +3,8 @@ package com.mu.tote2026.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.mu.tote2026.presentation.navigation.destination.auth.auth
+import com.mu.tote2026.presentation.navigation.destination.auth.navigateToSignIn
 import com.mu.tote2026.presentation.navigation.destination.auth.signIn
 import com.mu.tote2026.presentation.navigation.destination.splash.navigateToAuth
 import com.mu.tote2026.presentation.navigation.destination.splash.splash
@@ -22,6 +24,12 @@ fun NavGraph(
             toAuth = {
                 navController.navigateToAuth()
             },
+        )
+        auth(
+            toSignUp = { },
+            toSignIn = {
+                navController.navigateToSignIn()
+            }
         )
         signIn()
     }
