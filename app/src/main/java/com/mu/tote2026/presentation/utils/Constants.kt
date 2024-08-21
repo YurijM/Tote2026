@@ -5,6 +5,7 @@ const val MIN_PASSWORD_LENGTH = 6
 
 object Route {
     const val SPLASH_SCREEN = "splash_screen"
+    const val AUTH_SCREEN = "auth_screen"
     const val SIGN_IN_SCREEN = "sign_in_screen"
     const val TEST_SCREEN = "test_screen"
 }

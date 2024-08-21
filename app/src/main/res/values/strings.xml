@@ -4,6 +4,9 @@
     <string name="design">"Разработка"</string>
     <string name="company"><![CDATA[MU & C°]]></string>
 
+    <string name="sign_up">Регистрация</string>
+    <string name="sign_in">Авторизация</string>
+
     <string name="error_field_is_empty">"Поле не заполнено"</string>
     <string name="error_incorrect_email">"Некорректное значение email"</string>
     <string name="error_unauthorized_email">"Неразрешённый email"</string>
