@@ -81,7 +81,7 @@ fun SignInScreen(
                     .padding(horizontal = 48.dp)
                     .weight(1f)
             ) {
-                Title(title = stringResource(id = R.string.sign_in))
+                Title(titleId = R.string.sign_in)
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     /*border = BorderStroke(
@@ -89,7 +89,7 @@ fun SignInScreen(
                         color = MaterialTheme.colorScheme.outline
                     ),*/
                     elevation = CardDefaults.cardElevation(
-                        defaultElevation = 20.dp
+                        defaultElevation = 4.dp
                     )
                 ) {
                     Column(
@@ -155,8 +155,7 @@ fun SignInScreen(
                 modifier = Modifier.weight(1f)
             ) {
                 Box(modifier = Modifier.weight(1f)) {
-                    //if (isLoading.value) AppProgressBar()
-                    AppProgressBar()
+                    if (isLoading.value) AppProgressBar()
                 }
                 Image(
                     painter = painterResource(id = R.drawable.field1),
