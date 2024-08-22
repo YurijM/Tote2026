@@ -94,17 +94,15 @@ fun SplashScreen(
             Image(
                 modifier = Modifier.scale(scale.value),
                 painter = painterResource(id = R.drawable.author),
-                contentDescription = "Logo"
+                contentDescription = "Logo",
             )
             AssistChip(
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .scale(scaleText.value),
-                onClick = { /*TODO*/ },
+                onClick = {},
                 label = {
-                    Text(
-                        text = text,
-                    )
+                    Text(text = text)
                 },
                 leadingIcon = {
                     Icon(

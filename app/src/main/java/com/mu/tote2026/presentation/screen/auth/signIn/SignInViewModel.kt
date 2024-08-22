@@ -1,15 +1,13 @@
 package com.mu.tote2026.presentation.screen.auth.signIn
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.usecase.auth_usecase.AuthUseCase
 import com.mu.tote2026.presentation.utils.checkEmail
-import com.mu.tote2026.presentation.utils.toLog
+import com.mu.tote2026.presentation.utils.checkPassword
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,20 +23,30 @@ class SignInViewModel @Inject constructor(
     private val _state: MutableStateFlow<SignInState> = MutableStateFlow(SignInState())
     val state: StateFlow<SignInState> = _state.asStateFlow()
 
+    var enabledButton by mutableStateOf(false)
+        private set
+
     var email by mutableStateOf("")
+        private set
     var password by mutableStateOf("")
+        private set
 
     var errorEmail: String? = null
+        private set
     var errorPassword: String? = null
+        private set
 
     fun onEvent(event: SignInEvent) {
         when (event) {
             is SignInEvent.OnEmailChange -> {
                 email = event.email
                 errorEmail = checkEmail(email = event.email)
+                enabledButton = checkValues()
             }
             is SignInEvent.OnPasswordChange -> {
                 password = event.password
+                errorPassword = checkPassword(event.password, null)
+                enabledButton = checkValues()
             }
             is SignInEvent.OnSignIn -> {
                 viewModelScope.launch {
@@ -48,6 +56,11 @@ class SignInViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun checkValues(): Boolean {
+        return (errorEmail != null && errorEmail!!.isBlank()) &&
+                (errorPassword != null && errorPassword!!.isBlank())
     }
 
     companion object {
