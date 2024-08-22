@@ -68,17 +68,13 @@ fun AppTextField(
                 textAlign = textAlign
             ),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedLeadingIconColor = MaterialTheme.colorScheme.primary
-            ),
-            /*colors = OutlinedTextFieldDefaults.colors(
+                focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
                 errorLeadingIconColor = MaterialTheme.colorScheme.error,
-            ),*/
-            //textStyle = MaterialTheme.typography.bodyLarge,
+            ),
             label = {
                 if (label.isNotBlank()) {
                     Text(
                         text = label,
-                        //style = MaterialTheme.typography.labelLarge
                     )
                 }
             },

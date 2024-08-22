@@ -77,16 +77,12 @@ fun PasswordTextField(
             ),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                focusedTrailingIconColor = MaterialTheme.colorScheme.primary
+                focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+                errorLeadingIconColor = MaterialTheme.colorScheme.error,
             ),
-            /*colors = OutlinedTextFieldDefaults.colors(
-                errorLeadingIconColor = MaterialTheme.colorScheme.error
-            ),*/
-            //textStyle = MaterialTheme.typography.bodyLarge,
             label = {
                 Text(
                     text = label,
-                    //style = MaterialTheme.typography.labelLarge
                 )
             },
             leadingIcon = {
