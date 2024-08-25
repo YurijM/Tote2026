@@ -69,7 +69,6 @@ fun SignUpScreen(
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            //verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

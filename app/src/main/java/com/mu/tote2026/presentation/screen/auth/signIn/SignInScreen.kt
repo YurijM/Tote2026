@@ -69,7 +69,6 @@ fun SignInScreen(
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            //verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
