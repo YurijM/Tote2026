@@ -2,7 +2,10 @@ package com.mu.tote2026.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mu.tote2026.data.repository.Collections.EMAILS
+import com.mu.tote2026.domain.model.Email
 import com.mu.tote2026.domain.repository.AuthRepository
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -73,5 +76,40 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getCurrentGamblerId()  = auth.currentUser?.uid ?: ""
+    override fun getCurrentGamblerId() = auth.currentUser?.uid ?: ""
+
+    /*override fun isEmailValid(email: String): Flow<UiState<Boolean>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        firestore.collection(EMAILS).get()
+            .addOnSuccessListener { task ->
+                val emails = task.toObjects(Email::class.java)
+                trySend(UiState.Success((emails.find { it.email == email }?.email ?: "").isNotBlank()))
+            }
+            .addOnFailureListener { e ->
+                trySend(UiState.Error(e.message ?: "signIn: error is not defined"))
+            }
+
+        awaitClose {
+            close()
+        }
+    }*/
+
+    override fun isEmailValid(email: String): Boolean {
+        var isValid = false
+
+        firestore.collection(EMAILS).addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                toLog("error: ${exception.message}")
+            } else {
+                val emails = snapshot?.toObjects(Email::class.java) ?: emptyList()
+                toLog("emails: $emails")
+                toLog("email: ${emails.find { it.email == email }?.email}")
+                isValid = !emails.find { it.email == email }?.email.isNullOrBlank()
+                toLog("isValid: $isValid")
+            }
+        }
+
+        return isValid
+    }
 }

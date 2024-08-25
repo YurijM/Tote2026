@@ -6,6 +6,7 @@ import com.mu.tote2026.data.repository.AuthRepositoryImpl
 import com.mu.tote2026.domain.repository.AuthRepository
 import com.mu.tote2026.domain.usecase.auth_usecase.AuthUseCase
 import com.mu.tote2026.domain.usecase.auth_usecase.GetCurrentGamblerId
+import com.mu.tote2026.domain.usecase.auth_usecase.IsEmailValid
 import com.mu.tote2026.domain.usecase.auth_usecase.SignIn
 import com.mu.tote2026.domain.usecase.auth_usecase.SignUp
 import dagger.Module
@@ -29,6 +30,7 @@ object AuthRepositoryModule {
     fun provideAuthUseCase(authRepository: AuthRepository) = AuthUseCase(
         signUp = SignUp(authRepository),
         signIn = SignIn(authRepository),
-        getCurrentGamblerId = GetCurrentGamblerId(authRepository)
+        getCurrentGamblerId = GetCurrentGamblerId(authRepository),
+        isEmailValid = IsEmailValid(authRepository)
     )
 }

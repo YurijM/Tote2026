@@ -4,13 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.usecase.auth_usecase.AuthUseCase
 import com.mu.tote2026.presentation.utils.checkEmail
 import com.mu.tote2026.presentation.utils.checkPassword
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,7 +60,12 @@ class SignUpViewModel @Inject constructor(
                 enabledButton = checkValues()
 
             }
-            is SignUpEvent.OnSignUp -> {}
+            is SignUpEvent.OnSignUp -> {
+                viewModelScope.launch {
+                    val isEmailValid = authUseCase.isEmailValid(email)
+                    toLog("isEmailValid = $isEmailValid")
+                }
+            }
         }
     }
     private fun checkValues(): Boolean = errorEmail.isNullOrBlank() && errorPassword.isNullOrBlank() && errorPasswordConfirm.isNullOrBlank()
