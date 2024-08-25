@@ -5,7 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.mu.tote2026.presentation.navigation.destination.auth.auth
 import com.mu.tote2026.presentation.navigation.destination.auth.navigateToSignIn
+import com.mu.tote2026.presentation.navigation.destination.auth.navigateToSignUp
 import com.mu.tote2026.presentation.navigation.destination.auth.signIn
+import com.mu.tote2026.presentation.navigation.destination.auth.signUp
 import com.mu.tote2026.presentation.navigation.destination.splash.navigateToAuth
 import com.mu.tote2026.presentation.navigation.destination.splash.splash
 import com.mu.tote2026.presentation.navigation.destination.test.test
@@ -26,11 +28,14 @@ fun NavGraph(
             },
         )
         auth(
-            toSignUp = { },
+            toSignUp = {
+                navController.navigateToSignUp()
+            },
             toSignIn = {
                 navController.navigateToSignIn()
             }
         )
+        signUp()
         signIn()
     }
 }

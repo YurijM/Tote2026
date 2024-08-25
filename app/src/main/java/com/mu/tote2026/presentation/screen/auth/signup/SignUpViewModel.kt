@@ -1,27 +1,24 @@
-package com.mu.tote2026.presentation.screen.auth.signIn
+package com.mu.tote2026.presentation.screen.auth.signup
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.usecase.auth_usecase.AuthUseCase
 import com.mu.tote2026.presentation.utils.checkEmail
 import com.mu.tote2026.presentation.utils.checkPassword
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(
+class SignUpViewModel @Inject constructor(
     private val authUseCase: AuthUseCase
 ) : ViewModel() {
-    private val _state: MutableStateFlow<SignInState> = MutableStateFlow(SignInState())
-    val state: StateFlow<SignInState> = _state.asStateFlow()
+    private val _state = MutableStateFlow(SignUpState())
+    val state = _state.asStateFlow()
 
     var enabledButton by mutableStateOf(false)
         private set
@@ -30,41 +27,43 @@ class SignInViewModel @Inject constructor(
         private set
     var password by mutableStateOf("")
         private set
+    var passwordConfirm by mutableStateOf("")
+        private set
 
     var errorEmail: String? = null
         private set
     var errorPassword: String? = null
         private set
+    var errorPasswordConfirm: String? = null
+        private set
 
-    fun onEvent(event: SignInEvent) {
+    fun onEvent(event: SignUpEvent) {
         when (event) {
-            is SignInEvent.OnEmailChange -> {
+            is SignUpEvent.OnEmailChange -> {
                 email = event.email
                 errorEmail = checkEmail(email = event.email)
                 enabledButton = checkValues()
             }
-            is SignInEvent.OnPasswordChange -> {
+            is SignUpEvent.OnPasswordChange -> {
                 password = event.password
-                errorPassword = checkPassword(event.password, null)
+                errorPassword = checkPassword(event.password, passwordConfirm)
+                errorPasswordConfirm = checkPassword(passwordConfirm, event.password)
                 enabledButton = checkValues()
             }
-            is SignInEvent.OnSignIn -> {
-                viewModelScope.launch {
-                    authUseCase.signIn(email, password).collect {
-                        _state.value = SignInState(it)
-                    }
-                }
+            is SignUpEvent.OnPasswordConfirmChange -> {
+                passwordConfirm = event.passwordConfirm
+                errorPasswordConfirm = checkPassword(event.passwordConfirm, password)
+                errorPassword = checkPassword(password, event.passwordConfirm)
+                enabledButton = checkValues()
+
             }
+            is SignUpEvent.OnSignUp -> {}
         }
     }
-
-    /*private fun checkValues(): Boolean = (errorEmail != null && errorEmail!!.isBlank()) &&
-                (errorPassword != null && errorPassword!!.isBlank())*/
-    private fun checkValues(): Boolean = errorEmail.isNullOrBlank() && errorPassword.isNullOrBlank()
-
+    private fun checkValues(): Boolean = errorEmail.isNullOrBlank() && errorPassword.isNullOrBlank() && errorPasswordConfirm.isNullOrBlank()
 
     companion object {
-        data class SignInState(
+        data class SignUpState(
             val result: UiState<Boolean> = UiState.Default,
         )
     }

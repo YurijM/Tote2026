@@ -1,4 +1,4 @@
-package com.mu.tote2026.presentation.screen.auth.signIn
+package com.mu.tote2026.presentation.screen.auth.signup
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -36,8 +36,8 @@ import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.ui.common.UiState
 
 @Composable
-fun SignInScreen(
-    viewModel: SignInViewModel = hiltViewModel()
+fun SignUpScreen(
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
     val isLoading = remember { mutableStateOf(false) }
     val error = remember { mutableStateOf("") }
@@ -79,7 +79,7 @@ fun SignInScreen(
                     .padding(horizontal = 48.dp)
                     .weight(2f)
             ) {
-                Title(titleId = R.string.sign_in)
+                Title(titleId = R.string.sign_up)
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     elevation = CardDefaults.cardElevation(
@@ -103,7 +103,7 @@ fun SignInScreen(
                                 .padding(bottom = 8.dp),
                             value = viewModel.email,
                             onChange = { newValue ->
-                                viewModel.onEvent(SignInEvent.OnEmailChange(newValue))
+                                viewModel.onEvent(SignUpEvent.OnEmailChange(newValue))
                             },
                             label = stringResource(id = R.string.enter_email),
                             painterId = R.drawable.ic_email,
@@ -120,18 +120,31 @@ fun SignInScreen(
                             label = stringResource(id = R.string.enter_password),
                             value = viewModel.password,
                             onChange = { newValue ->
-                                viewModel.onEvent(SignInEvent.OnPasswordChange(newValue))
+                                viewModel.onEvent(SignUpEvent.OnPasswordChange(newValue))
                             },
                             painterId = R.drawable.ic_password,
                             description = "password",
                             errorMessage = viewModel.errorPassword
                         )
+                        PasswordTextField(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 12.dp),
+                            label = stringResource(id = R.string.confirm_password),
+                            value = viewModel.passwordConfirm,
+                            onChange = { newValue ->
+                                viewModel.onEvent(SignUpEvent.OnPasswordConfirmChange(newValue))
+                            },
+                            painterId = R.drawable.ic_password,
+                            description = "password confirm",
+                            errorMessage = viewModel.errorPasswordConfirm
+                        )
                         OkAndCancel(
-                            titleOk = stringResource(id = R.string.to_log_into),
+                            titleOk = stringResource(id = R.string.to_register),
                             enabledOk = viewModel.enabledButton,
                             showCancel = false,
                             onOK = {
-                                viewModel.onEvent(SignInEvent.OnSignIn)
+                                viewModel.onEvent(SignUpEvent.OnSignUp)
                             },
                             onCancel = {}
                         )
