@@ -14,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.SignCard
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
 @Composable
@@ -24,6 +25,7 @@ fun SignUpScreen(
     val error = remember { mutableStateOf("") }
     val state by viewModel.state.collectAsState()
 
+    toLog("state: $state")
     when (state.result) {
         is UiState.Loading -> {
             isLoading.value = true

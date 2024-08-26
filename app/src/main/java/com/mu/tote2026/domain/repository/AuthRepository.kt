@@ -16,5 +16,6 @@ interface AuthRepository {
 
     fun getCurrentGamblerId(): String
 
-    fun isEmailValid(email: String): Boolean
+    //fun isEmailValid(email: String): Boolean
+    fun isEmailValid(email: String): Flow<UiState<Boolean>>
 }

@@ -3,9 +3,12 @@ package com.mu.tote2026.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.Collections.EMAILS
+import com.mu.tote2026.data.repository.Errors.ERROR_FUN_CREATE_USER_WITH_EMAIL_AND_PASSWORD
+import com.mu.tote2026.data.repository.Errors.ERROR_FUN_SIGN_UP
+import com.mu.tote2026.data.repository.Errors.ERROR_NEW_GAMBLER_IS_NOT_CREATED
 import com.mu.tote2026.domain.model.Email
 import com.mu.tote2026.domain.repository.AuthRepository
-import com.mu.tote2026.presentation.utils.toLog
+import com.mu.tote2026.presentation.utils.Errors.UNAUTHORIZED_EMAIL
 import com.mu.tote2026.ui.common.UiState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -24,10 +27,10 @@ class AuthRepositoryImpl @Inject constructor(
             password
         ).addOnCompleteListener {
             if (it.isSuccessful) {
-                /*val user = auth.currentUser
+                val user = auth.currentUser
 
                 if (user != null) {
-                    GAMBLER = GamblerModel(
+                    /*GAMBLER = GamblerModel(
                         gamblerId = user.uid,
                         email = email
                     )
@@ -37,23 +40,22 @@ class AuthRepositoryImpl @Inject constructor(
                         .child(user.uid)
                         .setValue(GAMBLER)
 
-                    CURRENT_ID = user.uid
+                    CURRENT_ID = user.uid*/
 
                     trySend(UiState.Success(true))
                 } else {
                     trySend(UiState.Error(ERROR_NEW_GAMBLER_IS_NOT_CREATED))
-                }*/
+                }
             } else {
-                //trySend(UiState.Error(ERROR_FUN_CREATE_USER_WITH_EMAIL_AND_PASSWORD))
+                trySend(UiState.Error(ERROR_FUN_CREATE_USER_WITH_EMAIL_AND_PASSWORD))
             }
         }.addOnFailureListener {
-            //trySend(UiState.Error(it.message ?: ERROR_FUN_CREATE_GAMBLER))
+            trySend(UiState.Error(it.message ?: ERROR_FUN_SIGN_UP))
         }
 
         awaitClose {
             close()
         }
-
     }
 
     override fun signIn(email: String, password: String): Flow<UiState<Boolean>> = callbackFlow {
@@ -78,13 +80,19 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun getCurrentGamblerId() = auth.currentUser?.uid ?: ""
 
-    /*override fun isEmailValid(email: String): Flow<UiState<Boolean>> = callbackFlow {
+    override fun isEmailValid(email: String): Flow<UiState<Boolean>> = callbackFlow {
         trySend(UiState.Loading)
 
         firestore.collection(EMAILS).get()
             .addOnSuccessListener { task ->
                 val emails = task.toObjects(Email::class.java)
-                trySend(UiState.Success((emails.find { it.email == email }?.email ?: "").isNotBlank()))
+                val result = emails.find { it.email == email }
+                if (result != null)
+                    trySend(UiState.Success(true))
+                else {
+                    trySend(UiState.Success(false))
+                    trySend(UiState.Error(UNAUTHORIZED_EMAIL))
+                }
             }
             .addOnFailureListener { e ->
                 trySend(UiState.Error(e.message ?: "signIn: error is not defined"))
@@ -93,9 +101,9 @@ class AuthRepositoryImpl @Inject constructor(
         awaitClose {
             close()
         }
-    }*/
+    }
 
-    override fun isEmailValid(email: String): Boolean {
+    /*override fun isEmailValid(email: String): Boolean {
         var isValid = false
 
         firestore.collection(EMAILS).addSnapshotListener { snapshot, exception ->
@@ -111,5 +119,5 @@ class AuthRepositoryImpl @Inject constructor(
         }
 
         return isValid
-    }
+    }*/
 }
