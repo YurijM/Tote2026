@@ -3,7 +3,6 @@ package com.mu.tote2026.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.Collections.EMAILS
-import com.mu.tote2026.data.repository.Errors.ERROR_FUN_CREATE_USER_WITH_EMAIL_AND_PASSWORD
 import com.mu.tote2026.data.repository.Errors.ERROR_FUN_SIGN_UP
 import com.mu.tote2026.data.repository.Errors.ERROR_NEW_GAMBLER_IS_NOT_CREATED
 import com.mu.tote2026.domain.model.Email
@@ -25,29 +24,13 @@ class AuthRepositoryImpl @Inject constructor(
         auth.createUserWithEmailAndPassword(
             email,
             password
-        ).addOnCompleteListener {
-            if (it.isSuccessful) {
-                val user = auth.currentUser
+        ).addOnSuccessListener {
+            val user = auth.currentUser
 
-                if (user != null) {
-                    /*GAMBLER = GamblerModel(
-                        gamblerId = user.uid,
-                        email = email
-                    )
-
-                    firestore.reference
-                        .child(NODE_GAMBLERS)
-                        .child(user.uid)
-                        .setValue(GAMBLER)
-
-                    CURRENT_ID = user.uid*/
-
-                    trySend(UiState.Success(true))
-                } else {
-                    trySend(UiState.Error(ERROR_NEW_GAMBLER_IS_NOT_CREATED))
-                }
+            if (user != null) {
+                trySend(UiState.Success(true))
             } else {
-                trySend(UiState.Error(ERROR_FUN_CREATE_USER_WITH_EMAIL_AND_PASSWORD))
+                trySend(UiState.Error(ERROR_NEW_GAMBLER_IS_NOT_CREATED))
             }
         }.addOnFailureListener {
             trySend(UiState.Error(it.message ?: ERROR_FUN_SIGN_UP))

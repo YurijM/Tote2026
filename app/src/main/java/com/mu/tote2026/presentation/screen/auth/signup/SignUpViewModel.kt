@@ -8,13 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.usecase.auth_usecase.AuthUseCase
 import com.mu.tote2026.presentation.utils.checkEmail
 import com.mu.tote2026.presentation.utils.checkPassword
-import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -65,7 +63,7 @@ class SignUpViewModel @Inject constructor(
             }
 
             is SignUpEvent.OnSignUp -> {
-                /*viewModelScope.launch {
+                viewModelScope.launch {
                     authUseCase.isEmailValid(email).collect { emailState ->
                         _state.value = SignUpState(emailState)
 
@@ -75,22 +73,6 @@ class SignUpViewModel @Inject constructor(
                            }
                         }
                     }
-                }*/
-
-                var isEmailValid = false
-                authUseCase.isEmailValid(email).onEach { emailState ->
-                    _state.value = SignUpState(emailState)
-
-                    if (emailState is UiState.Success && emailState.data) {
-                        isEmailValid = true
-                    }
-                    toLog("isEmailValid: $isEmailValid")
-                }.launchIn(viewModelScope)
-
-                if (isEmailValid) {
-                    authUseCase.signUp(email, password).onEach { signState ->
-                        _state.value = SignUpState(signState)
-                    }.launchIn(viewModelScope)
                 }
             }
         }
