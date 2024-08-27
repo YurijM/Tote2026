@@ -78,8 +78,9 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    private fun checkValues(): Boolean =
-        errorEmail.isNullOrBlank() && errorPassword.isNullOrBlank() && errorPasswordConfirm.isNullOrBlank()
+    private fun checkValues(): Boolean = (errorEmail != null && errorEmail!!.isBlank()) &&
+            (errorPassword != null && errorPassword!!.isBlank()) &&
+            (errorPasswordConfirm != null && errorPasswordConfirm!!.isBlank())
 
     companion object {
         data class SignUpState(

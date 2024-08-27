@@ -58,10 +58,9 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    /*private fun checkValues(): Boolean = (errorEmail != null && errorEmail!!.isBlank()) &&
-                (errorPassword != null && errorPassword!!.isBlank())*/
-    private fun checkValues(): Boolean = errorEmail.isNullOrBlank() && errorPassword.isNullOrBlank()
-
+    private fun checkValues(): Boolean = (errorEmail != null && errorEmail!!.isBlank()) &&
+                (errorPassword != null && errorPassword!!.isBlank())
+    //private fun checkValues(): Boolean = errorEmail.isNullOrBlank() && errorPassword.isNullOrBlank()
 
     companion object {
         data class SignInState(
