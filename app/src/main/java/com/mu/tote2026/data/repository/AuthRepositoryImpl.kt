@@ -3,9 +3,12 @@ package com.mu.tote2026.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.Collections.EMAILS
+import com.mu.tote2026.data.repository.Collections.GAMBLERS
 import com.mu.tote2026.data.repository.Errors.ERROR_FUN_SIGN_UP
 import com.mu.tote2026.data.repository.Errors.ERROR_NEW_GAMBLER_IS_NOT_CREATED
+import com.mu.tote2026.data.repository.Errors.GAMBLER_DOCUMENT_WRITE_ERROR
 import com.mu.tote2026.domain.model.EmailModel
+import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.repository.AuthRepository
 import com.mu.tote2026.presentation.utils.Errors.UNAUTHORIZED_EMAIL
 import com.mu.tote2026.ui.common.UiState
@@ -28,12 +31,18 @@ class AuthRepositoryImpl @Inject constructor(
             val user = auth.currentUser
 
             if (user != null) {
-                trySend(UiState.Success(true))
+                firestore.collection(GAMBLERS).document(user.uid).set(GamblerModel(email = email))
+                    .addOnSuccessListener { trySend(UiState.Success(true)) }
+                    .addOnFailureListener { error ->
+                        // Добавить удаление из Authentication
+                        trySend(UiState.Error(error.message ?: GAMBLER_DOCUMENT_WRITE_ERROR))
+                    }
+
             } else {
                 trySend(UiState.Error(ERROR_NEW_GAMBLER_IS_NOT_CREATED))
             }
-        }.addOnFailureListener {
-            trySend(UiState.Error(it.message ?: ERROR_FUN_SIGN_UP))
+        }.addOnFailureListener { error ->
+            trySend(UiState.Error(error.message ?: ERROR_FUN_SIGN_UP))
         }
 
         awaitClose {
@@ -53,8 +62,8 @@ class AuthRepositoryImpl @Inject constructor(
 
             trySend(UiState.Success(uid.isNotBlank()))
             //trySend(UiState.Success(CURRENT_ID.isNotBlank()))
-        }.addOnFailureListener {
-            trySend(UiState.Error(it.message ?: "signIn: error is not defined"))
+        }.addOnFailureListener { error ->
+            trySend(UiState.Error(error.message ?: "signIn: error is not defined"))
         }
 
         awaitClose {
@@ -78,8 +87,8 @@ class AuthRepositoryImpl @Inject constructor(
                     trySend(UiState.Error(UNAUTHORIZED_EMAIL))
                 }
             }
-            .addOnFailureListener { e ->
-                trySend(UiState.Error(e.message ?: "signIn: error is not defined"))
+            .addOnFailureListener { error ->
+                trySend(UiState.Error(error.message ?: "signIn: error is not defined"))
             }
 
         awaitClose {
