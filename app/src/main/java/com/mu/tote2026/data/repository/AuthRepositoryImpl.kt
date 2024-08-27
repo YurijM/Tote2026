@@ -5,7 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.Collections.EMAILS
 import com.mu.tote2026.data.repository.Errors.ERROR_FUN_SIGN_UP
 import com.mu.tote2026.data.repository.Errors.ERROR_NEW_GAMBLER_IS_NOT_CREATED
-import com.mu.tote2026.domain.model.Email
+import com.mu.tote2026.domain.model.EmailModel
 import com.mu.tote2026.domain.repository.AuthRepository
 import com.mu.tote2026.presentation.utils.Errors.UNAUTHORIZED_EMAIL
 import com.mu.tote2026.ui.common.UiState
@@ -56,6 +56,7 @@ class AuthRepositoryImpl @Inject constructor(
         }.addOnFailureListener {
             trySend(UiState.Error(it.message ?: "signIn: error is not defined"))
         }
+
         awaitClose {
             close()
         }
@@ -68,7 +69,7 @@ class AuthRepositoryImpl @Inject constructor(
 
         firestore.collection(EMAILS).get()
             .addOnSuccessListener { task ->
-                val emails = task.toObjects(Email::class.java)
+                val emails = task.toObjects(EmailModel::class.java)
                 val result = emails.find { it.email == email }
                 if (result != null)
                     trySend(UiState.Success(true))
@@ -93,7 +94,7 @@ class AuthRepositoryImpl @Inject constructor(
             if (exception != null) {
                 toLog("error: ${exception.message}")
             } else {
-                val emails = snapshot?.toObjects(Email::class.java) ?: emptyList()
+                val emails = snapshot?.toObjects(EmailModel::class.java) ?: emptyList()
                 toLog("emails: $emails")
                 toLog("email: ${emails.find { it.email == email }?.email}")
                 isValid = !emails.find { it.email == email }?.email.isNullOrBlank()

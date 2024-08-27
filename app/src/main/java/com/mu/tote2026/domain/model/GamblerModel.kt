@@ -1,8 +1,12 @@
 package com.mu.tote2026.domain.model
 
-data class AdditionallyForGambler(
-    val rate: Int = 0,
+data class GamblerModel(
+    val email: String = "",
+    val nickname: String = "",
+    val photoUrl: String = "",
+    val gender: String = "",
     val isAdmin: Boolean = false,
+    val rate: Int = 0,
     val pointsPrev: Double = 0.00,
     val points: Double = 0.00,
     val placePrev: Int = 0,
