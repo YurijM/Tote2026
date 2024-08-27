@@ -50,10 +50,13 @@ class SignInViewModel @Inject constructor(
             }
             is SignInEvent.OnSignIn -> {
                 viewModelScope.launch {
-                    authUseCase.signIn(email, password).collect {
-                        _state.value = SignInState(it)
+                    authUseCase.signIn(email, password).collect { signState ->
+                        _state.value = SignInState(signState)
                     }
                 }
+                /*authUseCase.signIn(email, password).onEach {
+                    _state.value = SignInState(it)
+                }.launchIn(viewModelScope)*/
             }
         }
     }

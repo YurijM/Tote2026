@@ -5,6 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,6 +15,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.SignCard
+import com.mu.tote2026.presentation.utils.errorTranslate
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
 @Composable
@@ -23,24 +26,29 @@ fun SignInScreen(
     val isLoading = remember { mutableStateOf(false) }
     val error = remember { mutableStateOf("") }
     val state by viewModel.state.collectAsState()
+    val result = state.result
 
-    when (state.result) {
-        is UiState.Loading -> {
-            isLoading.value = true
-            error.value = ""
+    LaunchedEffect(key1 = result) {
+        toLog("result: $result")
+        when (result) {
+            is UiState.Loading -> {
+                isLoading.value = true
+                error.value = ""
+            }
+
+            is UiState.Success -> {
+                isLoading.value = false
+                error.value = ""
+            }
+
+            is UiState.Error -> {
+                isLoading.value = false
+                //error.value = errorTranslate((state.result as UiState.Error).error)
+                error.value = errorTranslate(result.error)
+            }
+
+            else -> {}
         }
-
-        is UiState.Success -> {
-            isLoading.value = false
-            error.value = ""
-        }
-
-        is UiState.Error -> {
-            isLoading.value = false
-            error.value = (state.result as UiState.Error).error
-        }
-
-        else -> {}
     }
 
     Surface(
@@ -50,7 +58,7 @@ fun SignInScreen(
     ) {
         SignCard(
             titleId = R.string.sign_in,
-            titleOkId = R.string.to_register,
+            titleOkId = R.string.to_log_into,
             email = viewModel.email,
             onEmailChange = { newValue -> viewModel.onEvent(SignInEvent.OnEmailChange(newValue)) },
             errorEmail = viewModel.errorEmail,
