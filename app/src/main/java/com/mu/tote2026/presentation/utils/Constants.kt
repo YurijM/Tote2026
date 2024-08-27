@@ -18,3 +18,19 @@ object Errors {
     const val INCORRECT_EMAIL = "Некорректное значение email"
     const val UNAUTHORIZED_EMAIL = "Неразрешённый email"
 }
+
+data class Translate(
+    val eng: String = "",
+    val rus: String = ""
+)
+
+val translateList = listOf(
+    Translate(
+        eng = "The email address is already in use by another account.",
+        rus = "Участник с таким адресом уже зарегистрирован"
+    ),
+    Translate(
+        eng = "The supplied auth credential is incorrect, malformed or has expired.",
+        rus = "Email или пароль неверны"
+    )
+)

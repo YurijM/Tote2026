@@ -1,9 +1,6 @@
 package com.mu.tote2026.presentation.utils
 
 import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import com.mu.tote2026.R
 import com.mu.tote2026.presentation.utils.Errors.FIELD_CONTAINS_LESS_THAN_N_CHARS
 import com.mu.tote2026.presentation.utils.Errors.FIELD_IS_EMPTY
 import com.mu.tote2026.presentation.utils.Errors.INCORRECT_EMAIL
@@ -51,3 +48,5 @@ fun checkPassword(password: String?, passwordConfirm: String?): String {
         }
     } else ""
 }
+
+fun errorTranslate(error: String): String = translateList.find { it.eng == error }?.rus ?: error
