@@ -1,4 +1,4 @@
-package com.mu.tote2026.presentation.navigation.destination.splash
+package com.mu.tote2026.presentation.navigation.destination.auth
 
 import androidx.navigation.NavController
 import com.mu.tote2026.presentation.utils.Route.AUTH_SCREEN

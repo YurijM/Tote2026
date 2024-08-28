@@ -21,7 +21,8 @@ import com.mu.tote2026.ui.common.UiState
 
 @Composable
 fun SignInScreen(
-    viewModel: SignInViewModel = hiltViewModel()
+    viewModel: SignInViewModel = hiltViewModel(),
+    toMain: () -> Unit
 ) {
     val isLoading = remember { mutableStateOf(false) }
     val error = remember { mutableStateOf("") }
@@ -39,6 +40,7 @@ fun SignInScreen(
             is UiState.Success -> {
                 isLoading.value = false
                 error.value = ""
+                toMain()
             }
 
             is UiState.Error -> {
