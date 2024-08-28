@@ -6,7 +6,10 @@ object Collections {
 }
 object Errors {
     const val CREATE_USER_WITH_EMAIL_AND_PASSWORD_FUNCTION_EXECUTING_ERROR = "Ошибка выполнения функции createUserWithEmailAndPassword"
-    const val ERROR_FUN_SIGN_UP = "Ошибка выполнения функции signUp"
-    const val ERROR_NEW_GAMBLER_IS_NOT_CREATED = "Новый участник не создан"
+    const val SIGN_IN_WITH_EMAIL_AND_PASSWORD_FUNCTION_EXECUTING_ERROR = "Ошибка выполнения функции " +
+            "signInWithEmailAndPassword"
+    const val NEW_USER_IS_NOT_CREATED_ERROR = "Новый пользователь не создан"
     const val GAMBLER_DOCUMENT_WRITE_ERROR= "Ошибка записи документа игрока"
+    const val USER_WAS_DELETED_ERROR= "Учётка пользователя удалена"
+    const val USER_DELETE_ERROR= "Ошибка при удалении пользователя"
 }
