@@ -5,8 +5,12 @@ import androidx.navigation.compose.composable
 import com.mu.tote2026.presentation.screen.auth.signup.SignUpScreen
 import com.mu.tote2026.presentation.utils.Route.SIGN_UP_SCREEN
 
-fun NavGraphBuilder.signUp() {
+fun NavGraphBuilder.signUp(
+    toProfile: () -> Unit
+) {
     composable(SIGN_UP_SCREEN) {
-        SignUpScreen()
+        SignUpScreen(
+            toProfile = toProfile
+        )
     }
 }

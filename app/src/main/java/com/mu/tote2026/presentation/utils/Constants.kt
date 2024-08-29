@@ -9,6 +9,7 @@ object Route {
     const val SIGN_IN_SCREEN = "sign_in_screen"
     const val SIGN_UP_SCREEN = "sign_up_screen"
     const val MAIN_SCREEN = "main_screen"
+    const val PROFILE_SCREEN = "profile_screen"
     const val TEST_SCREEN = "test_screen"
 }
 

@@ -11,6 +11,8 @@ import com.mu.tote2026.presentation.navigation.destination.auth.signUp
 import com.mu.tote2026.presentation.navigation.destination.auth.navigateToAuth
 import com.mu.tote2026.presentation.navigation.destination.main.main
 import com.mu.tote2026.presentation.navigation.destination.main.navigateToMain
+import com.mu.tote2026.presentation.navigation.destination.profile.navigateToProfile
+import com.mu.tote2026.presentation.navigation.destination.profile.profile
 import com.mu.tote2026.presentation.navigation.destination.splash.splash
 import com.mu.tote2026.presentation.navigation.destination.test.test
 import com.mu.tote2026.presentation.utils.Route.SPLASH_SCREEN
@@ -25,29 +27,24 @@ fun NavGraph(
     ) {
         test()
         splash(
-            toAuth = {
-                navController.navigateToAuth()
-            },
+            toAuth = { navController.navigateToAuth() }
         )
         auth(
-            toSignUp = {
-                navController.navigateToSignUp()
-            },
-            toSignIn = {
-                navController.navigateToSignIn()
-            }
+            toSignUp = { navController.navigateToSignUp() },
+            toSignIn = { navController.navigateToSignIn() }
         )
-        signUp()
+        signUp(
+            toProfile = { navController.navigateToProfile() }
+        )
         signIn(
-            toMain = {
-                navController.navigateToMain()
-            }
+            toMain = { navController.navigateToMain() }
         )
         main(
-            toAuth = {
-                navController.navigateToAuth()
-            }
+            toAuth = { navController.navigateToAuth() }
         )
-
+        profile(
+            toMain = { navController.navigateToMain() },
+            toAuth = { navController.navigateToAuth() }
+        )
     }
 }
