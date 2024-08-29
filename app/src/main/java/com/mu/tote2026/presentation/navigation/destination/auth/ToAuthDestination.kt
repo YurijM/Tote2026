@@ -7,7 +7,7 @@ import com.mu.tote2026.presentation.utils.Route.SPLASH_SCREEN
 fun NavController.navigateToAuth() {
     navigate(AUTH_SCREEN) {
         popUpTo(SPLASH_SCREEN) {
-            //inclusive = true
+            inclusive = true
         }
     }
 }
