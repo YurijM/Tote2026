@@ -34,10 +34,10 @@ fun NavGraph(
             toSignIn = { navController.navigateToSignIn() }
         )
         signUp(
-            //toProfile = { navController.navigateToProfile() }
-            toProfile = { email ->
+            toProfile = { navController.navigateToProfile() }
+            /*toProfile = { email ->
                 navController.navigateToProfile(email)
-            }
+            }*/
         )
         signIn(
             toMain = { navController.navigateToMain() }

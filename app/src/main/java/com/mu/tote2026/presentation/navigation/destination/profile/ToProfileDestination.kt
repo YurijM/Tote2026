@@ -4,9 +4,10 @@ import androidx.navigation.NavController
 import com.mu.tote2026.presentation.utils.Route.PROFILE_SCREEN
 
 fun NavController.navigateToProfile(
-    email: String
+    //email: String
 ) {
-    navigate("$PROFILE_SCREEN/$email") {
+    //navigate("$PROFILE_SCREEN/$email") {
+    navigate(PROFILE_SCREEN) {
         /*popUpTo(AUTH_SCREEN) {
             //inclusive = true
         }*/
