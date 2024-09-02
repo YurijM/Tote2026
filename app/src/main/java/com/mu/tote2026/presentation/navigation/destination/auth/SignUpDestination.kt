@@ -13,4 +13,11 @@ fun NavGraphBuilder.signUp(
             toProfile = toProfile
         )
     }
+    /*composable(
+        "$SIGN_UP_SCREEN/{$KEY_EMAIL}"
+    ) {
+        SignUpScreen(
+            toProfile = toProfile
+        )
+    }*/
 }
