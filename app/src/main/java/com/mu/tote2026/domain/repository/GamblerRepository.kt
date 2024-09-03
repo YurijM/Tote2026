@@ -5,5 +5,5 @@ import com.mu.tote2026.ui.common.UiState
 import kotlinx.coroutines.flow.Flow
 
 interface GamblerRepository {
-    fun getGambler(email: String): Flow<UiState<GamblerModel>>
+    fun getGambler(id: String): Flow<UiState<GamblerModel>>
 }

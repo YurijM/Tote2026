@@ -34,6 +34,7 @@ class AuthRepositoryImpl @Inject constructor(
                 if (user != null) {
                     firestore.collection(GAMBLERS).document(user.uid).set(GamblerModel(email = email))
                         .addOnSuccessListener {
+                            CURRENT_ID = user.uid
                             trySend(UiState.Success(true))
                         }
                         .addOnFailureListener {
@@ -67,10 +68,8 @@ class AuthRepositoryImpl @Inject constructor(
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                val uid = auth.currentUser?.uid.toString()
-                //CURRENT_ID = firebaseAuth.currentUser?.uid.toString()
-
-                trySend(UiState.Success(uid.isNotBlank()))
+                CURRENT_ID = auth.currentUser?.uid.toString()
+                trySend(UiState.Success(CURRENT_ID.isNotBlank()))
             }.addOnFailureListener { error ->
                 trySend(UiState.Error(error.message ?: SIGN_IN_WITH_EMAIL_AND_PASSWORD_FUNCTION_EXECUTING_ERROR))
             }
@@ -97,7 +96,7 @@ class AuthRepositoryImpl @Inject constructor(
                 }
             }
             .addOnFailureListener { error ->
-                trySend(UiState.Error(error.message ?: "signIn: error is not defined"))
+                trySend(UiState.Error(error.message ?: "isEmailValid: error is not defined"))
             }
 
         awaitClose {

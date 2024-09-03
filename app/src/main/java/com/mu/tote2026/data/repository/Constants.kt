@@ -1,5 +1,10 @@
 package com.mu.tote2026.data.repository
 
+import com.mu.tote2026.domain.model.GamblerModel
+
+var CURRENT_ID = ""
+var GAMBLER = GamblerModel()
+
 object Collections {
     const val EMAILS = "emails"
     const val GAMBLERS = "gamblers"

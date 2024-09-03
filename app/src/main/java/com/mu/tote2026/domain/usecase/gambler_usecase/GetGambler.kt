@@ -5,6 +5,6 @@ import com.mu.tote2026.domain.repository.GamblerRepository
 class GetGambler(
     private val gamblerRepository: GamblerRepository
 ) {
-    operator fun invoke(email: String) =
-        gamblerRepository.getGambler(email)
+    operator fun invoke(id: String) =
+        gamblerRepository.getGambler(id)
 }

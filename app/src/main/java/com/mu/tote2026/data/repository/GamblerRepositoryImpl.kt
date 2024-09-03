@@ -30,14 +30,14 @@ class GamblerRepositoryImpl(
         }
     }*/
 
-    override fun getGambler(email: String): Flow<UiState<GamblerModel>> = callbackFlow {
+    override fun getGambler(id: String): Flow<UiState<GamblerModel>> = callbackFlow {
         trySend(UiState.Loading)
 
-        val listener = firestore.collection(GAMBLERS).whereEqualTo("email", email)
+        val listener = firestore.collection(GAMBLERS).document(id)   //.whereEqualTo("id", id)
             .addSnapshotListener { snapshot, exception ->
                 if (snapshot != null) {
-                    val gambler = snapshot.toObjects(GamblerModel::class.java)[0]
-                    trySend(UiState.Success(gambler))
+                    GAMBLER = snapshot.toObject(GamblerModel::class.java)!!
+                    trySend(UiState.Success(GAMBLER))
                 } else {
                     trySend(UiState.Error(exception?.message ?: exception.toString()))
                 }
