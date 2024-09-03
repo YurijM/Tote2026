@@ -40,7 +40,8 @@ fun NavGraph(
             }*/
         )
         signIn(
-            toMain = { navController.navigateToMain() }
+            toMain = { navController.navigateToMain() },
+            toProfile = { navController.navigateToProfile() }
         )
         main(
             toAuth = { navController.navigateToAuth() }

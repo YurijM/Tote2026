@@ -3,7 +3,8 @@ package com.mu.tote2026.presentation.utils
 const val DEBUG_TAG = "tote2026"
 const val MIN_PASSWORD_LENGTH = 6
 
-const val KEY_EMAIL = "email"
+const val MALE = "мужской"
+const val FEMALE = "женский"
 
 object Route {
     const val SPLASH_SCREEN = "splash_screen"

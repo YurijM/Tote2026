@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.data.repository.CURRENT_ID
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
+import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,26 +25,29 @@ class ProfileViewModel @Inject constructor(
     private val _state: MutableStateFlow<GamblerState> = MutableStateFlow(GamblerState())
     val state: StateFlow<GamblerState> = _state.asStateFlow()
 
+    var gambler by mutableStateOf(GamblerModel())
+        private set
+
     var enabledButton by mutableStateOf(false)
         private set
 
-    var nickname by mutableStateOf("")
+    var nicknameError: String? = null
         private set
-    var photoUrl by mutableStateOf("")
+    var photoUrlError: String? = null
         private set
-    var gender by mutableStateOf("")
-        private set
-
-    var errorNickname: String? = null
-        private set
-    var errorPhotoUrl: String? = null
-        private set
-    var errorGender: String? = null
+    var genderError: String? = null
         private set
 
     init {
-        gamblerUseCase.getGambler(CURRENT_ID).onEach { stateGambler ->
-            _state.value = GamblerState(stateGambler)
+        gamblerUseCase.getGambler(CURRENT_ID).onEach { gamblerState ->
+            val result = GamblerState(gamblerState).result
+
+            if (result is UiState.Success) {
+                gambler = result.data
+                enabledButton = checkValues()
+            }
+
+            _state.value = GamblerState(gamblerState)
         }.launchIn(viewModelScope)
     }
 
@@ -54,6 +58,16 @@ class ProfileViewModel @Inject constructor(
             is ProfileEvent.OnGenderChange -> {}
             is ProfileEvent.OnSave -> {}
         }
+    }
+
+    private fun checkValues(): Boolean {
+            nicknameError = checkIsFieldEmpty(gambler.nickname)
+            photoUrlError = checkIsFieldEmpty(gambler.photoUrl)
+            genderError = checkIsFieldEmpty(gambler.gender)
+
+        return nicknameError.isNullOrBlank() &&
+                photoUrlError.isNullOrBlank() &&
+                genderError.isNullOrBlank()
     }
 
     companion object {
