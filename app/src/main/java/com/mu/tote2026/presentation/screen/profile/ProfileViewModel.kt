@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val gamblerUseCase: GamblerUseCase
+    gamblerUseCase: GamblerUseCase
 ) : ViewModel() {
     private val _state: MutableStateFlow<GamblerState> = MutableStateFlow(GamblerState())
     val state: StateFlow<GamblerState> = _state.asStateFlow()
@@ -53,9 +53,15 @@ class ProfileViewModel @Inject constructor(
 
     fun onEvent(event: ProfileEvent) {
         when (event) {
-            is ProfileEvent.OnNicknameChange -> {}
+            is ProfileEvent.OnNicknameChange -> {
+                gambler = gambler.copy(nickname = event.nickname)
+                enabledButton = checkValues()
+            }
+            is ProfileEvent.OnGenderChange -> {
+                gambler = gambler.copy(gender = event.gender)
+                enabledButton = checkValues()
+            }
             is ProfileEvent.OnPhotoUrlChange -> {}
-            is ProfileEvent.OnGenderChange -> {}
             is ProfileEvent.OnSave -> {}
         }
     }
@@ -66,7 +72,7 @@ class ProfileViewModel @Inject constructor(
             genderError = checkIsFieldEmpty(gambler.gender)
 
         return nicknameError.isNullOrBlank() &&
-                photoUrlError.isNullOrBlank() &&
+                //photoUrlError.isNullOrBlank() &&
                 genderError.isNullOrBlank()
     }
 

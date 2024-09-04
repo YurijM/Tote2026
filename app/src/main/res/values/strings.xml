@@ -16,6 +16,7 @@
 
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
 
     <string name="error_field_is_empty">"Поле не заполнено"</string>
     <string name="error_incorrect_email">"Некорректное значение email"</string>
@@ -25,5 +26,4 @@
 
     <string name="gambler_rate">ставка %1$d руб.</string>
     <string name="money_is_not_transferred_yet">Деньги ещё не переведены</string>
-    <string name="save">Сохранить</string>
 </resources>
