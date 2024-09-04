@@ -47,6 +47,7 @@ fun AppTextField(
     label: String,
     textAlign: TextAlign = TextAlign.Unspecified,
     value: String?,
+    maxLines: Int = 1,
     onChange: (newValue: String) -> Unit,
     @DrawableRes painterId: Int? = null,
     description: String? = null,
@@ -60,6 +61,7 @@ fun AppTextField(
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = keyboardOptions,
             value = value ?: "",
+            maxLines = maxLines,
             shape = ShapeDefaults.Medium,
             onValueChange = { newValue ->
                 onChange(newValue)

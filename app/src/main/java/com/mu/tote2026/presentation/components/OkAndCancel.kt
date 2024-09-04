@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +18,7 @@ import com.mu.tote2026.R
 
 @Composable
 fun OkAndCancel(
-    titleOk: String = stringResource(id = R.string.ok),
+    @StringRes titleOk: Int = R.string.ok,
     enabledOk: Boolean = false,
     showCancel: Boolean = true,
     onOK: () -> Unit,
@@ -34,7 +35,7 @@ fun OkAndCancel(
             onClick = { onOK() }
         ) {
             Text(
-                text = titleOk,
+                text = stringResource(titleOk),
                 style = MaterialTheme.typography.titleMedium
             )
         }

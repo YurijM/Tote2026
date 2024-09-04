@@ -53,7 +53,7 @@ fun SignCard(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(
-                    defaultElevation = 4.dp
+                    defaultElevation = 8.dp
                 )
             ) {
                 Column(
@@ -114,7 +114,7 @@ fun SignCard(
                         )
                     }
                     OkAndCancel(
-                        titleOk = stringResource(id = titleOkId),
+                        titleOk = titleOkId,
                         enabledOk = enabledButton,
                         showCancel = false,
                         onOK = { onSign() },
