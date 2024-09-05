@@ -7,4 +7,5 @@ sealed class ProfileEvent {
     data class OnPhotoChange(val uri: Uri) : ProfileEvent()
     data class OnGenderChange(val gender: String) : ProfileEvent()
     data object OnSave : ProfileEvent()
+    data object OnCancel : ProfileEvent()
 }

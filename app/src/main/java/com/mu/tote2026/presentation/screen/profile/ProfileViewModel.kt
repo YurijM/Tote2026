@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.data.repository.CURRENT_ID
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
+import com.mu.tote2026.presentation.utils.Errors.NOT_ALL_DATA_IS_PRESENTED
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +29,7 @@ class ProfileViewModel @Inject constructor(
 
     var gambler by mutableStateOf(GamblerModel())
         private set
+    private var currentGambler: GamblerModel = GamblerModel()
 
     private var photoUri by mutableStateOf<Uri?>(null)
 
@@ -36,10 +38,9 @@ class ProfileViewModel @Inject constructor(
 
     var nicknameError: String? = null
         private set
-    var photoUrlError: String? = null
-        private set
     var genderError: String? = null
         private set
+    private var photoUrlError: String? = null
 
     init {
         gamblerUseCase.getGambler(CURRENT_ID).onEach { gamblerState ->
@@ -47,10 +48,11 @@ class ProfileViewModel @Inject constructor(
 
             if (result is UiState.Success) {
                 gambler = result.data
+                currentGambler = gambler
                 enabledSaveButton = checkValues()
             }
 
-            _state.value = GamblerState(gamblerState)
+            //_state.value = GamblerState(gamblerState)
         }.launchIn(viewModelScope)
     }
 
@@ -83,10 +85,27 @@ class ProfileViewModel @Inject constructor(
                             _state.value = GamblerState(UiState.Error(photoState.error))
                         }
                     }.launchIn(viewModelScope)
+                } else {
+                    gamblerUseCase.saveGambler(CURRENT_ID, gambler).onEach { gamblerState ->
+                        _state.value = GamblerState(gamblerState)
+                        if (gamblerState is UiState.Success)
+                            currentGambler = gamblerState.data
+                    }.launchIn(viewModelScope)
                 }
+            }
+            is ProfileEvent.OnCancel -> {
+                if (checkCurrentGambler())
+                    _state.value = GamblerState(UiState.Success(currentGambler))
+                else
+                    _state.value = GamblerState(UiState.Error(NOT_ALL_DATA_IS_PRESENTED))
             }
         }
     }
+
+    private fun checkCurrentGambler(): Boolean =
+        checkIsFieldEmpty(currentGambler.nickname).isBlank() &&
+        checkIsFieldEmpty(currentGambler.photoUrl).isBlank() &&
+        checkIsFieldEmpty(currentGambler.gender).isBlank()
 
     private fun checkValues(): Boolean {
             nicknameError = checkIsFieldEmpty(gambler.nickname)

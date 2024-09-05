@@ -7,7 +7,7 @@ import com.mu.tote2026.presentation.utils.Route.MAIN_SCREEN
 fun NavController.navigateToMain() {
     navigate(MAIN_SCREEN) {
         popUpTo(AUTH_SCREEN) {
-            //inclusive = true
+            inclusive = true
         }
     }
 }

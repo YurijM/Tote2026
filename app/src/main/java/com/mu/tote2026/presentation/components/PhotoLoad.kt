@@ -9,12 +9,15 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,7 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.theme.Color2
@@ -77,14 +80,14 @@ fun PhotoLoad(
             )
         } else {
             if (photoUrl.isNotBlank()) {
-                AsyncImage(
+                SubcomposeAsyncImage(
                     model = photoUrl,
                     contentDescription = null,
                     modifier = Modifier
                         .requiredSize(dimensionResource(id = R.dimen.profile_photo_size))
                         .clip(RoundedCornerShape(8.dp)),
                     contentScale = ContentScale.Crop,
-                    /*loading = {
+                    loading = {
                         Box(
                             modifier = Modifier.size(48.dp),
                             contentAlignment = Alignment.Center
@@ -93,7 +96,7 @@ fun PhotoLoad(
                                 strokeWidth = 2.dp
                             )
                         }
-                    },*/
+                    },
                 )
             } else {
                 Image(

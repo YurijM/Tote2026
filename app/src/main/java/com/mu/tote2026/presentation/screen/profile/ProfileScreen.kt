@@ -35,6 +35,7 @@ import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.PhotoLoad
 import com.mu.tote2026.presentation.components.TextError
 import com.mu.tote2026.presentation.components.Title
+import com.mu.tote2026.presentation.utils.Errors.NOT_ALL_DATA_IS_PRESENTED
 import com.mu.tote2026.presentation.utils.FEMALE
 import com.mu.tote2026.presentation.utils.MALE
 import com.mu.tote2026.presentation.utils.errorTranslate
@@ -64,11 +65,15 @@ fun ProfileScreen(
             is UiState.Success -> {
                 isLoading = false
                 error = ""
+                toMain()
             }
 
             is UiState.Error -> {
                 isLoading = false
-                error = errorTranslate(result.error)
+                if (result.error == NOT_ALL_DATA_IS_PRESENTED)
+                    toAuth()
+                else
+                    error = errorTranslate(result.error)
             }
 
             else -> {}
@@ -136,7 +141,7 @@ fun ProfileScreen(
                     titleOk = R.string.save,
                     enabledOk = viewModel.enabledSaveButton,
                     onOK = { viewModel.onEvent(ProfileEvent.OnSave) },
-                    onCancel = {}
+                    onCancel = { viewModel.onEvent(ProfileEvent.OnCancel) }
                 )
                 if (error.isNotBlank()) {
                     TextError(
