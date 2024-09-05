@@ -21,14 +21,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    gamblerUseCase: GamblerUseCase
+    private val gamblerUseCase: GamblerUseCase
 ) : ViewModel() {
     private val _state: MutableStateFlow<GamblerState> = MutableStateFlow(GamblerState())
     val state: StateFlow<GamblerState> = _state.asStateFlow()
 
     var gambler by mutableStateOf(GamblerModel())
         private set
-
 
     private var photoUri by mutableStateOf<Uri?>(null)
 
@@ -70,7 +69,22 @@ class ProfileViewModel @Inject constructor(
                 photoUri = event.uri
                 enabledSaveButton = checkValues()
             }
-            is ProfileEvent.OnSave -> {}
+            is ProfileEvent.OnSave -> {
+                if (photoUri != null) {
+                    _state.value = GamblerState(UiState.Loading)
+
+                    gamblerUseCase.saveGamblerPhoto(CURRENT_ID, photoUri!!).onEach { photoState ->
+                        if (photoState is UiState.Success) {
+                            gambler = gambler.copy(photoUrl = photoState.data)
+                            gamblerUseCase.saveGambler(CURRENT_ID, gambler).onEach { gamblerState ->
+                                _state.value = GamblerState(gamblerState)
+                            }.launchIn(viewModelScope)
+                        } else if (photoState is UiState.Error) {
+                            _state.value = GamblerState(UiState.Error(photoState.error))
+                        }
+                    }.launchIn(viewModelScope)
+                }
+            }
         }
     }
 

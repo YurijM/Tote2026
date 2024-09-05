@@ -130,7 +130,7 @@ fun ProfileScreen(
                 OkAndCancel(
                     titleOk = R.string.save,
                     enabledOk = viewModel.enabledSaveButton,
-                    onOK = {},
+                    onOK = { viewModel.onEvent(ProfileEvent.OnSave) },
                     onCancel = {}
                 )
                 if (error.isNotBlank()) {
