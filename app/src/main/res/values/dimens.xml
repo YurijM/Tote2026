@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="profile_photo_size">120.dp</dimen>
+</resources>

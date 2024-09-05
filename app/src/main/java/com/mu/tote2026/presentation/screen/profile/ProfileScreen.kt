@@ -1,15 +1,11 @@
 package com.mu.tote2026.presentation.screen.profile
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -26,17 +22,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.components.AppRadioGroup
 import com.mu.tote2026.presentation.components.AppTextField
 import com.mu.tote2026.presentation.components.OkAndCancel
+import com.mu.tote2026.presentation.components.PhotoLoad
 import com.mu.tote2026.presentation.components.TextError
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.FEMALE
@@ -103,26 +98,47 @@ fun ProfileScreen(
                     viewModel.gambler.rate
                 )
                 HorizontalDivider(thickness = 1.dp)
-                ProfileEdit(
-                    nickname = viewModel.gambler.nickname,
-                    photoUrl = viewModel.gambler.photoUrl,
-                    gender = viewModel.gambler.gender,
-                    nicknameError = viewModel.nicknameError,
-                    genderError = viewModel.genderError,
-                    onNicknameChange = { newValue ->
-                        viewModel.onEvent(ProfileEvent.OnNicknameChange(newValue))
-                    },
-                    onGenderChange = { newValue ->
-                        viewModel.onEvent(ProfileEvent.OnGenderChange(newValue))
-                    }
-                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(
+                        horizontal = 8.dp,
+                        vertical = 4.dp
+                    )
+                ) {
+                    PhotoLoad(
+                        onSelect = { uri ->
+                            viewModel.onEvent(ProfileEvent.OnPhotoChange(uri))
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                    ProfileEdit(
+                        nickname = viewModel.gambler.nickname,
+                        gender = viewModel.gambler.gender,
+                        nicknameError = viewModel.nicknameError,
+                        genderError = viewModel.genderError,
+                        onNicknameChange = { newValue ->
+                            viewModel.onEvent(ProfileEvent.OnNicknameChange(newValue))
+                        },
+                        onGenderChange = { newValue ->
+                            viewModel.onEvent(ProfileEvent.OnGenderChange(newValue))
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
                 HorizontalDivider(thickness = 1.dp)
                 OkAndCancel(
                     titleOk = R.string.save,
-                    enabledOk = viewModel.enabledButton,
+                    enabledOk = viewModel.enabledSaveButton,
                     onOK = {},
                     onCancel = {}
                 )
+                if (error.isNotBlank()) {
+                    TextError(
+                        errorMessage = error,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
@@ -160,61 +176,36 @@ private fun CardHeader(
 
 @Composable
 private fun ProfileEdit(
+    modifier: Modifier = Modifier,
     nickname: String,
-    photoUrl: String,
     gender: String,
     nicknameError: String?,
     genderError: String?,
     onNicknameChange: (String) -> Unit,
     onGenderChange: (String) -> Unit,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceAround,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(
-            horizontal = 8.dp,
-            vertical = 4.dp
-        )
+    Column(
+        modifier = modifier
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.weight(1f)
-        ) {
-            Image(
-                painter = painterResource(R.drawable.noname),
-                contentDescription = null,
-                modifier = Modifier.size(120.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "Загрузить/сменить фото",
-                textDecoration = TextDecoration.Underline,
-                textAlign = TextAlign.Center
-            )
-        }
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            AppTextField(
-                label = "Ник",
-                value = nickname,
-                onChange = { newValue -> onNicknameChange(newValue)},
-                errorMessage = nicknameError
-            )
-            Text(
-                text = "Пол",
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 8.dp)
-            )
-            AppRadioGroup(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 4.dp),
-                items = listOf(MALE, FEMALE),
-                currentValue = gender,
-                onClick = { newValue -> onGenderChange(newValue) },
-                errorMessage = genderError
-            )
-        }
+        AppTextField(
+            label = "Ник",
+            value = nickname,
+            onChange = { newValue -> onNicknameChange(newValue) },
+            errorMessage = nicknameError
+        )
+        Text(
+            text = "Пол",
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(start = 8.dp)
+        )
+        AppRadioGroup(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 4.dp),
+            items = listOf(MALE, FEMALE),
+            currentValue = gender,
+            onClick = { newValue -> onGenderChange(newValue) },
+            errorMessage = genderError
+        )
     }
 }

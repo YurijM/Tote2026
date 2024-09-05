@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.screen.profile
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -28,7 +29,10 @@ class ProfileViewModel @Inject constructor(
     var gambler by mutableStateOf(GamblerModel())
         private set
 
-    var enabledButton by mutableStateOf(false)
+
+    private var photoUri by mutableStateOf<Uri?>(null)
+
+    var enabledSaveButton by mutableStateOf(false)
         private set
 
     var nicknameError: String? = null
@@ -44,7 +48,7 @@ class ProfileViewModel @Inject constructor(
 
             if (result is UiState.Success) {
                 gambler = result.data
-                enabledButton = checkValues()
+                enabledSaveButton = checkValues()
             }
 
             _state.value = GamblerState(gamblerState)
@@ -55,13 +59,17 @@ class ProfileViewModel @Inject constructor(
         when (event) {
             is ProfileEvent.OnNicknameChange -> {
                 gambler = gambler.copy(nickname = event.nickname)
-                enabledButton = checkValues()
+                enabledSaveButton = checkValues()
             }
             is ProfileEvent.OnGenderChange -> {
                 gambler = gambler.copy(gender = event.gender)
-                enabledButton = checkValues()
+                enabledSaveButton = checkValues()
             }
-            is ProfileEvent.OnPhotoUrlChange -> {}
+            is ProfileEvent.OnPhotoChange -> {
+                gambler = gambler.copy(photoUrl = event.uri.toString())
+                photoUri = event.uri
+                enabledSaveButton = checkValues()
+            }
             is ProfileEvent.OnSave -> {}
         }
     }
@@ -72,7 +80,7 @@ class ProfileViewModel @Inject constructor(
             genderError = checkIsFieldEmpty(gambler.gender)
 
         return nicknameError.isNullOrBlank() &&
-                //photoUrlError.isNullOrBlank() &&
+                photoUrlError.isNullOrBlank() &&
                 genderError.isNullOrBlank()
     }
 

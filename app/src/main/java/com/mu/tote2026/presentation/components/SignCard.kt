@@ -134,7 +134,7 @@ fun SignCard(
             modifier = Modifier.weight(1f)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.field1),
+                painter = painterResource(id = R.drawable.field),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxWidth()
