@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.utils.toLog
-import java.io.ByteArrayOutputStream
 
 @Composable
 fun PhotoLoad(
@@ -131,7 +130,7 @@ fun PhotoLoad(
     }
 }*/
 
-private fun bitmapToByteArray(
+/*private fun bitmapToByteArray(
     context: Context,
     uri: Uri
 ): ByteArray {
@@ -140,7 +139,7 @@ private fun bitmapToByteArray(
     val baos = ByteArrayOutputStream()
     bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
     return baos.toByteArray()
-}
+}*/
 
 private fun getBitmap(
     context: Context,
