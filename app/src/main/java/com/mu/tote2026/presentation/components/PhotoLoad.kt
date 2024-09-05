@@ -53,10 +53,10 @@ fun PhotoLoad(
         contract = ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         toLog("uri: $uri")
-        if (uri == null) return@rememberLauncherForActivityResult
-
-        imageUri = uri
-        onSelect(imageUri)
+        if (uri != null) {
+            imageUri = uri
+            onSelect(imageUri!!)
+        }
     }
 
     imageUri?.let { uri ->
