@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,9 +55,13 @@ fun SignCard(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 8.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
                 )
             ) {
                 Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -64,8 +69,7 @@ fun SignCard(
                             start = 12.dp,
                             end = 12.dp,
                             bottom = 16.dp,
-                        ),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                        )
                 ) {
                     AppTextField(
                         modifier = Modifier
