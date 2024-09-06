@@ -22,7 +22,7 @@ object Errors {
     const val PASSWORDS_DO_NOT_MATCH = "Значения паролей не совпадают"
     const val INCORRECT_EMAIL = "Некорректное значение email"
     const val UNAUTHORIZED_EMAIL = "Неразрешённый email"
-    const val NOT_ALL_DATA_IS_PRESENTED = "Не все данные представлены"
+    const val ERROR_PROFILE_IS_EMPTY = "Профиль не заполнен"
 }
 
 data class Translate(

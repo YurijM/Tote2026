@@ -35,7 +35,7 @@ import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.PhotoLoad
 import com.mu.tote2026.presentation.components.TextError
 import com.mu.tote2026.presentation.components.Title
-import com.mu.tote2026.presentation.utils.Errors.NOT_ALL_DATA_IS_PRESENTED
+import com.mu.tote2026.presentation.utils.Errors.ERROR_PROFILE_IS_EMPTY
 import com.mu.tote2026.presentation.utils.FEMALE
 import com.mu.tote2026.presentation.utils.MALE
 import com.mu.tote2026.presentation.utils.errorTranslate
@@ -70,7 +70,7 @@ fun ProfileScreen(
 
             is UiState.Error -> {
                 isLoading = false
-                if (result.error == NOT_ALL_DATA_IS_PRESENTED)
+                if (result.error == ERROR_PROFILE_IS_EMPTY)
                     toAuth()
                 else
                     error = errorTranslate(result.error)

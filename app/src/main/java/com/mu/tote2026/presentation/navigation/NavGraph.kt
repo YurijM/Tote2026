@@ -27,7 +27,8 @@ fun NavGraph(
     ) {
         test()
         splash(
-            toAuth = { navController.navigateToAuth() }
+            toAuth = { navController.navigateToAuth() },
+            toMain = { navController.navigateToMain() }
         )
         auth(
             toSignUp = { navController.navigateToSignUp() },
@@ -44,7 +45,8 @@ fun NavGraph(
             toProfile = { navController.navigateToProfile() }
         )
         main(
-            toAuth = { navController.navigateToAuth() }
+            toAuth = { navController.navigateToAuth() },
+            toProfile = { navController.navigateToProfile() }
         )
         profile(
             toMain = { navController.navigateToMain() },

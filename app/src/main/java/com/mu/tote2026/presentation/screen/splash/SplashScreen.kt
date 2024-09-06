@@ -35,7 +35,8 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(
     viewModel: SplashViewModel = hiltViewModel(),
-    toAuth: () -> Unit
+    toAuth: () -> Unit,
+    toMain: () -> Unit
 ) {
     val scale = remember {
         Animatable(0f)
@@ -79,8 +80,7 @@ fun SplashScreen(
             )
         )
         delay(1000L)
-        //if (viewModel.isAuth) toMain() else toAuth()
-        toAuth()
+        if (viewModel.isAuth) toMain() else toAuth()
     }
 
     Surface(

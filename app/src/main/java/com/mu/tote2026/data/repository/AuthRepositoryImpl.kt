@@ -6,10 +6,10 @@ import com.mu.tote2026.data.repository.Collections.EMAILS
 import com.mu.tote2026.data.repository.Collections.GAMBLERS
 import com.mu.tote2026.data.repository.Errors.CREATE_USER_WITH_EMAIL_AND_PASSWORD_FUNCTION_EXECUTING_ERROR
 import com.mu.tote2026.data.repository.Errors.GAMBLER_DOCUMENT_WRITE_ERROR
-import com.mu.tote2026.data.repository.Errors.NEW_USER_IS_NOT_CREATED_ERROR
+import com.mu.tote2026.data.repository.Errors.ERROR_NEW_USER_IS_NOT_CREATED
 import com.mu.tote2026.data.repository.Errors.SIGN_IN_WITH_EMAIL_AND_PASSWORD_FUNCTION_EXECUTING_ERROR
 import com.mu.tote2026.data.repository.Errors.USER_DELETE_ERROR
-import com.mu.tote2026.data.repository.Errors.USER_WAS_DELETED_ERROR
+import com.mu.tote2026.data.repository.Errors.ERROR_USER_WAS_DELETED
 import com.mu.tote2026.domain.model.EmailModel
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.repository.AuthRepository
@@ -42,7 +42,7 @@ class AuthRepositoryImpl @Inject constructor(
                             val error = GAMBLER_DOCUMENT_WRITE_ERROR
                             user.delete()
                                 .addOnSuccessListener {
-                                    trySend(UiState.Error("$error \n $USER_WAS_DELETED_ERROR"))
+                                    trySend(UiState.Error("$error \n $ERROR_USER_WAS_DELETED"))
                                 }
                                 .addOnFailureListener { e ->
                                     val message = "$error \n" + (e.message ?: USER_DELETE_ERROR)
@@ -51,7 +51,7 @@ class AuthRepositoryImpl @Inject constructor(
                         }
 
                 } else {
-                    trySend(UiState.Error(NEW_USER_IS_NOT_CREATED_ERROR))
+                    trySend(UiState.Error(ERROR_NEW_USER_IS_NOT_CREATED))
                 }
             }
             .addOnFailureListener { error ->

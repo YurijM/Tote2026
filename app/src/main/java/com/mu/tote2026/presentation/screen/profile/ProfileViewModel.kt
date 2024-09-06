@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.data.repository.CURRENT_ID
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
-import com.mu.tote2026.presentation.utils.Errors.NOT_ALL_DATA_IS_PRESENTED
+import com.mu.tote2026.presentation.utils.Errors.ERROR_PROFILE_IS_EMPTY
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
 import com.mu.tote2026.presentation.utils.checkProfile
 import com.mu.tote2026.ui.common.UiState
@@ -98,7 +98,7 @@ class ProfileViewModel @Inject constructor(
                 if (currentGambler.checkProfile())
                     _state.value = GamblerState(UiState.Success(currentGambler))
                 else
-                    _state.value = GamblerState(UiState.Error(NOT_ALL_DATA_IS_PRESENTED))
+                    _state.value = GamblerState(UiState.Error(ERROR_PROFILE_IS_EMPTY))
             }
         }
     }

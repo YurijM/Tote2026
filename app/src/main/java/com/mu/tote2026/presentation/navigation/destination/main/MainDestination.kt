@@ -6,11 +6,13 @@ import com.mu.tote2026.presentation.screen.main.MainScreen
 import com.mu.tote2026.presentation.utils.Route.MAIN_SCREEN
 
 fun NavGraphBuilder.main(
-    toAuth: () -> Unit
+    toAuth: () -> Unit,
+    toProfile: () -> Unit
 ) {
     composable(MAIN_SCREEN) {
         MainScreen(
-            toAuth = toAuth
+            toAuth = toAuth,
+            toProfile = toProfile,
         )
     }
 }
