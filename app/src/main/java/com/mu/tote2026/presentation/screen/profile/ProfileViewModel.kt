@@ -11,6 +11,7 @@ import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.presentation.utils.Errors.NOT_ALL_DATA_IS_PRESENTED
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
+import com.mu.tote2026.presentation.utils.checkProfile
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -94,18 +95,13 @@ class ProfileViewModel @Inject constructor(
                 }
             }
             is ProfileEvent.OnCancel -> {
-                if (checkCurrentGambler())
+                if (currentGambler.checkProfile())
                     _state.value = GamblerState(UiState.Success(currentGambler))
                 else
                     _state.value = GamblerState(UiState.Error(NOT_ALL_DATA_IS_PRESENTED))
             }
         }
     }
-
-    private fun checkCurrentGambler(): Boolean =
-        checkIsFieldEmpty(currentGambler.nickname).isBlank() &&
-        checkIsFieldEmpty(currentGambler.photoUrl).isBlank() &&
-        checkIsFieldEmpty(currentGambler.gender).isBlank()
 
     private fun checkValues(): Boolean {
             nicknameError = checkIsFieldEmpty(gambler.nickname)

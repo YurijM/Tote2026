@@ -1,6 +1,7 @@
 package com.mu.tote2026.presentation.utils
 
 import android.util.Log
+import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.presentation.utils.Errors.FIELD_CONTAINS_LESS_THAN_N_CHARS
 import com.mu.tote2026.presentation.utils.Errors.FIELD_IS_EMPTY
 import com.mu.tote2026.presentation.utils.Errors.INCORRECT_EMAIL
@@ -11,7 +12,6 @@ fun toLog(message: String) {
 }
 
 fun String.withParam(param: String) = this.replace("%_%", param)
-
 
 fun checkIsFieldEmpty(value: String?): String {
     return if ((value != null) && value.isBlank()) FIELD_IS_EMPTY
@@ -50,3 +50,7 @@ fun checkPassword(password: String?, passwordConfirm: String?): String {
 }
 
 fun errorTranslate(error: String): String = translateList.find { it.eng == error }?.rus ?: error
+
+fun GamblerModel.checkProfile(): Boolean = this.nickname.isNotBlank() &&
+        this.gender.isNotBlank() &&
+        this.photoUrl.isNotBlank()
