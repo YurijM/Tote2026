@@ -6,13 +6,11 @@ import com.mu.tote2026.presentation.screen.auth.signIn.SignInScreen
 import com.mu.tote2026.presentation.utils.Route.SIGN_IN_SCREEN
 
 fun NavGraphBuilder.signIn(
-    toMain: () -> Unit,
-    toProfile: () -> Unit
+    toMain: () -> Unit
 ) {
     composable(SIGN_IN_SCREEN) {
         SignInScreen(
-            toMain = toMain,
-            toProfile = toProfile
+            toMain = toMain
         )
     }
 }

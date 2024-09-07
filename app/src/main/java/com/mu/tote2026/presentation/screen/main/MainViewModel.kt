@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,6 +32,8 @@ class MainViewModel @Inject constructor(
 
     var gambler by mutableStateOf(GamblerModel())
         private set
+
+    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
 
     init {
         gamblerUseCase.getGambler(CURRENT_ID).onEach { gamblerState ->

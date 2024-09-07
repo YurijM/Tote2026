@@ -8,19 +8,26 @@ import androidx.compose.runtime.Composable
 
 private val LightColorScheme = lightColorScheme(
     background = Color1,
+    onBackground = Color5,
     surface = Color0,
     onSurface = Color9,
-    surfaceVariant = Color0,
+    surfaceVariant = Color2,
     primary = Color7,
+    primaryContainer = Color1,
     onPrimary = Color0,
+    onPrimaryContainer = Color7,
     outline = Color7
 )
 private val DarkColorScheme = darkColorScheme(
     background = Color8,
     surface = Color9,
     onSurface = Color0,
+    surfaceVariant = Color7,
     primary = Color3,
+    primaryContainer = Color8,
     onPrimary = Color9,
+    onPrimaryContainer = Color2,
+    outline = Color3
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -40,15 +47,16 @@ fun Tote2026Theme(
     //dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        /*dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+    /*val colorScheme = when {
+        *//*dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }*/
+        }*//*
 
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
-    }
+    }*/
+    val colorScheme = LightColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,

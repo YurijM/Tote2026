@@ -1,9 +1,11 @@
 package com.mu.tote2026.presentation.screen.main
 
-import android.widget.Toast
+import android.app.Activity
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -13,8 +15,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.mu.tote2026.presentation.components.AppProgressBar
+import com.mu.tote2026.presentation.components.ApplicationBar
+import com.mu.tote2026.presentation.components.BottomNav
 import com.mu.tote2026.presentation.utils.Errors.ERROR_PROFILE_IS_EMPTY
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
@@ -25,6 +31,12 @@ fun MainScreen(
     toAuth: () -> Unit,
     toProfile: () -> Unit
 ) {
+    val navMainController = rememberNavController()
+    val navBackStackEntry by navMainController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val context = LocalContext.current as Activity
+
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
@@ -56,17 +68,46 @@ fun MainScreen(
         }
     }
 
-    Surface(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Text(
-            text = viewModel.gambler.toString(),
-            textAlign = TextAlign.Center
-        )
-        if (error.isNotBlank()) {
-            val context = LocalContext.current
-            Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+    Scaffold(
+        bottomBar = {
+            if (viewModel.gambler.rate > 0) {
+                BottomNav(
+                    currentRoute,
+                    viewModel.currentYear
+                ) { route ->
+                    navMainController.navigate(route)
+                }
+            }
+        },
+        topBar = {
+            ApplicationBar(
+                navController = navMainController,
+                photoUrl = viewModel.gambler.photoUrl,
+                isAdmin = viewModel.gambler.admin,
+                onImageClick = { toProfile() },
+                onSignOut = {
+                    viewModel.signOut()
+                    context.finish()
+                    //activity?.finish()
+                }
+            )
         }
+    ) { paddingValues ->
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = paddingValues.calculateTopPadding(),
+                    bottom = paddingValues.calculateBottomPadding()
+                ),
+            contentColor = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.surface
+        ) {
+            //NavGraphMain(navMainController = navMainController)
 
+            if (isLoading) {
+                AppProgressBar()
+            }
+        }
     }
 }
