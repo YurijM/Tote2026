@@ -82,7 +82,7 @@ fun BottomNav(
                 painter = painterResource(id = R.drawable.author),
                 contentDescription = "author",
                 modifier =Modifier.size(28.dp),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                //tint = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Text(
                 text = years,
