@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.ApplicationBar
 import com.mu.tote2026.presentation.components.BottomNav
+import com.mu.tote2026.presentation.navigation.NavGraphMain
 import com.mu.tote2026.presentation.utils.Errors.ERROR_PROFILE_IS_EMPTY
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
@@ -103,7 +104,7 @@ fun MainScreen(
             contentColor = MaterialTheme.colorScheme.primary,
             color = MaterialTheme.colorScheme.surface
         ) {
-            //NavGraphMain(navMainController = navMainController)
+            NavGraphMain(navMainController = navMainController)
 
             if (isLoading) {
                 AppProgressBar()
