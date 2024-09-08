@@ -23,6 +23,7 @@ import com.mu.tote2026.presentation.components.ApplicationBar
 import com.mu.tote2026.presentation.components.BottomNav
 import com.mu.tote2026.presentation.navigation.NavGraphMain
 import com.mu.tote2026.presentation.utils.Errors.ERROR_PROFILE_IS_EMPTY
+import com.mu.tote2026.presentation.utils.Route.ADMIN_MAIN_SCREEN
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
@@ -82,10 +83,10 @@ fun MainScreen(
         },
         topBar = {
             ApplicationBar(
-                navController = navMainController,
                 photoUrl = viewModel.gambler.photoUrl,
                 isAdmin = viewModel.gambler.admin,
                 onImageClick = { toProfile() },
+                onAdminClick = { navMainController.navigate(ADMIN_MAIN_SCREEN) },
                 onSignOut = {
                     viewModel.signOut()
                     context.finish()

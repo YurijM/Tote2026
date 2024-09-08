@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.utils
 
+import androidx.annotation.StringRes
 import com.mu.tote2026.R
 
 const val DEBUG_TAG = "tote2026"
@@ -20,6 +21,13 @@ object Route {
     const val STAKE_LIST_SCREEN = "stake_list_screen"
     const val PROGNOSIS_SCREEN = "prognosis_screen"
     const val GAME_LIST_SCREEN = "game_list_screen"
+    const val ADMIN_MAIN_SCREEN = "admin_main_screen"
+    const val ADMIN_EMAIL_LIST_SCREEN = "admin_email_list_screen"
+    const val ADMIN_GAMBLER_LIST_SCREEN = "admin_gambler_list_screen"
+    const val ADMIN_TEAM_LIST_SCREEN = "admin_team_list_screen"
+    const val ADMIN_GAME_LIST_SCREEN = "admin_game_list_screen"
+    const val ADMIN_STAKE_LIST_SCREEN = "admin_stake_list_screen"
+    const val ADMIN_FINISH_SCREEN = "admin_finish_screen"
     const val TEST_SCREEN = "test_screen"
 }
 
@@ -56,6 +64,36 @@ sealed class BottomNavItem(
         titleId = R.string.games,
         iconId = R.drawable.ic_games,
         route = Route.GAME_LIST_SCREEN
+    )
+}
+
+sealed class AdminNavItem(
+    @StringRes val titleId: Int,
+    val route: String
+) {
+    data object AdminEmailItem: AdminNavItem(
+        titleId = R.string.admin_email_list,
+        route = Route.ADMIN_EMAIL_LIST_SCREEN
+    )
+    data object AdminGamblerItem: AdminNavItem(
+        titleId = R.string.admin_gambler_list,
+        route = Route.ADMIN_GAMBLER_LIST_SCREEN
+    )
+    data object AdminTeamItem: AdminNavItem(
+        titleId = R.string.admin_team_list,
+        route = Route.ADMIN_TEAM_LIST_SCREEN
+    )
+    data object AdminGameItem: AdminNavItem(
+        titleId = R.string.admin_game_list,
+        route = Route.ADMIN_GAME_LIST_SCREEN
+    )
+    data object AdminStakeItem: AdminNavItem(
+        titleId = R.string.admin_stake_list,
+        route = Route.ADMIN_STAKE_LIST_SCREEN
+    )
+    data object AdminFinishItem: AdminNavItem(
+        titleId = R.string.admin_finish,
+        route = Route.ADMIN_FINISH_SCREEN
     )
 }
 

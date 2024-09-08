@@ -3,6 +3,8 @@ package com.mu.tote2026.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.mu.tote2026.presentation.navigation.destination.admin.email.adminEmailList
+import com.mu.tote2026.presentation.navigation.destination.admin.main.adminMain
 import com.mu.tote2026.presentation.navigation.destination.game.gameList
 import com.mu.tote2026.presentation.navigation.destination.prognosis.prognosis
 import com.mu.tote2026.presentation.navigation.destination.rating.rating
@@ -13,7 +15,7 @@ import com.mu.tote2026.presentation.utils.Route.RATING_SCREEN
 fun NavGraphMain(
     navMainController: NavHostController
 ) {
-    NavHost (
+    NavHost(
         navController = navMainController,
         startDestination = RATING_SCREEN
     ) {
@@ -21,5 +23,12 @@ fun NavGraphMain(
         stakeList()
         prognosis()
         gameList()
+
+        adminMain(
+            toItem = { route ->
+                navMainController.navigate(route)
+            }
+        )
+        adminEmailList()
     }
 }

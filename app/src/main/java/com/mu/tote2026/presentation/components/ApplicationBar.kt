@@ -19,6 +19,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
@@ -27,17 +31,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.mu.tote2026.R
+import com.mu.tote2026.ui.theme.Color2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ApplicationBar(
-    navController: NavHostController,
     photoUrl: String,
     isAdmin: Boolean,
     onImageClick: () -> Unit,
+    onAdminClick: () -> Unit,
     onSignOut: () -> Unit
 ) {
     Column(
@@ -53,34 +57,18 @@ fun ApplicationBar(
             },
             actions = {
                 if (photoUrl.isNotBlank()) {
-                    /*SubcomposeAsyncImage(
-                        model = photoUrl,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(dimensionResource(id = R.dimen.app_bar_photo_size))
-                            .clip(CircleShape)
-                            .clickable { onImageClick() },
-                        contentScale = ContentScale.Crop,
-                        loading = {
-                            Box(
-                                modifier = Modifier.size(dimensionResource(id = R.dimen.app_bar_no_name_size)),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.fillMaxSize(.5f),
-                                    strokeWidth = 1.dp
-                                )
-                            }
-                        },
-                    )*/
                     val placeholder = rememberVectorPainter(
                         image = Icons.Rounded.AccountCircle
                     )
+                    var loading by remember { mutableStateOf(true) }
+
                     AsyncImage(
                         model = photoUrl,
                         placeholder = placeholder,
                         contentDescription = "User Photo",
                         contentScale = ContentScale.Crop,
+                        onSuccess = { loading = false },
+                        colorFilter = if (loading) ColorFilter.tint(Color2) else null,
                         modifier = Modifier
                             .size(dimensionResource(id = R.dimen.app_bar_photo_size))
                             .aspectRatio(1f / 1f)
@@ -103,8 +91,7 @@ fun ApplicationBar(
                 }
                 if (isAdmin) {
                     IconButton(
-                        //onClick = { navController.navigate(ADMIN_MAIN_SCREEN) }
-                        onClick = {}
+                        onClick = onAdminClick
                     ) {
                         Icon(
                             imageVector = Icons.Default.Settings,

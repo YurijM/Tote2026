@@ -34,4 +34,11 @@
     <string name="enter_nick">Введите Ник</string>
     <string name="load_photo">Загрузить фото</string>
     <string name="change_photo">Сменить фото</string>
+
+    <string name="admin_email_list">Список разрешённых email</string>
+    <string name="admin_gambler_list">Список участников</string>
+    <string name="admin_team_list">Список команд</string>
+    <string name="admin_game_list">Список игр</string>
+    <string name="admin_stake_list">Список ставок</string>
+    <string name="admin_finish">Окончание турнира</string>
 </resources>
