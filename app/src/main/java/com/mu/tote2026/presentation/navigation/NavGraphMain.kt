@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.mu.tote2026.presentation.navigation.destination.admin.email.adminEmailList
+import com.mu.tote2026.presentation.navigation.destination.admin.gambler.adminGamblerList
 import com.mu.tote2026.presentation.navigation.destination.admin.main.adminMain
 import com.mu.tote2026.presentation.navigation.destination.game.gameList
 import com.mu.tote2026.presentation.navigation.destination.prognosis.prognosis
@@ -30,5 +31,6 @@ fun NavGraphMain(
             }
         )
         adminEmailList()
+        adminGamblerList()
     }
 }
