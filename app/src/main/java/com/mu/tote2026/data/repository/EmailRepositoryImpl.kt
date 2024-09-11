@@ -29,7 +29,7 @@ class EmailRepositoryImpl(
             }
 
         awaitClose {
-            toLog("getEmailList: awaitClose")
+            toLog("getEmailList: listener remove")
             listener.remove()
         }
     }
@@ -65,16 +65,14 @@ class EmailRepositoryImpl(
         }
     }
 
-    override fun deleteEmail(docId: String): Flow<UiState<Boolean>>  = callbackFlow {
+    override fun deleteEmail(email: EmailModel): Flow<UiState<Boolean>>  = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(EMAILS).document(docId).delete()
+        firestore.collection(EMAILS).document(email.docId).delete()
             .addOnSuccessListener {
-                toLog("deleteEmail -> docId: $docId")
                 trySend(UiState.Success(true))
             }
             .addOnFailureListener { error ->
-                toLog("deleteEmail -> error: $error")
                 trySend(UiState.Error(error.message ?: "deleteEmail: error is not defined"))
             }
 

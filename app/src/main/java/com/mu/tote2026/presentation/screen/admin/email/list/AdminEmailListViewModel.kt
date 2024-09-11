@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.screen.admin.email.list
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.model.EmailModel
@@ -20,25 +21,31 @@ class AdminEmailListViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     var emailList = mutableListOf<EmailModel>()
+    var message = mutableStateOf("")
+        private set
 
     init {
-        emailUseCase.getEmailList().onEach { emailListState ->
-            _state.value = AdminEmailListState(emailListState)
+            emailUseCase.getEmailList().onEach { emailListState ->
+                _state.value = AdminEmailListState(emailListState)
 
-            if (emailListState is UiState.Success) {
-                emailList = emailListState.data.toMutableList()
-            }
-        }.launchIn(viewModelScope)
+                if (emailListState is UiState.Success) {
+                    emailList = emailListState.data.toMutableList()
+                }
+            }.launchIn(viewModelScope)
     }
 
     fun onEvent(event: AdminEmailListEvent) {
         when (event) {
             is AdminEmailListEvent.OnDelete -> {
-                emailUseCase.deleteEmail(event.docId).onEach { deleteState ->
-                    /*if (deleteState is UiState.Success) {
-                        _state.value = AdminEmailListState(UiState.Success(mu))
-                    }*/
+                emailUseCase.deleteEmail(event.email).onEach { deleteState ->
+                    if (deleteState is UiState.Success) {
+                        message.value = "Email ${event.email.email} удалён из списка"
+                    } else if (deleteState is UiState.Error) {
+                        message.value = deleteState.error
+                    }
                 }.launchIn(viewModelScope)
+
+                message.value = ""
             }
         }
     }

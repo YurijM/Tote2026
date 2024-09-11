@@ -110,5 +110,9 @@ val translateList = listOf(
     Translate(
         eng = "The supplied auth credential is incorrect, malformed or has expired.",
         rus = "Email или пароль неверны"
+    ),
+    Translate(
+        eng = "PERMISSION_DENIED: Missing or insufficient permissions.",
+        rus = "Для данной операции отсутсвует разрешение"
     )
 )
