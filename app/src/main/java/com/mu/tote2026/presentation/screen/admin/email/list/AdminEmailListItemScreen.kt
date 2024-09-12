@@ -29,7 +29,7 @@ fun AdminEmailListItemScreen(
     ) {
         Text(
             text = email,
-            modifier = Modifier.weight(7f),
+            modifier = Modifier.weight(5f),
         )
         IconButton(
             onClick = { onEdit() },
