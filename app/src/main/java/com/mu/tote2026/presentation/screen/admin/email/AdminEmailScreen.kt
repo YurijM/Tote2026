@@ -20,11 +20,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.AppTextField
 import com.mu.tote2026.presentation.components.OkAndCancel
+import com.mu.tote2026.presentation.components.TextError
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
@@ -48,6 +50,8 @@ fun AdminEmailScreen(
 
             is UiState.Success -> {
                 isLoading = false
+
+                if (viewModel.exit) toAdminEmailList()
             }
 
             is UiState.Error -> {
@@ -92,6 +96,12 @@ fun AdminEmailScreen(
                     onOK = { viewModel.onEvent(AdminEmailEvent.OnSave) },
                     onCancel = { toAdminEmailList() }
                 )
+                if (error.isNotBlank()) {
+                    TextError(
+                        errorMessage = error,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
 

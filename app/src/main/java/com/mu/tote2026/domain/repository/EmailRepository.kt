@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface EmailRepository {
     fun getEmailList(): Flow<UiState<List<EmailModel>>>
-    fun getEmail(email: String): Flow<UiState<EmailModel>>
-    fun saveEmail(email: String): Flow<UiState<EmailModel>>
-    fun deleteEmail(email: String): Flow<UiState<Boolean>>
+    fun getEmail(docId: String): Flow<UiState<EmailModel>>
+    fun saveEmail(email: EmailModel): Flow<UiState<EmailModel>>
+    fun deleteEmail(docId: String): Flow<UiState<Boolean>>
 }

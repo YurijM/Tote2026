@@ -11,6 +11,7 @@ import com.mu.tote2026.domain.usecase.email_usecase.EmailUseCase
 import com.mu.tote2026.presentation.utils.KEY_ID
 import com.mu.tote2026.presentation.utils.NEW_EMAIL
 import com.mu.tote2026.presentation.utils.checkEmail
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,12 +28,15 @@ class AdminEmailViewModel @Inject constructor(
     private val _state: MutableStateFlow<AdminEmailState> = MutableStateFlow(AdminEmailState())
     val state = _state.asStateFlow()
 
-    var email by mutableStateOf(EmailModel())
+    var email by mutableStateOf(EmailModel(docId = NEW_EMAIL))
         private set
     var emailError by mutableStateOf("")
 
+    var exit by mutableStateOf(false)
+
     init {
         val id = savedStateHandle.get<String>(KEY_ID)
+        toLog("id: $id")
 
         if (!id.isNullOrBlank() && id != NEW_EMAIL) {
             emailUseCase.getEmail(id).onEach { emailState ->
@@ -54,8 +58,10 @@ class AdminEmailViewModel @Inject constructor(
                 )
             }
             is AdminEmailEvent.OnSave -> {
-                emailUseCase.saveEmail(email.email).onEach { emailState ->
+                emailUseCase.saveEmail(email).onEach { emailState ->
                     _state.value = AdminEmailState(emailState)
+
+                    if (emailState is UiState.Success) exit = true
                 }.launchIn(viewModelScope)
             }
         }

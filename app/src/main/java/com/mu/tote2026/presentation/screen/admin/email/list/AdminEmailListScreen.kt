@@ -69,8 +69,8 @@ fun AdminEmailListScreen(
             items(viewModel.emailList) { email ->
                 AdminEmailListItemScreen(
                     email = email.email,
-                    onEdit = { toEmailEdit(email.email) },
-                    onDelete = { viewModel.onEvent((AdminEmailListEvent.OnDelete(email.email))) }
+                    onEdit = { toEmailEdit(email.docId) },
+                    onDelete = { viewModel.onEvent((AdminEmailListEvent.OnDelete(email))) }
                 )
             }
         }

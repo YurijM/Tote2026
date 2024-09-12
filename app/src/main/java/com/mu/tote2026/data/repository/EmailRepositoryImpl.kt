@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.Collections.EMAILS
 import com.mu.tote2026.domain.model.EmailModel
 import com.mu.tote2026.domain.repository.EmailRepository
+import com.mu.tote2026.presentation.utils.NEW_EMAIL
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import kotlinx.coroutines.channels.awaitClose
@@ -34,12 +35,13 @@ class EmailRepositoryImpl(
         }
     }
 
-    override fun getEmail(email: String): Flow<UiState<EmailModel>> = callbackFlow {
+    override fun getEmail(docId: String): Flow<UiState<EmailModel>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(EMAILS).document(email).get()
-            .addOnSuccessListener {
-                trySend(UiState.Success(EmailModel(email)))
+        firestore.collection(EMAILS).document(docId).get()
+            .addOnSuccessListener { task ->
+                val email = task.toObject(EmailModel::class.java) ?: EmailModel(docId)
+                trySend(UiState.Success(email))
             }
             .addOnFailureListener { error ->
                 trySend(UiState.Error(error.message ?: "getEmail: error is not defined"))
@@ -51,12 +53,18 @@ class EmailRepositoryImpl(
         }
     }
 
-    override fun saveEmail(email: String): Flow<UiState<EmailModel>> = callbackFlow {
+    override fun saveEmail(email: EmailModel): Flow<UiState<EmailModel>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(EMAILS).document(email).set(EmailModel(email))
+        var currentEmail = email
+
+        if (email.docId == NEW_EMAIL) {
+            currentEmail = currentEmail.copy(docId = firestore.collection(EMAILS).document().id)
+        }
+
+        firestore.collection(EMAILS).document(currentEmail.docId).set(currentEmail)
             .addOnSuccessListener {
-                trySend(UiState.Success(EmailModel(email)))
+                trySend(UiState.Success(currentEmail))
             }
             .addOnFailureListener { error ->
                 trySend(UiState.Error(error.message ?: "saveEmail: error is not defined"))
@@ -68,10 +76,10 @@ class EmailRepositoryImpl(
         }
     }
 
-    override fun deleteEmail(email: String): Flow<UiState<Boolean>> = callbackFlow {
+    override fun deleteEmail(docId: String): Flow<UiState<Boolean>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(EMAILS).document(email).delete()
+        firestore.collection(EMAILS).document(docId).delete()
             .addOnSuccessListener {
                 trySend(UiState.Success(true))
             }
