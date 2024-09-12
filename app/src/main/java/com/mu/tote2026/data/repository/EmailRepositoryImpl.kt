@@ -37,14 +37,9 @@ class EmailRepositoryImpl(
     override fun getEmail(email: String): Flow<UiState<EmailModel>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(EMAILS).whereEqualTo("email", email).get()
-            .addOnSuccessListener { task ->
-                toLog("task: $task")
-                for (document in task) {
-                    toLog("document: ${document.reference.parent.id}")
-                }
-                val emails = task.toObjects(EmailModel::class.java)
-                trySend(UiState.Success(emails[0]))
+        firestore.collection(EMAILS).document(email).get()
+            .addOnSuccessListener {
+                trySend(UiState.Success(EmailModel(email)))
             }
             .addOnFailureListener { error ->
                 trySend(UiState.Error(error.message ?: "getEmail: error is not defined"))
@@ -56,8 +51,16 @@ class EmailRepositoryImpl(
         }
     }
 
-    override fun saveEmail(docId: String, email: String): Flow<UiState<EmailModel>> = callbackFlow {
+    override fun saveEmail(email: String): Flow<UiState<EmailModel>> = callbackFlow {
         trySend(UiState.Loading)
+
+        firestore.collection(EMAILS).document(email).set(EmailModel(email))
+            .addOnSuccessListener {
+                trySend(UiState.Success(EmailModel(email)))
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error(error.message ?: "saveEmail: error is not defined"))
+            }
 
         awaitClose {
             toLog("saveEmail: awaitClose")
@@ -65,10 +68,10 @@ class EmailRepositoryImpl(
         }
     }
 
-    override fun deleteEmail(email: EmailModel): Flow<UiState<Boolean>>  = callbackFlow {
+    override fun deleteEmail(email: String): Flow<UiState<Boolean>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(EMAILS).document(email.docId).delete()
+        firestore.collection(EMAILS).document(email).delete()
             .addOnSuccessListener {
                 trySend(UiState.Success(true))
             }

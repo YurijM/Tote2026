@@ -10,6 +10,9 @@ const val MIN_PASSWORD_LENGTH = 6
 const val MALE = "мужской"
 const val FEMALE = "женский"
 
+const val KEY_ID = "id"
+const val NEW_EMAIL = "new"
+
 object Route {
     const val SPLASH_SCREEN = "splash_screen"
     const val AUTH_SCREEN = "auth_screen"
@@ -23,6 +26,7 @@ object Route {
     const val GAME_LIST_SCREEN = "game_list_screen"
     const val ADMIN_MAIN_SCREEN = "admin_main_screen"
     const val ADMIN_EMAIL_LIST_SCREEN = "admin_email_list_screen"
+    const val ADMIN_EMAIL_SCREEN = "admin_email_screen"
     const val ADMIN_GAMBLER_LIST_SCREEN = "admin_gambler_list_screen"
     const val ADMIN_TEAM_LIST_SCREEN = "admin_team_list_screen"
     const val ADMIN_GAME_LIST_SCREEN = "admin_game_list_screen"

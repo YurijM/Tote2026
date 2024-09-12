@@ -40,7 +40,7 @@ class AdminEmailListViewModel @Inject constructor(
             is AdminEmailListEvent.OnDelete -> {
                 emailUseCase.deleteEmail(event.email).onEach { deleteState ->
                     if (deleteState is UiState.Success) {
-                        message.value = "Email ${event.email.email} удалён из списка"
+                        message.value = "Email ${event.email} удалён из списка"
                     } else if (deleteState is UiState.Error) {
                         message.value = deleteState.error
                     }

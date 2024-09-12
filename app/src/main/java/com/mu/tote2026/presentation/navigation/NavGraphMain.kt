@@ -3,7 +3,10 @@ package com.mu.tote2026.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.mu.tote2026.presentation.navigation.destination.admin.email.adminEmail
 import com.mu.tote2026.presentation.navigation.destination.admin.email.adminEmailList
+import com.mu.tote2026.presentation.navigation.destination.admin.email.navigateToAdminEmail
+import com.mu.tote2026.presentation.navigation.destination.admin.email.navigateToAdminEmailList
 import com.mu.tote2026.presentation.navigation.destination.admin.gambler.adminGamblerList
 import com.mu.tote2026.presentation.navigation.destination.admin.game.adminGameList
 import com.mu.tote2026.presentation.navigation.destination.admin.main.adminMain
@@ -31,7 +34,14 @@ fun NavGraphMain(
                 navMainController.navigate(route)
             }
         )
-        adminEmailList()
+        adminEmailList(
+            toEmailEdit = { id ->
+                navMainController.navigateToAdminEmail(id)
+            }
+        )
+        adminEmail(
+            toAdminEmailList = { navMainController.navigateToAdminEmailList() }
+        )
         adminGamblerList()
         adminGameList()
     }

@@ -14,13 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mu.tote2026.domain.model.EmailModel
 
 @Composable
 fun AdminEmailListItemScreen(
-    email: EmailModel,
-    onEdit: (String) -> Unit,
-    onDelete: (String) -> Unit
+    email: String,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -29,11 +28,11 @@ fun AdminEmailListItemScreen(
             .padding(vertical = 8.dp),
     ) {
         Text(
-            text = email.email,
+            text = email,
             modifier = Modifier.weight(7f),
         )
         IconButton(
-            onClick = { onEdit(email.docId) },
+            onClick = { onEdit() },
             modifier = Modifier.weight(1f).size(24.dp),
         ) {
             Icon(
@@ -42,7 +41,7 @@ fun AdminEmailListItemScreen(
             )
         }
         IconButton(
-            onClick = { onDelete(email.docId) },
+            onClick = { onDelete() },
             modifier = Modifier.weight(1f).size(24.dp),
         ) {
             Icon(
