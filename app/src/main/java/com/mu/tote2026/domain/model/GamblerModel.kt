@@ -5,7 +5,8 @@ data class GamblerModel(
     val nickname: String = "",
     val photoUrl: String = "",
     val gender: String = "",
-    val admin: Boolean = false,
+    @field:JvmField
+    val isAdmin: Boolean = false,
     val rate: Int = 0,
     val pointsPrev: Double = 0.00,
     val points: Double = 0.00,

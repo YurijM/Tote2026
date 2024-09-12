@@ -25,13 +25,14 @@ class AdminEmailListViewModel @Inject constructor(
         private set
 
     init {
-            emailUseCase.getEmailList().onEach { emailListState ->
-                _state.value = AdminEmailListState(emailListState)
+        emailUseCase.getEmailList().onEach { emailListState ->
+            _state.value = AdminEmailListState(emailListState)
 
-                if (emailListState is UiState.Success) {
-                    emailList = emailListState.data.toMutableList()
-                }
-            }.launchIn(viewModelScope)
+            if (emailListState is UiState.Success) {
+                emailList = emailListState.data.toMutableList()
+                emailList.sortBy { it.email }
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun onEvent(event: AdminEmailListEvent) {

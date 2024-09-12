@@ -84,7 +84,7 @@ fun MainScreen(
         topBar = {
             ApplicationBar(
                 photoUrl = viewModel.gambler.photoUrl,
-                isAdmin = viewModel.gambler.admin,
+                isAdmin = viewModel.gambler.isAdmin,
                 onImageClick = { toProfile() },
                 onAdminClick = { navMainController.navigate(ADMIN_MAIN_SCREEN) },
                 onSignOut = {
