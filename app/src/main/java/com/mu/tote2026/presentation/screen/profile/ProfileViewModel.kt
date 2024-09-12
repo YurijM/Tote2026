@@ -1,6 +1,5 @@
 package com.mu.tote2026.presentation.screen.profile
 
-import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -32,7 +31,8 @@ class ProfileViewModel @Inject constructor(
         private set
     private var currentGambler: GamblerModel = GamblerModel()
 
-    private var photoUri by mutableStateOf<Uri?>(null)
+    //private var photoUri by mutableStateOf<Uri?>(null)
+    private var photoUri by mutableStateOf<ByteArray?>(null)
 
     var enabledSaveButton by mutableStateOf(false)
         private set

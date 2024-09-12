@@ -1,11 +1,16 @@
 package com.mu.tote2026.presentation.utils
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.util.Log
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.presentation.utils.Errors.FIELD_CONTAINS_LESS_THAN_N_CHARS
 import com.mu.tote2026.presentation.utils.Errors.FIELD_IS_EMPTY
 import com.mu.tote2026.presentation.utils.Errors.INCORRECT_EMAIL
 import com.mu.tote2026.presentation.utils.Errors.PASSWORDS_DO_NOT_MATCH
+import java.io.ByteArrayOutputStream
 
 fun toLog(message: String) {
     Log.d(DEBUG_TAG, message)
@@ -47,6 +52,17 @@ fun checkPassword(password: String?, passwordConfirm: String?): String {
             else -> ""
         }
     } else ""
+}
+
+fun bitmapToByteArray(
+    context: Context,
+    uri: Uri
+): ByteArray {
+    val inputStream = context.contentResolver.openInputStream(uri)
+    val bitmap = BitmapFactory.decodeStream(inputStream)
+    val baos = ByteArrayOutputStream()
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+    return baos.toByteArray()
 }
 
 fun errorTranslate(error: String): String = translateList.find { it.eng == error }?.rus ?: error

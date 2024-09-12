@@ -1,6 +1,5 @@
 package com.mu.tote2026.data.repository
 
-import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.mu.tote2026.data.repository.Collections.GAMBLERS
@@ -72,11 +71,13 @@ class GamblerRepositoryImpl(
         }
     }
 
-    override fun saveGamblerPhoto(id: String, uri: Uri): Flow<UiState<String>> = callbackFlow {
+    //override fun saveGamblerPhoto(id: String, uri: Uri): Flow<UiState<String>> = callbackFlow {
+    override fun saveGamblerPhoto(id: String, uri: ByteArray): Flow<UiState<String>> = callbackFlow {
         trySend(UiState.Loading)
 
         val path = storage.reference.child(FOLDER_GAMBLER_PHOTO).child(id)
-        path.putFile(uri)
+        path.putBytes(uri)
+        //path.putFile(uri)
             .addOnSuccessListener {
                 path.downloadUrl
                     .addOnSuccessListener { uriFirebase ->

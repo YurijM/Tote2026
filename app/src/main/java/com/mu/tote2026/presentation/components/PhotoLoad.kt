@@ -1,7 +1,5 @@
 package com.mu.tote2026.presentation.components
 
-import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -38,6 +36,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.mu.tote2026.R
+import com.mu.tote2026.presentation.utils.bitmapToByteArray
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.theme.Color2
 
@@ -49,7 +48,8 @@ fun PhotoLoad(
 ) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
-    val bitmap = remember { mutableStateOf<Bitmap?>(null) }
+    //val bitmap = remember { mutableStateOf<Bitmap?>(null) }
+    val bitmap = remember { mutableStateOf<ByteArray?>(null) }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
@@ -62,7 +62,8 @@ fun PhotoLoad(
     }
 
     imageUri?.let { uri ->
-        bitmap.value = getBitmap(context, uri)
+        //bitmap.value = getBitmap(context, uri)
+        bitmap.value = bitmapToByteArray(context, uri)
     }
 
     Column(
@@ -71,7 +72,8 @@ fun PhotoLoad(
     ) {
         if (bitmap.value != null) {
             Image(
-                bitmap = bitmap.value!!.asImageBitmap(),
+                //bitmap = bitmap.value!!.asImageBitmap(),
+                bitmap = BitmapFactory.decodeByteArray(bitmap.value, 0, bitmap.value!!.size).asImageBitmap(),
                 contentDescription = null,
                 modifier = Modifier
                     .requiredSize(dimensionResource(id = R.dimen.profile_photo_size))
@@ -144,10 +146,11 @@ fun PhotoLoad(
     return baos.toByteArray()
 }*/
 
+/*
 private fun getBitmap(
     context: Context,
     uri: Uri
 ): Bitmap {
   val inputStream = context.contentResolver.openInputStream(uri)
   return BitmapFactory.decodeStream(inputStream)
-}
+}*/
