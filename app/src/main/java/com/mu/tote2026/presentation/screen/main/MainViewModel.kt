@@ -11,7 +11,6 @@ import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.presentation.utils.Errors.ERROR_PROFILE_IS_EMPTY
 import com.mu.tote2026.presentation.utils.checkProfile
-import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +42,6 @@ class MainViewModel @Inject constructor(
 
             if (result is UiState.Success) {
                 gambler = result.data
-                toLog("gambler: $gambler")
                 if (!gambler.checkProfile())
                     _state.value = GamblerState(UiState.Error(ERROR_PROFILE_IS_EMPTY))
             }
