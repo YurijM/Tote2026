@@ -6,10 +6,12 @@ import com.mu.tote2026.data.repository.Collections.EMAILS
 import com.mu.tote2026.data.repository.Collections.GAMBLERS
 import com.mu.tote2026.data.repository.Errors.CREATE_USER_WITH_EMAIL_AND_PASSWORD_FUNCTION_EXECUTING_ERROR
 import com.mu.tote2026.data.repository.Errors.ERROR_NEW_USER_IS_NOT_CREATED
+import com.mu.tote2026.data.repository.Errors.ERROR_UNAUTHORIZED_EMAIL
 import com.mu.tote2026.data.repository.Errors.ERROR_USER_WAS_DELETED
 import com.mu.tote2026.data.repository.Errors.GAMBLER_DOCUMENT_WRITE_ERROR
 import com.mu.tote2026.data.repository.Errors.SIGN_IN_WITH_EMAIL_AND_PASSWORD_FUNCTION_EXECUTING_ERROR
 import com.mu.tote2026.data.repository.Errors.USER_DELETE_ERROR
+import com.mu.tote2026.domain.model.EmailModel
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.repository.AuthRepository
 import com.mu.tote2026.ui.common.UiState
@@ -96,9 +98,13 @@ class AuthRepositoryImpl @Inject constructor(
             .addOnFailureListener { error ->
                 trySend(UiState.Error(error.message ?: "isEmailValid: error is not defined"))
             }*/
-        firestore.collection(EMAILS).document(email).get()
-            .addOnSuccessListener {
-                trySend(UiState.Success(true))
+        firestore.collection(EMAILS).whereEqualTo("email", email).get()
+            .addOnSuccessListener { task ->
+                val result = task.toObjects(EmailModel::class.java)
+                if (result.isNotEmpty())
+                    trySend(UiState.Success(true))
+                else
+                    trySend(UiState.Error(ERROR_UNAUTHORIZED_EMAIL))
             }
             .addOnFailureListener { error ->
                 trySend(UiState.Error(error.message ?: "isEmailValid: error is not defined"))
