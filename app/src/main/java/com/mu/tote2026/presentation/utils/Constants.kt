@@ -28,6 +28,7 @@ object Route {
     const val ADMIN_EMAIL_LIST_SCREEN = "admin_email_list_screen"
     const val ADMIN_EMAIL_SCREEN = "admin_email_screen"
     const val ADMIN_GAMBLER_LIST_SCREEN = "admin_gambler_list_screen"
+    const val ADMIN_GAMBLER_SCREEN = "admin_gambler_screen"
     const val ADMIN_TEAM_LIST_SCREEN = "admin_team_list_screen"
     const val ADMIN_GAME_LIST_SCREEN = "admin_game_list_screen"
     const val ADMIN_STAKE_LIST_SCREEN = "admin_stake_list_screen"
@@ -40,7 +41,6 @@ object Errors {
     const val FIELD_CONTAINS_LESS_THAN_N_CHARS = "Поле содержит меньше %_% символов"
     const val PASSWORDS_DO_NOT_MATCH = "Значения паролей не совпадают"
     const val INCORRECT_EMAIL = "Некорректное значение email"
-    const val UNAUTHORIZED_EMAIL = "Неразрешённый email"
     const val ERROR_PROFILE_IS_EMPTY = "Профиль не заполнен"
 }
 

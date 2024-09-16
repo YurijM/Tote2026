@@ -6,6 +6,7 @@ import com.mu.tote2026.data.repository.GamblerRepositoryImpl
 import com.mu.tote2026.domain.repository.GamblerRepository
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.domain.usecase.gambler_usecase.GetGambler
+import com.mu.tote2026.domain.usecase.gambler_usecase.GetGamblerList
 import com.mu.tote2026.domain.usecase.gambler_usecase.SaveGambler
 import com.mu.tote2026.domain.usecase.gambler_usecase.SaveGamblerPhoto
 import dagger.Module
@@ -27,6 +28,7 @@ object GamblerRepositoryModule {
     @Provides
     @Singleton
     fun provideGamblerUseCase(gamblerRepository: GamblerRepository) = GamblerUseCase(
+        getGamblerList = GetGamblerList(gamblerRepository),
         getGambler = GetGambler(gamblerRepository),
         saveGambler = SaveGambler(gamblerRepository),
         saveGamblerPhoto = SaveGamblerPhoto(gamblerRepository)

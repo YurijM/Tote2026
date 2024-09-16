@@ -18,6 +18,26 @@ class GamblerRepositoryImpl(
     private val firestore: FirebaseFirestore,
     private val storage: FirebaseStorage
 ) : GamblerRepository {
+    override fun getGamblerList(): Flow<UiState<List<GamblerModel>>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        val listener = firestore.collection(GAMBLERS)
+            .addSnapshotListener { snapshot, exception ->
+                if (snapshot != null) {
+                    val gamblers = snapshot.toObjects(GamblerModel::class.java)
+                    trySend(UiState.Success(gamblers))
+                } else if (exception != null) {
+                    trySend(UiState.Error(exception.message ?: exception.toString()))
+                } else {
+                    trySend(UiState.Error("getGamblerList: error is not defined"))
+                }
+            }
+        awaitClose  {
+            toLog("getGamblerList: listener remove")
+            listener.remove()
+        }
+    }
+
     /*override fun getGambler(email: String): Flow<UiState<GamblerModel>> = callbackFlow {
         trySend(UiState.Loading)
 

@@ -8,6 +8,7 @@ import com.mu.tote2026.presentation.navigation.destination.admin.email.adminEmai
 import com.mu.tote2026.presentation.navigation.destination.admin.email.navigateToAdminEmail
 import com.mu.tote2026.presentation.navigation.destination.admin.email.navigateToAdminEmailList
 import com.mu.tote2026.presentation.navigation.destination.admin.gambler.adminGamblerList
+import com.mu.tote2026.presentation.navigation.destination.admin.gambler.navigateToAdminGambler
 import com.mu.tote2026.presentation.navigation.destination.admin.game.adminGameList
 import com.mu.tote2026.presentation.navigation.destination.admin.main.adminMain
 import com.mu.tote2026.presentation.navigation.destination.game.gameList
@@ -42,7 +43,11 @@ fun NavGraphMain(
         adminEmail(
             toAdminEmailList = { navMainController.navigateToAdminEmailList() }
         )
-        adminGamblerList()
+        adminGamblerList(
+            toGamblerEdit = { id ->
+                navMainController.navigateToAdminGambler(id)
+            }
+        )
         adminGameList()
     }
 }

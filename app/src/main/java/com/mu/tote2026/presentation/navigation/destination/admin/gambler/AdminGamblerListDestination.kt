@@ -5,8 +5,12 @@ import androidx.navigation.compose.composable
 import com.mu.tote2026.presentation.screen.admin.gambler.list.AdminGamblerListScreen
 import com.mu.tote2026.presentation.utils.Route.ADMIN_GAMBLER_LIST_SCREEN
 
-fun NavGraphBuilder.adminGamblerList() {
+fun NavGraphBuilder.adminGamblerList(
+    toGamblerEdit: (String) -> Unit
+) {
     composable(ADMIN_GAMBLER_LIST_SCREEN) {
-        AdminGamblerListScreen()
+        AdminGamblerListScreen(
+            toGamblerEdit = toGamblerEdit
+        )
     }
 }
