@@ -1,6 +1,7 @@
 package com.mu.tote2026.domain.model
 
 data class GamblerModel(
+    val docId: String = "",
     val email: String = "",
     val nickname: String = "",
     val photoUrl: String = "",
