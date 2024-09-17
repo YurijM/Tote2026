@@ -79,7 +79,7 @@ class ProfileViewModel @Inject constructor(
                     gamblerUseCase.saveGamblerPhoto(CURRENT_ID, photoUri!!).onEach { photoState ->
                         if (photoState is UiState.Success) {
                             gambler = gambler.copy(photoUrl = photoState.data)
-                            gamblerUseCase.saveGambler(CURRENT_ID, gambler).onEach { gamblerState ->
+                            gamblerUseCase.saveGambler(gambler).onEach { gamblerState ->
                                 _state.value = GamblerState(gamblerState)
                             }.launchIn(viewModelScope)
                         } else if (photoState is UiState.Error) {
@@ -87,7 +87,8 @@ class ProfileViewModel @Inject constructor(
                         }
                     }.launchIn(viewModelScope)
                 } else {
-                    gamblerUseCase.saveGambler(CURRENT_ID, gambler).onEach { gamblerState ->
+                    //gamblerUseCase.saveGambler(CURRENT_ID, gambler).onEach { gamblerState ->
+                    gamblerUseCase.saveGambler(gambler).onEach { gamblerState ->
                         _state.value = GamblerState(gamblerState)
                         if (gamblerState is UiState.Success)
                             currentGambler = gamblerState.data

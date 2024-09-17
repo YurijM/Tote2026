@@ -74,10 +74,11 @@ class GamblerRepositoryImpl(
         }
     }
 
-    override fun saveGambler(id: String, gambler: GamblerModel): Flow<UiState<GamblerModel>> = callbackFlow {
+    //override fun saveGambler(id: String, gambler: GamblerModel): Flow<UiState<GamblerModel>> = callbackFlow {
+    override fun saveGambler(gambler: GamblerModel): Flow<UiState<GamblerModel>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(GAMBLERS).document(id).set(gambler)
+        firestore.collection(GAMBLERS).document(gambler.docId).set(gambler)
             .addOnSuccessListener {
                 trySend(UiState.Success(gambler))
             }

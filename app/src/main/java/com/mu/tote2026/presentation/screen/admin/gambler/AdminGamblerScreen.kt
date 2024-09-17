@@ -46,6 +46,7 @@ fun AdminGamblerScreen(
 
     LaunchedEffect(key1 = result) {
         toLog("AdminGamblerScreen result: $result")
+        toLog("AdminGamblerScreen exit: ${viewModel.exit}")
         when (result) {
             is UiState.Loading -> {
                 isLoading = true

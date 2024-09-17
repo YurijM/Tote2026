@@ -27,6 +27,7 @@ import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.AppTextField
 import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.TextError
+import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
@@ -56,7 +57,7 @@ fun AdminEmailScreen(
 
             is UiState.Error -> {
                 isLoading = false
-                error = result.error
+                error = errorTranslate(result.error)
             }
 
             else -> {}

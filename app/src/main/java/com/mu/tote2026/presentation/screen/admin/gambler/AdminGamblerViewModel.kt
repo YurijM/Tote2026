@@ -39,11 +39,12 @@ class AdminGamblerViewModel @Inject constructor(
 
     init {
         val id = savedStateHandle.get<String>(KEY_ID)
-        if (!id.isNullOrBlank() && !exit) {
+        //if (!id.isNullOrBlank() && !exit) {
+        if (!id.isNullOrBlank()) {
                 gamblerUseCase.getGambler(id).onEach { gamblerState ->
-                    toLog("1")
-                    //_state.value = AdminGamblerState(gamblerState)
+                    _state.value = AdminGamblerState(gamblerState)
                     if (gamblerState is UiState.Success) {
+                        toLog("1")
                         gambler = gamblerState.data
                     }
                 }.launchIn(viewModelScope)
@@ -54,12 +55,11 @@ class AdminGamblerViewModel @Inject constructor(
         when (event) {
             is AdminGamblerEvent.OnRateChange -> {
                 rateError = checkRate(event.rate)
-                /*gambler = if (rateError.isBlank()) {
+                gambler = if (rateError.isBlank()) {
                     gambler.copy(rate = event.rate.toInt())
                 } else {
                     gambler.copy(rate = 0)
-                }*/
-                gambler = gambler.copy(rate = event.rate.toInt())
+                }
             }
             is AdminGamblerEvent.OnIsAdminChange -> {
                 gambler = gambler.copy(
@@ -67,10 +67,12 @@ class AdminGamblerViewModel @Inject constructor(
                 )
             }
             is AdminGamblerEvent.OnSave -> {
-                gamblerUseCase.saveGambler(gambler.docId, gambler).onEach { gamblerState ->
-                    toLog("2")
-                    _state.value = AdminGamblerState(gamblerState)
-                    if (gamblerState is UiState.Success) exit = true
+                gamblerUseCase.saveGambler(gambler).onEach { gamblerSaveState ->
+                    _state.value = AdminGamblerState(gamblerSaveState)
+                    if (gamblerSaveState is UiState.Success) {
+                        toLog("2")
+                        exit = true
+                    }
                 }.launchIn(viewModelScope)
             }
         }
