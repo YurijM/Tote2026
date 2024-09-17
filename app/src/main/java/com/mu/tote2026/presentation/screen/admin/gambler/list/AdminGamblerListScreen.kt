@@ -64,7 +64,7 @@ fun AdminGamblerListScreen(
             items(viewModel.gamblerList) { gambler ->
                 AdminGamblerListItemScreen(
                     gambler.nickname,
-                    onEdit = {}
+                    onEdit = { toGamblerEdit(gambler.docId )}
                 )
             }
         }

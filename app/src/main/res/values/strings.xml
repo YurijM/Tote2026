@@ -34,6 +34,7 @@
     <string name="enter_nick">Введите Ник</string>
     <string name="load_photo">Загрузить фото</string>
     <string name="change_photo">Сменить фото</string>
+    <string name="transferred_money">Переведённые деньги</string>
 
     <string name="admin_email_list">Список разрешённых email</string>
     <string name="admin_gambler_list">Список участников</string>

@@ -37,7 +37,8 @@ object Route {
 }
 
 object Errors {
-    const val FIELD_IS_EMPTY = "Поле не заполнено"
+    const val FIELD_CAN_NOT_BE_EMPTY = "Поле не может быть пустым"
+    const val FIELD_CAN_NOT_NEGATIVE = "Значение не может быть отрицательным"
     const val FIELD_CONTAINS_LESS_THAN_N_CHARS = "Поле содержит меньше %_% символов"
     const val PASSWORDS_DO_NOT_MATCH = "Значения паролей не совпадают"
     const val INCORRECT_EMAIL = "Некорректное значение email"
