@@ -109,7 +109,8 @@ fun ProfileScreen(
             ) {
                 CardHeader(
                     viewModel.gambler.email,
-                    viewModel.gambler.rate
+                    viewModel.gambler.rate,
+                    viewModel.gambler.isAdmin
                 )
                 HorizontalDivider(thickness = 1.dp)
                 Row(
@@ -167,28 +168,41 @@ fun ProfileScreen(
 @Composable
 private fun CardHeader(
     email: String,
-    rate: Int
+    rate: Int,
+    isAdmin: Boolean
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        Text(
-            text = email,
-            fontWeight = FontWeight.Bold
-        )
-        if (rate > 0) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text(
-                text = stringResource(R.string.gambler_rate, rate),
+                text = email,
                 fontWeight = FontWeight.Bold
             )
-        } else {
-            TextError(
-                errorMessage = stringResource(R.string.money_is_not_transferred_yet),
-                textAlign = TextAlign.End
+            if (rate > 0) {
+                Text(
+                    text = stringResource(R.string.gambler_rate, rate),
+                    fontWeight = FontWeight.Bold
+                )
+            } else {
+                TextError(
+                    errorMessage = stringResource(R.string.money_is_not_transferred_yet),
+                    textAlign = TextAlign.End
+                )
+            }
+        }
+        if (isAdmin) {
+            Text(
+                text = stringResource(R.string.admin),
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }

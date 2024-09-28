@@ -11,7 +11,6 @@ import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.presentation.utils.Errors.FIELD_CAN_NOT_BE_EMPTY
 import com.mu.tote2026.presentation.utils.Errors.FIELD_CAN_NOT_NEGATIVE
 import com.mu.tote2026.presentation.utils.KEY_ID
-import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,19 +31,15 @@ class AdminGamblerViewModel @Inject constructor(
         private set
     var rateError by mutableStateOf("")
         private set
-    var isAdminError by mutableStateOf("")
-        private set
     var exit by mutableStateOf(false)
         private set
 
     init {
         val id = savedStateHandle.get<String>(KEY_ID)
-        //if (!id.isNullOrBlank() && !exit) {
         if (!id.isNullOrBlank()) {
                 gamblerUseCase.getGambler(id).onEach { gamblerState ->
                     _state.value = AdminGamblerState(gamblerState)
                     if (gamblerState is UiState.Success) {
-                        toLog("1")
                         gambler = gamblerState.data
                     }
                 }.launchIn(viewModelScope)
@@ -69,10 +64,10 @@ class AdminGamblerViewModel @Inject constructor(
             is AdminGamblerEvent.OnSave -> {
                 gamblerUseCase.saveGambler(gambler).onEach { gamblerSaveState ->
                     _state.value = AdminGamblerState(gamblerSaveState)
-                    if (gamblerSaveState is UiState.Success) {
+                    exit = true
+                    /*if (gamblerSaveState is UiState.Success) {
                         toLog("2")
-                        exit = true
-                    }
+                    }*/
                 }.launchIn(viewModelScope)
             }
         }
