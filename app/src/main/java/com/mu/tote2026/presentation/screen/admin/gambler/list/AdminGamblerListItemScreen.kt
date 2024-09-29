@@ -84,7 +84,7 @@ private fun GamblerPhoto(
     AsyncImage(
         model = photoUrl,
         placeholder = placeholder,
-        contentDescription = "User Photo",
+        contentDescription = "Gambler Photo",
         contentScale = ContentScale.Crop,
         onSuccess = { loading = false },
         colorFilter = if (loading) ColorFilter.tint(Color2) else null,
