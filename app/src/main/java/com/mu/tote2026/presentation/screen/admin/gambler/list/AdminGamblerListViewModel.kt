@@ -14,13 +14,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AdminGamblerListViewModel @Inject constructor(
-    private val gamblerUseCase: GamblerUseCase
+    gamblerUseCase: GamblerUseCase
 ) : ViewModel() {
     private val _state: MutableStateFlow<AdminGamblerListState> = MutableStateFlow(AdminGamblerListState())
     val state = _state.asStateFlow()
 
     var gamblerList = mutableListOf<GamblerModel>()
         private set
+    var prizeFund = 0
 
     init {
         gamblerUseCase.getGamblerList().onEach { gamblerListState ->
@@ -29,6 +30,7 @@ class AdminGamblerListViewModel @Inject constructor(
             if (gamblerListState is UiState.Success) {
                 gamblerList = gamblerListState.data.toMutableList()
                 gamblerList.sortBy { it.nickname }
+                prizeFund = gamblerList.sumOf { it.rate }
             }
         }.launchIn(viewModelScope)
     }

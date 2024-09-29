@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.components.AppProgressBar
@@ -53,9 +55,13 @@ fun AdminGamblerListScreen(
     }
 
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
         Title(R.string.admin_gambler_list)
+        Text(
+            text = stringResource(R.string.prize_fund, viewModel.prizeFund)
+        )
 
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -63,7 +69,7 @@ fun AdminGamblerListScreen(
         ) {
             items(viewModel.gamblerList) { gambler ->
                 AdminGamblerListItemScreen(
-                    gambler.nickname,
+                    gambler,
                     onEdit = { toGamblerEdit(gambler.docId )}
                 )
             }
