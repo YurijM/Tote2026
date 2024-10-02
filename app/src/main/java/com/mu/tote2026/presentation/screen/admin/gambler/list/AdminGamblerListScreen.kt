@@ -74,7 +74,7 @@ fun AdminGamblerListScreen(
             items(viewModel.gamblerList) { gambler ->
                 AdminGamblerListItemScreen(
                     gambler,
-                    onEdit = { toGamblerEdit(gambler.docId )}
+                    onEdit = { toGamblerEdit(gambler.id )}
                 )
             }
         }

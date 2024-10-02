@@ -32,7 +32,7 @@ class AuthRepositoryImpl @Inject constructor(
                 val user = auth.currentUser
 
                 if (user != null) {
-                    firestore.collection(GAMBLERS).document(user.uid).set(GamblerModel(docId = user.uid, email = email))
+                    firestore.collection(GAMBLERS).document(user.uid).set(GamblerModel(id = user.uid, email = email))
                         .addOnSuccessListener {
                             CURRENT_ID = user.uid
                             trySend(UiState.Success(true))

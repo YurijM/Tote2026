@@ -78,7 +78,7 @@ class GamblerRepositoryImpl(
     override fun saveGambler(gambler: GamblerModel): Flow<UiState<GamblerModel>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(GAMBLERS).document(gambler.docId).set(gambler)
+        firestore.collection(GAMBLERS).document(gambler.id).set(gambler)
             .addOnSuccessListener {
                 trySend(UiState.Success(gambler))
             }
