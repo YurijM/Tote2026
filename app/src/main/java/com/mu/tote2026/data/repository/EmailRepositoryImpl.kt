@@ -4,7 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.Collections.EMAILS
 import com.mu.tote2026.domain.model.EmailModel
 import com.mu.tote2026.domain.repository.EmailRepository
-import com.mu.tote2026.presentation.utils.NEW_EMAIL
+import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import kotlinx.coroutines.channels.awaitClose
@@ -58,7 +58,7 @@ class EmailRepositoryImpl(
 
         var currentEmail = email
 
-        if (email.id == NEW_EMAIL) {
+        if (email.id == NEW_DOC) {
             currentEmail = currentEmail.copy(id = firestore.collection(EMAILS).document().id)
         }
 
