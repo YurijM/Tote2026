@@ -9,6 +9,7 @@ const val FOLDER_GAMBLER_PHOTO = "gambler_photo"
 
 object Collections {
     const val EMAILS = "emails"
+    const val GROUPS = "groups"
     const val GAMBLERS = "gamblers"
 }
 object Errors {
