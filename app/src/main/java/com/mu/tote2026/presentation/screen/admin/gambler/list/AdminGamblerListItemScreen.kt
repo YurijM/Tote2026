@@ -45,7 +45,7 @@ fun AdminGamblerListItemScreen(
             containerColor = if (gambler.isAdmin) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
         ),
         modifier = Modifier
-            .fillMaxWidth(.6f)
+            .fillMaxWidth(.75f)
             .padding(vertical = 8.dp)
             .clickable { onEdit() }
     ) {
