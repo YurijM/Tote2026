@@ -38,7 +38,7 @@ class AdminEmailListViewModel @Inject constructor(
     fun onEvent(event: AdminEmailListEvent) {
         when (event) {
             is AdminEmailListEvent.OnDelete -> {
-                emailUseCase.deleteEmail(event.email.docId).onEach { deleteState ->
+                emailUseCase.deleteEmail(event.email.id).onEach { deleteState ->
                     if (deleteState is UiState.Success) {
                         message.value = "Email ${event.email.email} удалён из списка"
                     } else if (deleteState is UiState.Error) {

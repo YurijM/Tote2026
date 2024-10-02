@@ -58,11 +58,11 @@ class EmailRepositoryImpl(
 
         var currentEmail = email
 
-        if (email.docId == NEW_EMAIL) {
-            currentEmail = currentEmail.copy(docId = firestore.collection(EMAILS).document().id)
+        if (email.id == NEW_EMAIL) {
+            currentEmail = currentEmail.copy(id = firestore.collection(EMAILS).document().id)
         }
 
-        firestore.collection(EMAILS).document(currentEmail.docId).set(currentEmail)
+        firestore.collection(EMAILS).document(currentEmail.id).set(currentEmail)
             .addOnSuccessListener {
                 trySend(UiState.Success(currentEmail))
             }

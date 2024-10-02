@@ -28,7 +28,7 @@ class AdminEmailViewModel @Inject constructor(
     private val _state: MutableStateFlow<AdminEmailState> = MutableStateFlow(AdminEmailState())
     val state = _state.asStateFlow()
 
-    var email by mutableStateOf(EmailModel(docId = NEW_EMAIL))
+    var email by mutableStateOf(EmailModel(id = NEW_EMAIL))
         private set
     var emailError by mutableStateOf("")
 
