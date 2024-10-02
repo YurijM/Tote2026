@@ -11,7 +11,7 @@ const val MALE = "мужской"
 const val FEMALE = "женский"
 
 const val KEY_ID = "id"
-const val NEW_EMAIL = "new"
+const val NEW_DOC = "new"
 
 object Route {
     const val SPLASH_SCREEN = "splash_screen"

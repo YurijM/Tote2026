@@ -21,7 +21,7 @@ import com.mu.tote2024.presentation.components.AppFabAdd
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.Title
-import com.mu.tote2026.presentation.utils.NEW_EMAIL
+import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
@@ -76,7 +76,7 @@ fun AdminEmailListScreen(
         }
     }
     AppFabAdd(
-        onAdd = { toEmailEdit(NEW_EMAIL) }
+        onAdd = { toEmailEdit(NEW_DOC) }
     )
 
     if (isLoading) {

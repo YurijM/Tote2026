@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.model.EmailModel
 import com.mu.tote2026.domain.usecase.email_usecase.EmailUseCase
 import com.mu.tote2026.presentation.utils.KEY_ID
-import com.mu.tote2026.presentation.utils.NEW_EMAIL
+import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.checkEmail
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
@@ -28,7 +28,7 @@ class AdminEmailViewModel @Inject constructor(
     private val _state: MutableStateFlow<AdminEmailState> = MutableStateFlow(AdminEmailState())
     val state = _state.asStateFlow()
 
-    var email by mutableStateOf(EmailModel(id = NEW_EMAIL))
+    var email by mutableStateOf(EmailModel(id = NEW_DOC))
         private set
     var emailError by mutableStateOf("")
 
@@ -38,7 +38,7 @@ class AdminEmailViewModel @Inject constructor(
         val id = savedStateHandle.get<String>(KEY_ID)
         toLog("id: $id")
 
-        if (!id.isNullOrBlank() && id != NEW_EMAIL) {
+        if (!id.isNullOrBlank() && id != NEW_DOC) {
             emailUseCase.getEmail(id).onEach { emailState ->
                 _state.value = AdminEmailState(emailState)
 
