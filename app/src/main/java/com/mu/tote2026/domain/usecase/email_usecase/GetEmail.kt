@@ -5,5 +5,5 @@ import com.mu.tote2026.domain.repository.EmailRepository
 class GetEmail(
     private val emailRepository: EmailRepository
 ) {
-    operator fun invoke(email: String) = emailRepository.getEmail(email)
+    operator fun invoke(id: String) = emailRepository.getEmail(id)
 }

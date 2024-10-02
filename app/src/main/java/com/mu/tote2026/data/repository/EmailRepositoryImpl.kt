@@ -35,12 +35,12 @@ class EmailRepositoryImpl(
         }
     }
 
-    override fun getEmail(docId: String): Flow<UiState<EmailModel>> = callbackFlow {
+    override fun getEmail(id: String): Flow<UiState<EmailModel>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(EMAILS).document(docId).get()
+        firestore.collection(EMAILS).document(id).get()
             .addOnSuccessListener { task ->
-                val email = task.toObject(EmailModel::class.java) ?: EmailModel(docId)
+                val email = task.toObject(EmailModel::class.java) ?: EmailModel(id)
                 trySend(UiState.Success(email))
             }
             .addOnFailureListener { error ->
@@ -76,10 +76,10 @@ class EmailRepositoryImpl(
         }
     }
 
-    override fun deleteEmail(docId: String): Flow<UiState<Boolean>> = callbackFlow {
+    override fun deleteEmail(id: String): Flow<UiState<Boolean>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(EMAILS).document(docId).delete()
+        firestore.collection(EMAILS).document(id).delete()
             .addOnSuccessListener {
                 trySend(UiState.Success(true))
             }
