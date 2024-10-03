@@ -29,7 +29,7 @@ class AdminGroupListViewModel @Inject constructor(
             _state.value = AdminGroupListState(groupListState)
             if (groupListState is UiState.Success) {
                 groupList = groupListState.data.toMutableList()
-                groupList.sortBy { it.id }
+                groupList.sortBy { it.id.toInt() }
             }
         }.launchIn(viewModelScope)
     }
@@ -37,7 +37,7 @@ class AdminGroupListViewModel @Inject constructor(
     fun onEvent(event: AdminGroupListEvent) {
         when (event) {
             is AdminGroupListEvent.OnDelete -> {
-                groupUseCase.deleteGroup(event.group.id.toString()).onEach { deleteGroupState ->
+                groupUseCase.deleteGroup(event.group.id).onEach { deleteGroupState ->
                     if (deleteGroupState is UiState.Success)
                         message.value = "Группа ${event.group.group} удалена из списка"
                 }.launchIn(viewModelScope)
