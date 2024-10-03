@@ -27,6 +27,8 @@ object Route {
     const val ADMIN_MAIN_SCREEN = "admin_main_screen"
     const val ADMIN_EMAIL_LIST_SCREEN = "admin_email_list_screen"
     const val ADMIN_EMAIL_SCREEN = "admin_email_screen"
+    const val ADMIN_GROUP_LIST_SCREEN = "admin_group_list_screen"
+    const val ADMIN_GROUP_SCREEN = "admin_group_screen"
     const val ADMIN_GAMBLER_LIST_SCREEN = "admin_gambler_list_screen"
     const val ADMIN_GAMBLER_SCREEN = "admin_gambler_screen"
     const val ADMIN_TEAM_LIST_SCREEN = "admin_team_list_screen"
@@ -83,6 +85,10 @@ sealed class AdminNavItem(
     data object AdminGamblerItem: AdminNavItem(
         titleId = R.string.admin_gambler_list,
         route = Route.ADMIN_GAMBLER_LIST_SCREEN
+    )
+    data object AdminGroupItem: AdminNavItem(
+        titleId = R.string.admin_group_list,
+        route = Route.ADMIN_GROUP_LIST_SCREEN
     )
     data object AdminTeamItem: AdminNavItem(
         titleId = R.string.admin_team_list,

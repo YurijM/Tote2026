@@ -12,6 +12,8 @@ import com.mu.tote2026.presentation.navigation.destination.admin.gambler.adminGa
 import com.mu.tote2026.presentation.navigation.destination.admin.gambler.navigateToAdminGambler
 import com.mu.tote2026.presentation.navigation.destination.admin.gambler.navigateToAdminGamblerList
 import com.mu.tote2026.presentation.navigation.destination.admin.game.adminGameList
+import com.mu.tote2026.presentation.navigation.destination.admin.group.adminGroupList
+import com.mu.tote2026.presentation.navigation.destination.admin.group.navigateToAdminGroup
 import com.mu.tote2026.presentation.navigation.destination.admin.main.adminMain
 import com.mu.tote2026.presentation.navigation.destination.game.gameList
 import com.mu.tote2026.presentation.navigation.destination.prognosis.prognosis
@@ -44,6 +46,11 @@ fun NavGraphMain(
         )
         adminEmail(
             toAdminEmailList = { navMainController.navigateToAdminEmailList() }
+        )
+        adminGroupList(
+            toGroupEdit = { id ->
+                navMainController.navigateToAdminGroup(id)
+            }
         )
         adminGamblerList(
             toGamblerEdit = { id ->

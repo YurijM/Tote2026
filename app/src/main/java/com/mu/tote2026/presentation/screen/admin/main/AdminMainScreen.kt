@@ -16,6 +16,7 @@ fun AdminMainScreen(
     val navItems = mutableListOf(
         AdminNavItem.AdminEmailItem,
         AdminNavItem.AdminGamblerItem,
+        AdminNavItem.AdminGroupItem,
         AdminNavItem.AdminTeamItem,
         AdminNavItem.AdminGameItem,
         AdminNavItem.AdminStakeItem,
