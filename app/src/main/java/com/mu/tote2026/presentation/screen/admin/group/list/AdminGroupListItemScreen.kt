@@ -1,4 +1,4 @@
-package com.mu.tote2026.presentation.screen.admin.email.list
+package com.mu.tote2026.presentation.screen.admin.group.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,11 +18,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AdminEmailListItemScreen(
-    email: String,
+fun AdminGroupListItemScreen(
+    group: String,
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -45,7 +46,6 @@ fun AdminEmailListItemScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp, vertical = 4.dp),
         ) {
-
             /*Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -53,25 +53,30 @@ fun AdminEmailListItemScreen(
             .padding(vertical = 8.dp),
     ) {*/
             Text(
-                text = email,
+                text = group,
                 modifier = Modifier.weight(5f),
+                textAlign = TextAlign.Center
             )
             IconButton(
                 onClick = { onEdit() },
-                modifier = Modifier.weight(1f).size(24.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .size(24.dp),
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "editEmail"
+                    contentDescription = "editGroup"
                 )
             }
             IconButton(
                 onClick = { onDelete() },
-                modifier = Modifier.weight(1f).size(24.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .size(24.dp),
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "deleteEmail",
+                    contentDescription = "deleteGroup",
                 )
             }
         }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -68,12 +67,11 @@ fun AdminGroupListScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             items(viewModel.groupList) { group ->
-                /*AdminEmailListItemScreen(
-                    email = email.email,
-                    onEdit = { toEmailEdit(email.id) },
-                    onDelete = { viewModel.onEvent((AdminEmailListEvent.OnDelete(email))) }
-                )*/
-                Text(group.group)
+                AdminGroupListItemScreen(
+                    group = group.group,
+                    onEdit = { toGroupEdit(group.id) },
+                    onDelete = { viewModel.onEvent((AdminGroupListEvent.OnDelete(group))) }
+                )
             }
         }
     }
