@@ -31,6 +31,7 @@ class GroupRepositoryImpl(
         awaitClose {
             toLog("getGroupList: listener remove")
             listener.remove()
+            close()
         }
     }
 

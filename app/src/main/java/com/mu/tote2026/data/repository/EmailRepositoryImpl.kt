@@ -32,6 +32,7 @@ class EmailRepositoryImpl(
         awaitClose {
             toLog("getEmailList: listener remove")
             listener.remove()
+            close()
         }
     }
 

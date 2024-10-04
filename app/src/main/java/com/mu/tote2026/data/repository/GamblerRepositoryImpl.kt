@@ -35,6 +35,7 @@ class GamblerRepositoryImpl(
         awaitClose  {
             toLog("getGamblerList: listener remove")
             listener.remove()
+            close()
         }
     }
 
