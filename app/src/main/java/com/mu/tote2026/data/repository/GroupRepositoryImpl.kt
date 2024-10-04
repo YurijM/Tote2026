@@ -55,7 +55,7 @@ class GroupRepositoryImpl(
     override fun saveGroup(group: GroupModel): Flow<UiState<GroupModel>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(GROUPS).document(group.id.toString()).set(group)
+        firestore.collection(GROUPS).document(group.id).set(group)
             .addOnSuccessListener {
                 trySend(UiState.Success(group))
             }
