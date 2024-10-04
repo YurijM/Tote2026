@@ -75,23 +75,6 @@ class GameRepositoryImpl(
         }
     }
 
-    override fun deleteAllTeams(): Flow<UiState<Boolean>> = callbackFlow {
-        trySend(UiState.Loading)
-
-        firestore.collection(TEAMS).document().delete()
-            .addOnSuccessListener {
-                trySend(UiState.Success(true))
-            }
-            .addOnFailureListener { error ->
-                trySend(UiState.Error(error.message ?: "deleteAllTeams: error is not defined"))
-            }
-
-        awaitClose {
-            toLog("deleteAllTeams awaitClose")
-            close()
-        }
-    }
-
     override fun deleteTeam(id: String): Flow<UiState<Boolean>> = callbackFlow {
         trySend(UiState.Loading)
 
