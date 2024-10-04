@@ -4,7 +4,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.Collections.TEAMS
 import com.mu.tote2026.domain.model.TeamModel
 import com.mu.tote2026.domain.repository.GameRepository
-import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import kotlinx.coroutines.channels.awaitClose
@@ -56,17 +55,15 @@ class GameRepositoryImpl(
     override fun saveTeam(team: TeamModel): Flow<UiState<TeamModel>> = callbackFlow {
         trySend(UiState.Loading)
 
-        var currentTeam = team
+        /*var currentTeam = team
         val collection = firestore.collection(TEAMS)
 
         if (currentTeam.id == NEW_DOC)
-            currentTeam = currentTeam.copy(
-                id = collection.document().id
-            )
+            currentTeam = currentTeam.copy(id = collection.document().id)*/
 
-        collection.document(currentTeam.id).set(currentTeam)
+        firestore.collection(TEAMS).document(team.team).set(team)
             .addOnSuccessListener {
-                trySend(UiState.Success(currentTeam))
+                trySend(UiState.Success(team))
             }
             .addOnFailureListener { error ->
                 trySend(UiState.Error(error.message ?: "saveTeam: error is not defined"))
@@ -74,6 +71,23 @@ class GameRepositoryImpl(
 
         awaitClose {
             toLog("saveTeam awaitClose")
+            close()
+        }
+    }
+
+    override fun deleteAllTeams(): Flow<UiState<Boolean>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        firestore.collection(TEAMS).document().delete()
+            .addOnSuccessListener {
+                trySend(UiState.Success(true))
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error(error.message ?: "deleteAllTeams: error is not defined"))
+            }
+
+        awaitClose {
+            toLog("deleteAllTeams awaitClose")
             close()
         }
     }

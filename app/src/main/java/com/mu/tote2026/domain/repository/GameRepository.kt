@@ -8,5 +8,6 @@ interface GameRepository {
     fun getTeamList(): Flow<UiState<List<TeamModel>>>
     fun getTeam(id: String): Flow<UiState<TeamModel>>
     fun saveTeam(team: TeamModel): Flow<UiState<TeamModel>>
+    fun deleteAllTeams(): Flow<UiState<Boolean>>
     fun deleteTeam(id: String): Flow<UiState<Boolean>>
 }
