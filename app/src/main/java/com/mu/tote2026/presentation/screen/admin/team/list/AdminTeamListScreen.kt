@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.components.AppProgressBar
+import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
@@ -59,18 +59,20 @@ fun AdminTeamListScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         Title(R.string.admin_team_list)
+        OkAndCancel(
+            titleOk = R.string.load,
+            enabledOk = true,
+            showCancel = false,
+            onOK = { viewModel.onEvent(AdminTeamListEvent.OnLoad) },
+            onCancel = {}
+        )
 
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
         ) {
             items(viewModel.teamList) { team ->
-                /*AdminGroupListItemScreen(
-                    team = team.team,
-                    onEdit = { toGroupEdit(team.id) },
-                    onDelete = { viewModel.onEvent((AdminGroupListEvent.OnDelete(team))) }
-                )*/
-                Text(text = team.team)
+                AdminTeamListItemScreen(team)
             }
         }
     }

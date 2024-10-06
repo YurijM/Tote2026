@@ -21,6 +21,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
     <string name="save">Сохранить</string>
+    <string name="load">Загрузить</string>
 
     <string name="error_field_is_empty">"Поле не заполнено"</string>
     <string name="error_incorrect_email">"Некорректное значение email"</string>
