@@ -10,6 +10,9 @@ const val MIN_PASSWORD_LENGTH = 6
 const val MALE = "мужской"
 const val FEMALE = "женский"
 
+const val GAMBLER = "gambler"
+const val GAME = "game"
+
 const val KEY_ID = "id"
 const val NEW_DOC = "new"
 

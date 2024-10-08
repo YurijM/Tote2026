@@ -3,10 +3,14 @@ package com.mu.tote2026.di.module.repository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.GameRepositoryImpl
 import com.mu.tote2026.domain.repository.GameRepository
+import com.mu.tote2026.domain.usecase.game_usecase.DeleteGame
 import com.mu.tote2026.domain.usecase.game_usecase.DeleteTeam
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
+import com.mu.tote2026.domain.usecase.game_usecase.GetGame
+import com.mu.tote2026.domain.usecase.game_usecase.GetGameList
 import com.mu.tote2026.domain.usecase.game_usecase.GetTeam
 import com.mu.tote2026.domain.usecase.game_usecase.GetTeamList
+import com.mu.tote2026.domain.usecase.game_usecase.SaveGame
 import com.mu.tote2026.domain.usecase.game_usecase.SaveTeam
 import dagger.Module
 import dagger.Provides
@@ -29,6 +33,11 @@ object GameRepositoryModule {
         getTeamList = GetTeamList(gameRepository),
         getTeam = GetTeam(gameRepository),
         saveTeam = SaveTeam(gameRepository),
-        deleteTeam = DeleteTeam(gameRepository)
+        deleteTeam = DeleteTeam(gameRepository),
+
+        getGameList = GetGameList(gameRepository),
+        getGame = GetGame(gameRepository),
+        saveGame = SaveGame(gameRepository),
+        deleteGame = DeleteGame(gameRepository),
     )
 }
