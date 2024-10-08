@@ -3,7 +3,7 @@ package com.mu.tote2026.presentation.screen.admin.team.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.model.TeamModel
-import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
+import com.mu.tote2026.domain.usecase.team_usecase.TeamUseCase
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AdminTeamListViewModel @Inject constructor(
-    private val gameUseCase: GameUseCase
+    private val teamUseCase: TeamUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(AdminTeamListState())
     val state = _state.asStateFlow()
@@ -22,7 +22,7 @@ class AdminTeamListViewModel @Inject constructor(
     var teamList = mutableListOf<TeamModel>()
 
     init {
-        gameUseCase.getTeamList().onEach { teamListState ->
+        teamUseCase.getTeamList().onEach { teamListState ->
             _state.value = AdminTeamListState(teamListState)
 
             if (teamListState is UiState.Success) {
@@ -40,10 +40,10 @@ class AdminTeamListViewModel @Inject constructor(
         when (event) {
             is AdminTeamListEvent.OnLoad -> {
                 teamList.forEach { team ->
-                    gameUseCase.deleteTeam(team.team).launchIn(viewModelScope)
+                    teamUseCase.deleteTeam(team.team).launchIn(viewModelScope)
                 }
                 teams.forEach { team ->
-                    gameUseCase.saveTeam(team).launchIn(viewModelScope)
+                    teamUseCase.saveTeam(team).launchIn(viewModelScope)
                 }
             }
         }

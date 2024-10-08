@@ -4,14 +4,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.GameRepositoryImpl
 import com.mu.tote2026.domain.repository.GameRepository
 import com.mu.tote2026.domain.usecase.game_usecase.DeleteGame
-import com.mu.tote2026.domain.usecase.game_usecase.DeleteTeam
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
 import com.mu.tote2026.domain.usecase.game_usecase.GetGame
 import com.mu.tote2026.domain.usecase.game_usecase.GetGameList
-import com.mu.tote2026.domain.usecase.game_usecase.GetTeam
-import com.mu.tote2026.domain.usecase.game_usecase.GetTeamList
 import com.mu.tote2026.domain.usecase.game_usecase.SaveGame
-import com.mu.tote2026.domain.usecase.game_usecase.SaveTeam
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,11 +26,6 @@ object GameRepositoryModule {
     @Provides
     @Singleton
     fun provideGameUseCase(gameRepository: GameRepository) = GameUseCase(
-        getTeamList = GetTeamList(gameRepository),
-        getTeam = GetTeam(gameRepository),
-        saveTeam = SaveTeam(gameRepository),
-        deleteTeam = DeleteTeam(gameRepository),
-
         getGameList = GetGameList(gameRepository),
         getGame = GetGame(gameRepository),
         saveGame = SaveGame(gameRepository),
