@@ -46,4 +46,9 @@
     <string name="admin_stake_list">Список ставок</string>
     <string name="admin_finish">Окончание турнира</string>
     <string name="prize_fund">Общий призовой фонд %1$s руб.</string>
+
+    <string name="game_number">Игра №%1$s</string>
+    <string name="group">группа %1$s</string>
+    <string name="add_time_scope">доп.время %1$s : %2$s</string>
+    <string name="winner_by_penalty">победитель по пенальти - %1$s</string>
 </resources>

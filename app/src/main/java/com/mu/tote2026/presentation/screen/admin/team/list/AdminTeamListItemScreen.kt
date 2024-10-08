@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.TeamModel
+import com.mu.tote2026.presentation.components.TeamFlag
 import com.mu.tote2026.ui.theme.Color2
 
 @Composable
@@ -62,27 +63,4 @@ fun AdminTeamListItemScreen(
             )
         }
     }
-}
-
-@Composable
-private fun TeamFlag(
-    flag: String
-) {
-    val placeholder = rememberVectorPainter(
-        image = Icons.Rounded.LocationOn
-    )
-    var loading by remember { mutableStateOf(true) }
-
-    AsyncImage(
-        model = flag,
-        placeholder = placeholder,
-        contentDescription = "Team Photo",
-        contentScale = ContentScale.Crop,
-        onSuccess = { loading = false },
-        colorFilter = if (loading) ColorFilter.tint(Color2) else null,
-        modifier = Modifier
-            .size(dimensionResource(id = R.dimen.flag_size))
-            .aspectRatio(1f / 1f)
-            .clip(CircleShape)
-    )
 }

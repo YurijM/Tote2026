@@ -31,6 +31,7 @@ class TeamRepositoryImpl(
         awaitClose {
             toLog("getTeamList: listener remove")
             listener.remove()
+            close()
         }
     }
 

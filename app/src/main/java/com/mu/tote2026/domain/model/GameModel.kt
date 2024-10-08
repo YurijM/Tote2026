@@ -3,6 +3,7 @@ package com.mu.tote2026.domain.model
 data class GameModel(
     val id: String = "",
     val start: String = "",
+    val groupId: String = "",
     val group: String = "",
     val team1: String = "",
     val flag1: String = "",
