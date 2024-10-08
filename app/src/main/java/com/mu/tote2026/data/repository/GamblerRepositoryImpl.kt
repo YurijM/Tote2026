@@ -18,6 +18,19 @@ class GamblerRepositoryImpl(
     private val firestore: FirebaseFirestore,
     private val storage: FirebaseStorage
 ) : GamblerRepository {
+    /*
+            //firestore.collection(EMAILS).document().collection("stakes").whereGreaterThanOrEqualTo("gameNo", "2").get()
+        firestore.collectionGroup("stakes").whereGreaterThanOrEqualTo("gameNo", "2").get()
+            .addOnSuccessListener { task ->
+                val stakes = task.toObjects(GameModel::class.java)
+                for (stake in stakes) {
+                    //toLog("stake gameNo => ${stake.gameNo}")
+                }
+            }
+            .addOnFailureListener { error ->
+                toLog("collectionGroup error => ${error.message}")
+            }
+     */
     override fun getGamblerList(): Flow<UiState<List<GamblerModel>>> = callbackFlow {
         trySend(UiState.Loading)
 

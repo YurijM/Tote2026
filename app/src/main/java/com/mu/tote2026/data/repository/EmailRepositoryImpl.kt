@@ -3,7 +3,6 @@ package com.mu.tote2026.data.repository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.Collections.EMAILS
 import com.mu.tote2026.domain.model.EmailModel
-import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.repository.EmailRepository
 import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.toLog
@@ -18,17 +17,6 @@ class EmailRepositoryImpl(
     override fun getEmailList(): Flow<UiState<List<EmailModel>>> = callbackFlow {
         trySend(UiState.Loading)
 
-        //firestore.collection(EMAILS).document().collection("stakes").whereGreaterThanOrEqualTo("gameNo", "2").get()
-        firestore.collectionGroup("stakes").whereGreaterThanOrEqualTo("gameNo", "2").get()
-            .addOnSuccessListener { task ->
-                val stakes = task.toObjects(GameModel::class.java)
-                for (stake in stakes) {
-                    toLog("stake gameNo => ${stake.gameNo}")
-                }
-            }
-            .addOnFailureListener { error ->
-                toLog("collectionGroup error => ${error.message}")
-            }
         val listener = firestore.collection(EMAILS)
             .addSnapshotListener { snapshot, exception ->
                 if (snapshot != null) {
