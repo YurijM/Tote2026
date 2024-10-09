@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -76,14 +77,15 @@ fun AdminGameListItemScreen(
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
             ) {
                 Row(
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .weight(5f)
-                        .padding(horizontal = 4.dp)
+                    modifier = Modifier.weight(1f)
                 ) {
                     Text(
                         text = game.team1,
@@ -94,7 +96,10 @@ fun AdminGameListItemScreen(
                     TeamFlag(game.flag1)
                 }
                 Row(
-                    modifier = Modifier.weight(1f).padding(horizontal = 4.dp)
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .wrapContentWidth()
+                        .padding(horizontal = 4.dp)
                 ) {
                     Text(
                         text = game.goal1
@@ -106,9 +111,7 @@ fun AdminGameListItemScreen(
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .weight(5f)
-                        .padding(horizontal = 4.dp)
+                    modifier = Modifier.weight(1f)
                 ) {
                     TeamFlag(game.flag2)
                     Text(
@@ -120,14 +123,16 @@ fun AdminGameListItemScreen(
                 }
             }
             if (game.addGoal1.isNotBlank() && game.addGoal2.isNotBlank()) {
-              Text(
-                  text = stringResource(R.string.add_time_scope, game.addGoal1, game.addGoal2)
-              )
+                Text(
+                    text = stringResource(R.string.add_time_scope, game.addGoal1, game.addGoal2),
+                    lineHeight = .1.em
+                )
             }
             if (game.byPenalty.isNotBlank()) {
-              Text(
-                  text = stringResource(R.string.winner_by_penalty, game.byPenalty)
-              )
+                Text(
+                    text = stringResource(R.string.winner_by_penalty, game.byPenalty),
+                    lineHeight = .1.em
+                )
             }
         }
     }
