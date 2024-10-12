@@ -59,22 +59,17 @@ fun AdminGameListItemScreen(
                     .fillMaxWidth()
                     .height(20.dp)
             ) {
+                val group = if (game.groupId.toInt() <= GROUPS_COUNT)
+                    stringResource(R.string.group, game.group)
+                else
+                    game.group
                 Text(
-                    text = stringResource(R.string.game_number, game.id)
+                    text = stringResource(R.string.game_number, game.id) + " ($group)"
                 )
                 Text(
                     game.start.asDateTime()
                 )
             }
-            val group = if (game.groupId.toInt() <= GROUPS_COUNT)
-                stringResource(R.string.group, game.group)
-            else
-                game.group
-            Text(
-                text = group,
-                lineHeight = 0.1.em,
-                maxLines = 1,
-            )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
