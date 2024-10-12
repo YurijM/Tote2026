@@ -1,6 +1,5 @@
 package com.mu.tote2026.presentation.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,8 +22,8 @@ import com.mu.tote2026.R
 
 @Composable
 fun SignCard(
-    @StringRes titleId: Int,
-    @StringRes titleOkId: Int,
+    title: String,
+    titleOk: String,
     email: String,
     onEmailChange: (String) -> Unit,
     errorEmail: String?,
@@ -50,7 +49,7 @@ fun SignCard(
                 .padding(horizontal = 48.dp)
                 .weight(2f)
         ) {
-            Title(titleId = titleId)
+            Title(title = title)
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(
@@ -118,7 +117,7 @@ fun SignCard(
                         )
                     }
                     OkAndCancel(
-                        titleOk = titleOkId,
+                        titleOk = titleOk,
                         enabledOk = enabledButton,
                         showCancel = false,
                         onOK = { onSign() },

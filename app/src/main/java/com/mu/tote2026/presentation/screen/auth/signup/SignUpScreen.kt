@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.components.AppProgressBar
@@ -58,8 +59,8 @@ fun SignUpScreen(
             .verticalScroll(rememberScrollState()),
     ) {
         SignCard(
-            titleId = R.string.sign_up,
-            titleOkId = R.string.to_register,
+            title = stringResource(R.string.sign_up),
+            titleOk = stringResource(R.string.to_register),
             email = viewModel.email,
             onEmailChange = { newValue -> viewModel.onEvent(SignUpEvent.OnEmailChange(newValue)) },
             errorEmail = viewModel.errorEmail,

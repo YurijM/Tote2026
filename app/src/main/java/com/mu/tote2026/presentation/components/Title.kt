@@ -27,14 +27,14 @@ fun PreviewTitle() {
 
 @Composable
 fun Title(
-    @StringRes titleId: Int,
+    title: String,
     color: Color = MaterialTheme.colorScheme.primary
 ) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        text = stringResource(id = titleId),
+        text = title,
         color = color,
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.titleLarge

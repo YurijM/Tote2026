@@ -60,7 +60,7 @@ fun AdminGamblerListScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        Title(R.string.admin_gambler_list)
+        Title(stringResource(R.string.admin_gambler_list))
         Text(
             text = stringResource(R.string.prize_fund, viewModel.prizeFund)
         )

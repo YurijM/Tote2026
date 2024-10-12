@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2024.presentation.components.AppFabAdd
 import com.mu.tote2026.R
@@ -60,7 +61,7 @@ fun AdminGroupListScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Title(R.string.admin_group_list)
+        Title(stringResource(R.string.admin_group_list))
 
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,

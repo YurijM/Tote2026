@@ -22,6 +22,8 @@
     <string name="cancel">Отмена</string>
     <string name="save">Сохранить</string>
     <string name="load">Загрузить</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 
     <string name="error_field_is_empty">"Поле не заполнено"</string>
     <string name="error_incorrect_email">"Некорректное значение email"</string>
@@ -46,6 +48,9 @@
     <string name="admin_stake_list">Список ставок</string>
     <string name="admin_finish">Окончание турнира</string>
     <string name="prize_fund">Общий призовой фонд %1$s руб.</string>
+
+    <string name="email_delete">Удаление email</string>
+    <string name="want_delete_email">Вы действительно хотите удалить email \"%1$s\"?</string>
 
     <string name="game_number">Игра №%1$s</string>
     <string name="group">группа %1$s</string>

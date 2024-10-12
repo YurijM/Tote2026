@@ -16,10 +16,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2024.presentation.components.AppFabAdd
 import com.mu.tote2026.R
+import com.mu.tote2026.domain.model.EmailModel
 import com.mu.tote2026.presentation.components.AppProgressBar
+import com.mu.tote2026.presentation.components.ApplicationDialog
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.errorTranslate
@@ -36,6 +39,10 @@ fun AdminEmailListScreen(
 
     val state by viewModel.state.collectAsState()
     val result = state.result
+
+    var currentEmail by remember { mutableStateOf(EmailModel()) }
+
+    var openDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = result) {
         toLog("AdminEmailListScreen result: $result")
@@ -60,7 +67,7 @@ fun AdminEmailListScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Title(R.string.admin_email_list)
+        Title(stringResource(R.string.admin_email_list))
 
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -70,7 +77,10 @@ fun AdminEmailListScreen(
                 AdminEmailListItemScreen(
                     email = email.email,
                     onEdit = { toEmailEdit(email.id) },
-                    onDelete = { viewModel.onEvent((AdminEmailListEvent.OnDelete(email))) }
+                    onDelete = {
+                        currentEmail = email
+                        openDialog = true
+                    }
                 )
             }
         }
@@ -78,6 +88,22 @@ fun AdminEmailListScreen(
     AppFabAdd(
         onAdd = { toEmailEdit(NEW_DOC) }
     )
+
+    if (openDialog) {
+        ApplicationDialog(
+            title = stringResource(R.string.email_delete),
+            text = stringResource(R.string.want_delete_email, currentEmail.email),
+            titleOK = stringResource(R.string.yes),
+            titleCancel = stringResource(R.string.no),
+            showCancel = true,
+            onDismiss = { openDialog = false },
+            onOK = {
+                openDialog = false
+                viewModel.onEvent((AdminEmailListEvent.OnDelete(currentEmail)))
+            },
+            onCancel = { openDialog = false }
+        )
+    }
 
     if (isLoading) {
         AppProgressBar()

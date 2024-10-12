@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.components.AppProgressBar
@@ -58,9 +59,9 @@ fun AdminTeamListScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        Title(R.string.admin_team_list)
+        Title(stringResource(R.string.admin_team_list))
         OkAndCancel(
-            titleOk = R.string.load,
+            titleOk = stringResource(R.string.load),
             enabledOk = true,
             showCancel = false,
             onOK = { viewModel.onEvent(AdminTeamListEvent.OnLoad) },

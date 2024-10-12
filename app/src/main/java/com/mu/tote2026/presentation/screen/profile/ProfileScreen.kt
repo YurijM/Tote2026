@@ -97,7 +97,7 @@ fun ProfileScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         ) {
-            Title(titleId = R.string.profile)
+            Title(title = stringResource(R.string.profile))
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(
@@ -145,7 +145,7 @@ fun ProfileScreen(
                 }
                 HorizontalDivider(thickness = 1.dp)
                 OkAndCancel(
-                    titleOk = R.string.save,
+                    titleOk = stringResource(R.string.save),
                     enabledOk = viewModel.enabledSaveButton,
                     onOK = { viewModel.onEvent(ProfileEvent.OnSave) },
                     onCancel = { viewModel.onEvent(ProfileEvent.OnCancel) }
