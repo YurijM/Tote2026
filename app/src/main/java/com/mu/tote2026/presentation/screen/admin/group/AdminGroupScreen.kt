@@ -21,10 +21,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mu.tote2026.R
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.AppTextField
 import com.mu.tote2026.presentation.components.OkAndCancel
@@ -85,7 +87,7 @@ fun AdminGroupScreen(
                 )
             ) {
                 AppTextField(
-                    label = "Порядковый номер",
+                    label = stringResource(R.string.item_no),
                     value = viewModel.group.id,
                     onChange = { newValue -> viewModel.onEvent(AdminGroupEvent.OnIdChange(newValue)) },
                     keyboardOptions = KeyboardOptions(
@@ -98,7 +100,7 @@ fun AdminGroupScreen(
                     )
                 )
                 AppTextField(
-                    label = "Группа",
+                    label = stringResource(R.string.group),
                     value = viewModel.group.group,
                     onChange = { newValue -> viewModel.onEvent(AdminGroupEvent.OnGroupChange(newValue)) },
                     errorMessage = viewModel.groupError,
@@ -112,6 +114,7 @@ fun AdminGroupScreen(
                 )
                 HorizontalDivider(thickness = 1.dp)
                 OkAndCancel(
+                    titleOk = stringResource(R.string.save),
                     enabledOk = viewModel.enabledSaveButton,
                     onOK = { viewModel.onEvent(AdminGroupEvent.OnSave) },
                     onCancel = { toAdminGroupList() }

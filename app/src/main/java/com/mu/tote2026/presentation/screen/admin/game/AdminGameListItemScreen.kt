@@ -60,7 +60,7 @@ fun AdminGameListItemScreen(
                     .height(20.dp)
             ) {
                 val group = if (game.groupId.toInt() <= GROUPS_COUNT)
-                    stringResource(R.string.group, game.group)
+                    stringResource(R.string.group_name, game.group)
                 else
                     game.group
                 Text(

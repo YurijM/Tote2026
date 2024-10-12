@@ -52,8 +52,13 @@
     <string name="email_delete">Удаление email</string>
     <string name="want_delete_email">Вы действительно хотите удалить email \"%1$s\"?</string>
 
+    <string name="group">Группа</string>
+    <string name="item_no">Порядковый номер</string>
+    <string name="group_delete">Удаление группы</string>
+    <string name="want_delete_group">Вы действительно хотите удалить группу \"%1$s\"?</string>
+
     <string name="game_number">Игра №%1$s</string>
-    <string name="group">группа %1$s</string>
+    <string name="group_name">группа %1$s</string>
     <string name="add_time_scope">доп.время %1$s : %2$s</string>
     <string name="winner_by_penalty">победитель по пенальти - %1$s</string>
 </resources>

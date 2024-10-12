@@ -20,7 +20,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2024.presentation.components.AppFabAdd
 import com.mu.tote2026.R
+import com.mu.tote2026.domain.model.GroupModel
 import com.mu.tote2026.presentation.components.AppProgressBar
+import com.mu.tote2026.presentation.components.ApplicationDialog
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.errorTranslate
@@ -37,6 +39,10 @@ fun AdminGroupListScreen(
 
     val state by viewModel.state.collectAsState()
     val result = state.result
+
+    var currentGroup by remember { mutableStateOf(GroupModel()) }
+
+    var openDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = result) {
         toLog("AdminGroupListViewModel result: $result")
@@ -71,7 +77,10 @@ fun AdminGroupListScreen(
                 AdminGroupListItemScreen(
                     group = group.group,
                     onEdit = { toGroupEdit(group.id) },
-                    onDelete = { viewModel.onEvent((AdminGroupListEvent.OnDelete(group))) }
+                    onDelete = {
+                        currentGroup = group
+                        openDialog = true
+                    }
                 )
             }
         }
@@ -79,6 +88,22 @@ fun AdminGroupListScreen(
     AppFabAdd(
         onAdd = { toGroupEdit(NEW_DOC) }
     )
+
+    if (openDialog) {
+        ApplicationDialog(
+            title = stringResource(R.string.group_delete),
+            text = stringResource(R.string.want_delete_group, currentGroup.group),
+            titleOK = stringResource(R.string.yes),
+            titleCancel = stringResource(R.string.no),
+            showCancel = true,
+            onDismiss = { openDialog = false },
+            onOK = {
+                openDialog = false
+                viewModel.onEvent((AdminGroupListEvent.OnDelete(currentGroup)))
+            },
+            onCancel = { openDialog = false }
+        )
+    }
 
     if (isLoading) {
         AppProgressBar()
