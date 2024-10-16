@@ -37,7 +37,7 @@ fun AdminGameListScreen(
     val result = state.result
 
     LaunchedEffect(key1 = result) {
-        toLog("AdminGameListViewModel result: $result")
+        toLog("AdminGameListScreen result: $result")
         when (result) {
             is UiState.Loading -> {
                 isLoading = true
