@@ -9,6 +9,7 @@ import com.mu.tote2026.ui.common.UiState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import java.lang.System.currentTimeMillis
 
 class GameRepositoryImpl(
     private val firestore: FirebaseFirestore
@@ -69,6 +70,34 @@ class GameRepositoryImpl(
 
         awaitClose {
             toLog("deleteGame awaitClose")
+            close()
+        }
+    }
+
+    override fun getGamblerStakes(gamblerId: String): Flow<UiState<List<GameModel>>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        val listener = firestore.collection(GAMES)
+            .addSnapshotListener { value, error ->
+                if (value != null) {
+                    val games = value.toObjects(GameModel::class.java)
+                    games.removeAll { game -> game.start.toLong() < currentTimeMillis() }
+                    for (game in games) {
+                        game.stakes.toMutableList().removeAll { stake -> stake.gamblerId != gamblerId }
+                    }
+                    games.sortBy { game -> game.id.toInt() }
+
+                    trySend(UiState.Success(games))
+                } else if (error != null) {
+                    trySend(UiState.Error(error.message ?: error.toString()))
+                } else {
+                    trySend(UiState.Error("getGamblerStakes: error is not defined"))
+                }
+            }
+
+        awaitClose {
+            toLog("getGamblerStakes: listener remove")
+            listener.remove()
             close()
         }
     }

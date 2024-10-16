@@ -5,6 +5,7 @@ import com.mu.tote2026.data.repository.GameRepositoryImpl
 import com.mu.tote2026.domain.repository.GameRepository
 import com.mu.tote2026.domain.usecase.game_usecase.DeleteGame
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
+import com.mu.tote2026.domain.usecase.game_usecase.GetGamblerStakes
 import com.mu.tote2026.domain.usecase.game_usecase.GetGame
 import com.mu.tote2026.domain.usecase.game_usecase.GetGameList
 import com.mu.tote2026.domain.usecase.game_usecase.SaveGame
@@ -30,5 +31,7 @@ object GameRepositoryModule {
         getGame = GetGame(gameRepository),
         saveGame = SaveGame(gameRepository),
         deleteGame = DeleteGame(gameRepository),
+
+        getGamblerStakes = GetGamblerStakes(gameRepository),
     )
 }
