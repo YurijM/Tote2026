@@ -33,7 +33,9 @@ fun NavGraphMain(
         startDestination = RATING_SCREEN
     ) {
         rating()
-        stakeList()
+        stakeList(
+            toStakeEdit = {}
+        )
         prognosis()
         gameList()
 
