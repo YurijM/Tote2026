@@ -62,4 +62,5 @@
     <string name="add_time_scope">доп.время %1$s : %2$s</string>
     <string name="winner_by_penalty">победитель по пенальти - %1$s</string>
     <string name="stake_is_absent">Ставка отсутсвует</string>
+    <string name="stake">Ставка</string>
 </resources>

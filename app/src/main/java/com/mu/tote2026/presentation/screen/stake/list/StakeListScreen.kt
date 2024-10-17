@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
+import com.mu.tote2026.data.repository.CURRENT_ID
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.Title
@@ -29,7 +30,7 @@ import com.mu.tote2026.ui.common.UiState
 @Composable
 fun StakeListScreen(
     viewModel: StakeListViewModel = hiltViewModel(),
-    toStakeEdit: (StakeModel) -> Unit
+    toStakeEdit: (String, String) -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
@@ -69,8 +70,14 @@ fun StakeListScreen(
                 StakeListItem(
                     game,
                     onEdit = {
-                        if (game.stakes.isNotEmpty())
-                            toStakeEdit(game.stakes[0])
+                        val stake = if (game.stakes.isNotEmpty())
+                            game.stakes[0]
+                        else
+                            StakeModel(
+                                gameId = game.id,
+                                gamblerId = CURRENT_ID
+                            )
+                            toStakeEdit(stake.gameId, stake.gamblerId)
                     }
                 )
             }

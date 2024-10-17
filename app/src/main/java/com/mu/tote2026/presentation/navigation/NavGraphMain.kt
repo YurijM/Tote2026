@@ -21,7 +21,9 @@ import com.mu.tote2026.presentation.navigation.destination.admin.team.adminTeamL
 import com.mu.tote2026.presentation.navigation.destination.game.gameList
 import com.mu.tote2026.presentation.navigation.destination.prognosis.prognosis
 import com.mu.tote2026.presentation.navigation.destination.rating.rating
-import com.mu.tote2026.presentation.navigation.destination.stake.stakeList
+import com.mu.tote2026.presentation.navigation.destination.stake.navigateToStake
+import com.mu.tote2026.presentation.navigation.destination.stake.stake
+import com.mu.tote2026.presentation.navigation.destination.stake.stakes
 import com.mu.tote2026.presentation.utils.Route.RATING_SCREEN
 
 @Composable
@@ -33,9 +35,12 @@ fun NavGraphMain(
         startDestination = RATING_SCREEN
     ) {
         rating()
-        stakeList(
-            toStakeEdit = {}
+        stakes(
+            toStakeEdit = { gameId, gamblerId ->
+                navMainController.navigateToStake(gameId, gamblerId)
+            }
         )
+        stake()
         prognosis()
         gameList()
 

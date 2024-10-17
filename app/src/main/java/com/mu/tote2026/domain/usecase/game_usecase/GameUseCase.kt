@@ -7,4 +7,5 @@ data class GameUseCase(
     val deleteGame: DeleteGame,
 
     val getGamblerStakes: GetGamblerStakes,
+    val getGamblerGameStake: GetGamblerGameStake,
 )

@@ -152,7 +152,7 @@ fun ProfileScreen(
                 )
                 if (error.isNotBlank()) {
                     TextError(
-                        errorMessage = error,
+                        error = error,
                         textAlign = TextAlign.Center
                     )
                 }
@@ -192,7 +192,7 @@ private fun CardHeader(
                 )
             } else {
                 TextError(
-                    errorMessage = stringResource(R.string.money_is_not_transferred_yet),
+                    error = stringResource(R.string.money_is_not_transferred_yet),
                     textAlign = TextAlign.End
                 )
             }

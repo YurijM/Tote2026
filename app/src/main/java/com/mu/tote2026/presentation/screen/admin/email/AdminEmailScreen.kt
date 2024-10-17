@@ -104,7 +104,7 @@ fun AdminEmailScreen(
                 )
                 if (error.isNotBlank()) {
                     TextError(
-                        errorMessage = error,
+                        error = error,
                         textAlign = TextAlign.Center
                     )
                 }

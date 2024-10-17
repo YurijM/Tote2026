@@ -134,7 +134,7 @@ fun AdminGamblerScreen(
                 )
                 if (error.isNotBlank()) {
                     TextError(
-                        errorMessage = error,
+                        error = error,
                         textAlign = TextAlign.Center
                     )
                 }

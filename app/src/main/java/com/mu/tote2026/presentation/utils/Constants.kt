@@ -10,12 +10,10 @@ const val MIN_PASSWORD_LENGTH = 6
 const val MALE = "мужской"
 const val FEMALE = "женский"
 
-const val GAMBLER = "gambler"
-const val GAME = "game"
-
 const val GROUPS_COUNT = 6
 
 const val KEY_ID = "id"
+const val KEY_GAMBLER_ID = "gamblerId"
 const val NEW_DOC = "new"
 
 object Route {
@@ -27,6 +25,7 @@ object Route {
     const val PROFILE_SCREEN = "profile_screen"
     const val RATING_SCREEN = "rating_screen"
     const val STAKE_LIST_SCREEN = "stake_list_screen"
+    const val STAKE_SCREEN = "stake_screen"
     const val PROGNOSIS_SCREEN = "prognosis_screen"
     const val GAME_LIST_SCREEN = "game_list_screen"
     const val ADMIN_MAIN_SCREEN = "admin_main_screen"

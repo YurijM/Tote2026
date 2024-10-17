@@ -101,4 +101,23 @@ class GameRepositoryImpl(
             close()
         }
     }
+
+    override fun getGamblerGameStake(gameId: String, gamblerId: String): Flow<UiState<GameModel>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        firestore.collection(GAMES).document(gameId).get()
+            .addOnSuccessListener { task ->
+                val game = task.toObject(GameModel::class.java) ?: GameModel(gameId)
+                game.stakes.toMutableList().removeAll { it.gamblerId != gamblerId }
+                trySend(UiState.Success(game))
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error(error.message ?: "getGamblerStake: error is not defined"))
+            }
+
+        awaitClose {
+            toLog("getGamblerStake: awaitClose")
+            close()
+        }
+    }
 }

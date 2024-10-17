@@ -11,14 +11,14 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TextError(
-    errorMessage: String,
+    error: String,
     textAlign: TextAlign? = null,
 ) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp),
-        text = errorMessage,
+        text = error,
         color = MaterialTheme.colorScheme.error,
         style = MaterialTheme.typography.bodySmall,
         textAlign = textAlign

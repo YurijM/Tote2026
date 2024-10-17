@@ -11,4 +11,5 @@ interface GameRepository {
     fun deleteGame(id: String): Flow<UiState<Boolean>>
 
     fun getGamblerStakes(gamblerId: String): Flow<UiState<List<GameModel>>>
+    fun getGamblerGameStake(gameId: String, gamblerId: String): Flow<UiState<GameModel>>
 }
