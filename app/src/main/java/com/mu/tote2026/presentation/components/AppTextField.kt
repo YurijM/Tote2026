@@ -41,6 +41,34 @@ fun PreviewAppFieldWithIcon() {
     }
 }*/
 
+/*
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OutlinedTextField(
+    modifier: Modifier = Modifier,
+    text: String,
+    onValueChange: (String) -> Unit,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    // ...
+) {
+    BasicTextField(
+        value = text,
+        onValueChange = { onValueChange(it) },
+        modifier = modifier
+            .height(50.dp)
+            .width(OutlinedTextFieldDefaults.MinWidth),
+        interactionSource = interactionSource,
+        textStyle = TextStyle(fontSize = 17.sp),
+        // ...
+    ) { innerTextField ->
+        OutlinedTextFieldDefaults.DecorationBox(
+            // ...
+            contentPadding = ...
+        )
+    }
+}
+ */
+
 @Composable
 fun AppTextField(
     modifier: Modifier = Modifier,
