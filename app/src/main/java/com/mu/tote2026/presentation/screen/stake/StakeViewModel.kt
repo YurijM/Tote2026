@@ -64,6 +64,15 @@ class StakeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    fun onEvent(event: StakeEvent) {
+        when (event) {
+            is StakeEvent.OnGoal1Change -> {
+                stake = stake.copy(goal1 = event.goal)
+            }
+            else -> {}
+        }
+    }
+
     private fun checkMainTime(): Boolean =
         if (stake.goal1.isNotBlank()
             && stake.goal2.isNotBlank()

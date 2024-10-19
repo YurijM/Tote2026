@@ -70,7 +70,7 @@ fun SignCard(
                             bottom = 16.dp,
                         )
                 ) {
-                    AppTextField(
+                    AppOutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 8.dp),
@@ -81,7 +81,7 @@ fun SignCard(
                         label = stringResource(id = R.string.enter_email),
                         painterId = R.drawable.ic_email,
                         description = "email",
-                        errorMessage = errorEmail,
+                        error = errorEmail ?: "",
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
                         )

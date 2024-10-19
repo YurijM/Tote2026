@@ -30,9 +30,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
+import com.mu.tote2026.presentation.components.AppOutlinedTextField
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.AppRadioGroup
-import com.mu.tote2026.presentation.components.AppTextField
 import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.PhotoLoad
 import com.mu.tote2026.presentation.components.TextError
@@ -221,11 +221,11 @@ private fun ProfileEdit(
     Column(
         modifier = modifier
     ) {
-        AppTextField(
+        AppOutlinedTextField(
             label = "Ник",
             value = nickname,
             onChange = { newValue -> onNicknameChange(newValue) },
-            errorMessage = nicknameError
+            error = nicknameError ?: ""
         )
         Text(
             text = "Пол",

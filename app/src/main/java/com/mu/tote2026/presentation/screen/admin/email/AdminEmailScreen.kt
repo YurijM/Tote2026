@@ -25,8 +25,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mu.tote2026.presentation.components.AppOutlinedTextField
 import com.mu.tote2026.presentation.components.AppProgressBar
-import com.mu.tote2026.presentation.components.AppTextField
 import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.TextError
 import com.mu.tote2026.presentation.utils.errorTranslate
@@ -83,11 +83,11 @@ fun AdminEmailScreen(
                     containerColor = MaterialTheme.colorScheme.surface
                 )
             ) {
-                AppTextField(
+                AppOutlinedTextField(
                     label = "email",
                     value = viewModel.email.email,
                     onChange = { newValue -> viewModel.onEvent(AdminEmailEvent.OnEmailChange(newValue)) },
-                    errorMessage = viewModel.emailError,
+                    error = viewModel.emailError,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email
                     ),

@@ -34,8 +34,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
+import com.mu.tote2026.presentation.components.AppOutlinedTextField
 import com.mu.tote2026.presentation.components.AppProgressBar
-import com.mu.tote2026.presentation.components.AppTextField
 import com.mu.tote2026.presentation.components.TeamFlag
 import com.mu.tote2026.presentation.components.TextError
 import com.mu.tote2026.presentation.components.Title
@@ -107,9 +107,20 @@ fun StakeScreen(
                         viewModel.game,
                         viewModel.stake,
                         errorMessage = viewModel.errorMainTime,
-                        onGoal1Change = { /*goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 1, goal))*/ },
+                        onGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoal1Change(goal)) },
                         onGoal2Change = { /*goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 2, goal))*/ }
                     )
+
+                    /*AppOutlinedTextField(
+                        value = viewModel.stake.goal1,
+                        onChange = { goal -> viewModel.onEvent(StakeEvent.OnGoal1Change(goal)) },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.NumberPassword,
+                        ),
+                        modifier = Modifier.width(56.dp)
+                    )*/
+
+
                     /*if (viewModel.isExtraTime) {
                         ExtraTime(
                             addGoal1 = viewModel.game.addGoal1,
@@ -290,16 +301,20 @@ private fun MainTime(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            modifier = Modifier.weight(1f),
             text = game.team1,
-            textAlign = TextAlign.End
+            textAlign = TextAlign.End,
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 4.dp),
         )
         TeamFlag(game.flag1)
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(12.dp))
         TeamFlag(game.flag2)
         Text(
-            modifier = Modifier.weight(1f),
-            text = game.team2
+            text = game.team2,
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 4.dp),
         )
     }
     Row(
@@ -310,16 +325,14 @@ private fun MainTime(
             modifier = Modifier.weight(1f),
             contentAlignment = Alignment.CenterEnd
         ) {
-            AppTextField(
-                modifier = Modifier.width(52.dp),
-                label = "",
-                textAlign = TextAlign.Center,
+            AppOutlinedTextField(
                 value = stake.goal1,
+                textAlign = TextAlign.Center,
                 onChange = { newValue -> onGoal1Change(newValue) },
-                errorMessage = null,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.NumberPassword,
-                )
+                ),
+                modifier = Modifier.width(42.dp)
             )
         }
         Text(
@@ -330,16 +343,14 @@ private fun MainTime(
             modifier = Modifier.weight(1f),
             contentAlignment = Alignment.CenterStart
         ) {
-            AppTextField(
-                modifier = Modifier.width(52.dp),
-                label = "",
-                textAlign = TextAlign.Center,
+            AppOutlinedTextField(
                 value = stake.goal2,
+                textAlign = TextAlign.Center,
                 onChange = { newValue -> onGoal2Change(newValue) },
-                errorMessage = null,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.NumberPassword,
-                )
+                ),
+                modifier = Modifier.width(42.dp)
             )
         }
     }

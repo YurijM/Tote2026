@@ -32,8 +32,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
+import com.mu.tote2026.presentation.components.AppOutlinedTextField
 import com.mu.tote2026.presentation.components.AppProgressBar
-import com.mu.tote2026.presentation.components.AppTextField
 import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.TextError
 import com.mu.tote2026.presentation.utils.errorTranslate
@@ -90,11 +90,11 @@ fun AdminGamblerScreen(
                 ),
                 modifier = Modifier.fillMaxWidth(.75f),
             ) {
-                AppTextField(
+                AppOutlinedTextField(
                     label = stringResource(R.string.transferred_money),
                     value = viewModel.gambler.rate.toString(),
                     onChange = { newValue -> viewModel.onEvent(AdminGamblerEvent.OnRateChange(newValue)) },
-                    errorMessage = viewModel.rateError,
+                    error = viewModel.rateError,
                     modifier = Modifier.padding(
                         horizontal = 20.dp,
                         vertical = 8.dp
