@@ -9,10 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
+import com.mu.tote2026.presentation.utils.Errors.ADD_GOAL_INCORRECT
 import com.mu.tote2026.presentation.utils.GROUPS_COUNT
 import com.mu.tote2026.presentation.utils.KEY_GAMBLER_ID
 import com.mu.tote2026.presentation.utils.KEY_ID
 import com.mu.tote2026.presentation.utils.NEW_DOC
+import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,11 +42,19 @@ class StakeViewModel @Inject constructor(
     var isByPenalty = false
         private set
 
+    private var errorGoal1 = ""
+    private var errorGoal2 = ""
+    private var errorAddGoal1 = ""
+    private var errorAddGoal2 = ""
+
     var errorMainTime = ""
         private set
     var errorExtraTime = ""
         private set
     var errorByPenalty = ""
+        private set
+
+    var enabled = false
         private set
 
     init {
@@ -60,17 +71,57 @@ class StakeViewModel @Inject constructor(
                     game.stakes[0]
                 else
                     StakeModel(gameId, gamblerId)
+
+                enabled = checkValues()
             }
         }.launchIn(viewModelScope)
     }
 
     fun onEvent(event: StakeEvent) {
         when (event) {
-            is StakeEvent.OnGoal1Change -> {
-                stake = stake.copy(goal1 = event.goal)
+            is StakeEvent.OnGoalChange -> {
+                checkGoal(
+                    extraTime = event.extraTime,
+                    teamNo = event.teamNo,
+                    goal = event.goal
+                )
+                enabled = checkValues()
             }
+            is StakeEvent.OnSave -> {}
             else -> {}
         }
+    }
+
+    private fun checkGoal(extraTime: Boolean, teamNo: Int, goal: String) {
+        toLog("extraTime: $extraTime, teamNo: $teamNo, goal: $goal")
+        if (!extraTime) {
+            if (teamNo == 1) {
+                stake = stake.copy(goal1 = goal)
+                errorGoal1 = checkIsFieldEmpty(goal)
+            } else {
+                stake = stake.copy(goal2 = goal)
+                errorGoal2 = checkIsFieldEmpty(goal)
+            }
+            errorMainTime = errorGoal1.ifBlank { errorGoal2 }
+        } else {
+            if (teamNo == 1) {
+                stake = stake.copy(addGoal1 = goal)
+                errorAddGoal1 = checkIsFieldEmpty(goal).ifBlank {
+                    if (stake.addGoal1 < stake.goal1)
+                        ADD_GOAL_INCORRECT
+                    else ""
+                }
+            } else {
+                stake = stake.copy(addGoal2 = goal)
+                errorAddGoal2 = checkIsFieldEmpty(goal).ifBlank {
+                    if (stake.addGoal2 < stake.goal2)
+                        ADD_GOAL_INCORRECT
+                    else ""
+                }
+            }
+            errorExtraTime = errorAddGoal1.ifBlank { errorAddGoal2 }
+        }
+        toLog("stake: $stake")
     }
 
     private fun checkMainTime(): Boolean =
@@ -91,6 +142,43 @@ class StakeViewModel @Inject constructor(
         } else {
             false
         }
+
+    private fun checkExtraTime(): Boolean {
+        var result = if (stake.addGoal1.isNotBlank())
+            stake.addGoal1 >= stake.goal1
+        else
+            true
+
+        result = result && if (stake.addGoal2.isNotBlank())
+            stake.addGoal2 >= stake.goal2
+        else
+            true
+
+        isByPenalty = (stake.addGoal1.isNotBlank() && stake.addGoal1 >= stake.goal1
+                && stake.addGoal2.isNotBlank() && stake.addGoal2 >= stake.goal2
+                && stake.addGoal1 == stake.addGoal2)
+
+        if (isByPenalty) {
+            result = result && stake.byPenalty.isNotBlank()
+        } else {
+            stake = stake.copy(byPenalty = "")
+        }
+
+        return result
+    }
+
+    private fun checkValues(): Boolean {
+        isExtraTime = false
+        isByPenalty = false
+
+        var result = checkMainTime()
+
+        if (isExtraTime) {
+            result = result && checkExtraTime()
+        }
+
+        return result
+    }
 
     companion object {
         data class StakeState (

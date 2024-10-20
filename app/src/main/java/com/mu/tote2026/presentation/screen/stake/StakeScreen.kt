@@ -36,6 +36,7 @@ import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.presentation.components.AppOutlinedTextField
 import com.mu.tote2026.presentation.components.AppProgressBar
+import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.TeamFlag
 import com.mu.tote2026.presentation.components.TextError
 import com.mu.tote2026.presentation.components.Title
@@ -107,29 +108,18 @@ fun StakeScreen(
                         viewModel.game,
                         viewModel.stake,
                         errorMessage = viewModel.errorMainTime,
-                        onGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoal1Change(goal)) },
-                        onGoal2Change = { /*goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 2, goal))*/ }
+                        onGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 1, goal))  },
+                        onGoal2Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 2, goal)) }
                     )
 
-                    /*AppOutlinedTextField(
-                        value = viewModel.stake.goal1,
-                        onChange = { goal -> viewModel.onEvent(StakeEvent.OnGoal1Change(goal)) },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.NumberPassword,
-                        ),
-                        modifier = Modifier.width(56.dp)
-                    )*/
-
-
-                    /*if (viewModel.isExtraTime) {
+                    //if (viewModel.isExtraTime) {
                         ExtraTime(
-                            addGoal1 = viewModel.game.addGoal1,
-                            addGoal2 = viewModel.game.addGoal2,
+                            viewModel.stake,
                             errorMessage = viewModel.errorExtraTime,
                             onAddGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(true, 1, goal)) },
                             onAddGoal2Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(true, 2, goal)) }
                         )
-                        if (viewModel.isByPenalty) {
+                        /*if (viewModel.isByPenalty) {
                             ByPenalty(
                                 teams = listOf(
                                     "",
@@ -140,20 +130,24 @@ fun StakeScreen(
                                 errorMessage = viewModel.errorByPenalty,
                                 onClick = { selectedItem -> viewModel.onEvent(StakeEvent.OnPenaltyChange(selectedItem)) }
                             )
-                        }
-                    }*/
-                    /*OkAndCancel(
+                        }*/
+                    //}
+                    HorizontalDivider(
+                        modifier = Modifier.padding(top = 8.dp),
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.outline,
+                    )
+                    OkAndCancel(
                         titleOk = stringResource(id = R.string.save),
                         enabledOk = viewModel.enabled,
                         onOK = { viewModel.onEvent(StakeEvent.OnSave) },
                         onCancel = { viewModel.onEvent(StakeEvent.OnCancel) }
-                    )*/
+                    )
                     if (error.isNotBlank()) {
                         TextError(
                             error = error,
                             textAlign = TextAlign.Center
                         )
-                        //Spacer(modifier = Modifier.height(4.dp))
                     }
                 }
             }
@@ -307,9 +301,9 @@ private fun MainTime(
                 .weight(1f)
                 .padding(end = 4.dp),
         )
-        TeamFlag(game.flag1)
+        TeamFlag(game.flag1, 20.dp)
         Spacer(modifier = Modifier.width(12.dp))
-        TeamFlag(game.flag2)
+        TeamFlag(game.flag2, 20.dp)
         Text(
             text = game.team2,
             modifier = Modifier
@@ -335,10 +329,7 @@ private fun MainTime(
                 modifier = Modifier.width(42.dp)
             )
         }
-        Text(
-            text = " : ",
-            style = MaterialTheme.typography.displaySmall
-        )
+        Text(text = " : ")
         Box(
             modifier = Modifier.weight(1f),
             contentAlignment = Alignment.CenterStart
@@ -360,17 +351,11 @@ private fun MainTime(
             textAlign = TextAlign.Center
         )
     }
-    HorizontalDivider(
-        modifier = Modifier.padding(vertical = 8.dp),
-        thickness = 1.dp,
-        color = MaterialTheme.colorScheme.onSurface,
-    )
 }
 
-/*@Composable
+@Composable
 private fun ExtraTime(
-    addGoal1: String,
-    addGoal2: String,
+    stake: StakeModel,
     errorMessage: String,
     onAddGoal1Change: (String) -> Unit,
     onAddGoal2Change: (String) -> Unit,
@@ -388,37 +373,53 @@ private fun ExtraTime(
             modifier = Modifier.weight(1f),
             contentAlignment = Alignment.CenterEnd
         ) {
-            AppTextField(
+            AppOutlinedTextField(
+                value = stake.addGoal1,
+                textAlign = TextAlign.Center,
+                onChange = { newValue -> onAddGoal1Change(newValue) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.NumberPassword,
+                ),
+                modifier = Modifier.width(42.dp)
+            )
+            /*AppOutlinedTextField(
                 modifier = Modifier.width(52.dp),
                 label = "",
                 textAlign = TextAlign.Center,
                 value = addGoal1,
                 onChange = { newValue -> onAddGoal1Change(newValue) },
-                errorMessage = null,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.NumberPassword,
                 )
-            )
+            )*/
         }
         Text(
             text = " : ",
-            style = MaterialTheme.typography.displaySmall
+            //style = MaterialTheme.typography.displaySmall
         )
         Box(
             modifier = Modifier.weight(1f),
             contentAlignment = Alignment.CenterStart
         ) {
-            AppTextField(
+            AppOutlinedTextField(
+                value = stake.addGoal2,
+                textAlign = TextAlign.Center,
+                onChange = { newValue -> onAddGoal2Change(newValue) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.NumberPassword,
+                ),
+                modifier = Modifier.width(42.dp)
+            )
+            /*AppOutlinedTextField(
                 modifier = Modifier.width(52.dp),
                 label = "",
                 textAlign = TextAlign.Center,
                 value = addGoal2,
                 onChange = { newValue -> onAddGoal2Change(newValue) },
-                errorMessage = null,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.NumberPassword,
                 )
-            )
+            )*/
         }
     }
     if (errorMessage.isNotBlank()) {
@@ -427,14 +428,14 @@ private fun ExtraTime(
             textAlign = TextAlign.Center
         )
     }
-    HorizontalDivider(
+    /*HorizontalDivider(
         modifier = Modifier.padding(vertical = 8.dp),
         thickness = 1.dp,
         color = MaterialTheme.colorScheme.onSurface,
-    )
+    )*/
 }
 
-@Composable
+/*@Composable
 fun ByPenalty(
     teams: List<String>,
     selectedTeam: String,

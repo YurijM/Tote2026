@@ -49,6 +49,7 @@ object Errors {
     const val PASSWORDS_DO_NOT_MATCH = "Значения паролей не совпадают"
     const val INCORRECT_EMAIL = "Некорректное значение email"
     const val ERROR_PROFILE_IS_EMPTY = "Профиль не заполнен"
+    const val ADD_GOAL_INCORRECT = "Количество мячей не может быть меньше, чем в основное время"
 }
 
 sealed class BottomNavItem(

@@ -1,9 +1,9 @@
 package com.mu.tote2026.presentation.screen.stake
 
 sealed class StakeEvent {
-    data class OnGoal1Change(val goal: String) : StakeEvent()
-    data class OnGoal2Change(val goal: String) : StakeEvent()
-    data class OnAddGoal1Change(val goal: String) : StakeEvent()
-    data class OnAddGoal2Change(val goal: String) : StakeEvent()
+    data class OnGoalChange(val extraTime: Boolean, val teamNo: Int, val goal: String) : StakeEvent()
     data class OnByPenaltyChange(val team: String) : StakeEvent()
+    object OnCancel :StakeEvent()
+    object OnSave :StakeEvent()
+    object OnGenerateStake :StakeEvent()
 }
