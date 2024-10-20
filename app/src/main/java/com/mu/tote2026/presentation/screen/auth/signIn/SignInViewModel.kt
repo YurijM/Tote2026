@@ -32,9 +32,9 @@ class SignInViewModel @Inject constructor(
     var password by mutableStateOf("")
         private set
 
-    var errorEmail: String? = null
+    var errorEmail: String = ""
         private set
-    var errorPassword: String? = null
+    var errorPassword: String = ""
         private set
 
     fun onEvent(event: SignInEvent) {
@@ -62,8 +62,9 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    private fun checkValues(): Boolean = (errorEmail != null && errorEmail!!.isBlank()) &&
-                (errorPassword != null && errorPassword!!.isBlank())
+    private fun checkValues(): Boolean = (errorEmail.isBlank() && errorPassword.isBlank())
+    /*private fun checkValues(): Boolean = (errorEmail != null && errorEmail!!.isBlank()) &&
+                (errorPassword != null && errorPassword!!.isBlank())*/
     //private fun checkValues(): Boolean = errorEmail.isNullOrBlank() && errorPassword.isNullOrBlank()
 
     companion object {

@@ -29,11 +29,11 @@ fun SignCard(
     errorEmail: String?,
     password: String,
     onPasswordChange: (String) -> Unit,
-    errorPassword: String?,
+    errorPassword: String = "",
     isRegistration: Boolean = false,
     passwordConfirm: String = "",
     onPasswordConfirmChange: ((String) -> Unit)? = null,
-    errorPasswordConfirm: String? = null,
+    errorPasswordConfirm: String = "",
     enabledButton: Boolean,
     onSign: () -> Unit,
     error: String
@@ -86,7 +86,7 @@ fun SignCard(
                             keyboardType = KeyboardType.Email,
                         )
                     )
-                    PasswordTextField(
+                    PasswordField(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 12.dp),
@@ -97,10 +97,10 @@ fun SignCard(
                         },
                         painterId = R.drawable.ic_password,
                         description = "password",
-                        errorMessage = errorPassword
+                        error = errorPassword
                     )
                     if (isRegistration) {
-                        PasswordTextField(
+                        PasswordField(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = 12.dp),
@@ -113,7 +113,7 @@ fun SignCard(
                             },
                             painterId = R.drawable.ic_password,
                             description = "password confirm",
-                            errorMessage = errorPasswordConfirm
+                            error = errorPasswordConfirm
                         )
                     }
                     OkAndCancel(
