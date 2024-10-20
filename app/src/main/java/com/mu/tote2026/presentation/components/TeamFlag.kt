@@ -16,13 +16,15 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.unit.Dp
 import coil.compose.AsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.ui.theme.Color2
 
 @Composable
 fun TeamFlag(
-    flag: String
+    flag: String,
+    size: Dp = dimensionResource(id = R.dimen.flag_size)
 ) {
     val placeholder = rememberVectorPainter(
         image = Icons.Rounded.LocationOn
@@ -37,7 +39,7 @@ fun TeamFlag(
         onSuccess = { loading = false },
         colorFilter = if (loading) ColorFilter.tint(Color2) else null,
         modifier = Modifier
-            .size(dimensionResource(id = R.dimen.flag_size))
+            .size(size)
             .aspectRatio(1f / 1f)
             .clip(CircleShape)
     )
