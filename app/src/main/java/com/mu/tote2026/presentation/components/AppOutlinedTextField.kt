@@ -38,7 +38,8 @@ fun AppOutlinedTextField(
     onChange: (String) -> Unit,
     fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
     height: Dp = with(LocalDensity.current) {
-        MaterialTheme.typography.displayLarge.lineHeight.toDp()
+        //MaterialTheme.typography.displayLarge.lineHeight.toDp()
+        MaterialTheme.typography.displayMedium.lineHeight.toDp()
     },
     textAlign: TextAlign = TextAlign.Unspecified,
     label: String = "",

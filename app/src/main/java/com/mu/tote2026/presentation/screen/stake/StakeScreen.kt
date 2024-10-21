@@ -25,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -65,6 +66,8 @@ fun StakeScreen(
 
             is UiState.Success -> {
                 isLoading = false
+
+                if (viewModel.exit) toStakeList()
             }
 
             is UiState.Error -> {
@@ -141,7 +144,8 @@ fun StakeScreen(
                     OkAndCancel(
                         titleOk = stringResource(id = R.string.save),
                         enabledOk = viewModel.enabled,
-                        onOK = { viewModel.onEvent(StakeEvent.OnSave) },
+                        onOK = {
+                            viewModel.onEvent(StakeEvent.OnSave) },
                         onCancel = { toStakeList() }
                     )
                     if (error.isNotBlank()) {
@@ -327,7 +331,7 @@ private fun MainTime(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.NumberPassword,
                 ),
-                modifier = Modifier.width(42.dp)
+                modifier = Modifier.width(dimensionResource(R.dimen.goal_edit_width))
             )
         }
         Text(text = " : ")
@@ -342,7 +346,7 @@ private fun MainTime(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.NumberPassword,
                 ),
-                modifier = Modifier.width(42.dp)
+                modifier = Modifier.width(dimensionResource(R.dimen.goal_edit_width))
             )
         }
     }
@@ -381,7 +385,7 @@ private fun ExtraTime(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.NumberPassword,
                 ),
-                modifier = Modifier.width(42.dp)
+                modifier = Modifier.width(dimensionResource(R.dimen.goal_edit_width))
             )
             /*AppOutlinedTextField(
                 modifier = Modifier.width(52.dp),
@@ -409,7 +413,7 @@ private fun ExtraTime(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.NumberPassword,
                 ),
-                modifier = Modifier.width(42.dp)
+                modifier = Modifier.width(dimensionResource(R.dimen.goal_edit_width))
             )
             /*AppOutlinedTextField(
                 modifier = Modifier.width(52.dp),

@@ -15,7 +15,6 @@ import com.mu.tote2026.presentation.utils.KEY_GAMBLER_ID
 import com.mu.tote2026.presentation.utils.KEY_ID
 import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
-import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class StakeViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    gameUseCase: GameUseCase
+    private val gameUseCase: GameUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(StakeState())
     val state = _state.asStateFlow()
@@ -35,6 +34,10 @@ class StakeViewModel @Inject constructor(
     var game by mutableStateOf(GameModel())
         private set
     var stake by mutableStateOf(StakeModel())
+        private set
+    private var oldStake = StakeModel()
+
+    var exit by mutableStateOf(false)
         private set
 
     var isExtraTime = false
@@ -72,6 +75,8 @@ class StakeViewModel @Inject constructor(
                 else
                     StakeModel(gameId, gamblerId)
 
+                oldStake = stake
+
                 enabled = checkValues()
             }
         }.launchIn(viewModelScope)
@@ -87,13 +92,26 @@ class StakeViewModel @Inject constructor(
                 )
                 enabled = checkValues()
             }
-            is StakeEvent.OnSave -> {}
+
+            is StakeEvent.OnSave -> {
+                gameUseCase.saveStake(oldStake, stake).onEach { saveStakeState ->
+                    _state.value = when (saveStakeState) {
+                        is UiState.Success -> {
+                            exit = true
+                            StakeState(UiState.Success(game))
+                        }
+                        is UiState.Loading -> StakeState(UiState.Loading)
+                        is UiState.Error -> StakeState(UiState.Error(saveStakeState.error))
+                        else -> StakeState(UiState.Default)
+                    }
+                }.launchIn(viewModelScope)
+            }
+
             else -> {}
         }
     }
 
     private fun checkGoal(extraTime: Boolean, teamNo: Int, goal: String) {
-        toLog("extraTime: $extraTime, teamNo: $teamNo, goal: $goal")
         if (!extraTime) {
             if (teamNo == 1) {
                 stake = stake.copy(goal1 = goal)
@@ -121,7 +139,6 @@ class StakeViewModel @Inject constructor(
             }
             errorExtraTime = errorAddGoal1.ifBlank { errorAddGoal2 }
         }
-        toLog("stake: $stake")
     }
 
     private fun checkMainTime(): Boolean =
@@ -181,7 +198,7 @@ class StakeViewModel @Inject constructor(
     }
 
     companion object {
-        data class StakeState (
+        data class StakeState(
             val result: UiState<GameModel> = UiState.Default
         )
     }

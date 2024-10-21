@@ -5,4 +5,5 @@
     <dimen name="profile_photo_size">120.dp</dimen>
     <dimen name="gambler_photo_size">24.dp</dimen>
     <dimen name="flag_size">16.dp</dimen>
+    <dimen name="goal_edit_width">52.dp</dimen>
 </resources>

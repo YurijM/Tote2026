@@ -1,8 +1,11 @@
 package com.mu.tote2026.data.repository
 
+import com.google.firebase.firestore.FieldValue.arrayRemove
+import com.google.firebase.firestore.FieldValue.arrayUnion
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.Collections.GAMES
 import com.mu.tote2026.domain.model.GameModel
+import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.domain.repository.GameRepository
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
@@ -109,6 +112,7 @@ class GameRepositoryImpl(
             .addOnSuccessListener { task ->
                 val game = task.toObject(GameModel::class.java) ?: GameModel(gameId)
                 game.stakes.toMutableList().removeAll { it.gamblerId != gamblerId }
+
                 trySend(UiState.Success(game))
             }
             .addOnFailureListener { error ->
@@ -117,6 +121,31 @@ class GameRepositoryImpl(
 
         awaitClose {
             toLog("getGamblerStake: awaitClose")
+            close()
+        }
+    }
+
+    override fun saveStake(oldStake: StakeModel, newStake: StakeModel): Flow<UiState<Boolean>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        val game = firestore.collection(GAMES).document(oldStake.gameId)
+
+        game.update("stakes", arrayRemove(oldStake))
+            .addOnSuccessListener {
+                game.update("stakes", arrayUnion(newStake))
+                    .addOnSuccessListener {
+                        trySend(UiState.Success(true))
+                    }
+                    .addOnFailureListener { error ->
+                        trySend(UiState.Error(error.message ?: "saveStake->arrayUnion: error is not defined"))
+                    }
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error(error.message ?: "saveStake->arrayRemove: error is not defined"))
+            }
+
+        awaitClose {
+            toLog("saveStake awaitClose")
             close()
         }
     }

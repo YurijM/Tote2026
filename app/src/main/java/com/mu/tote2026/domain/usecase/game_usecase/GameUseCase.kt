@@ -8,4 +8,5 @@ data class GameUseCase(
 
     val getGamblerStakes: GetGamblerStakes,
     val getGamblerGameStake: GetGamblerGameStake,
+    val saveStake: SaveStake,
 )

@@ -10,6 +10,7 @@ import com.mu.tote2026.domain.usecase.game_usecase.GetGamblerStakes
 import com.mu.tote2026.domain.usecase.game_usecase.GetGame
 import com.mu.tote2026.domain.usecase.game_usecase.GetGameList
 import com.mu.tote2026.domain.usecase.game_usecase.SaveGame
+import com.mu.tote2026.domain.usecase.game_usecase.SaveStake
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,5 +36,6 @@ object GameRepositoryModule {
 
         getGamblerStakes = GetGamblerStakes(gameRepository),
         getGamblerGameStake = GetGamblerGameStake(gameRepository),
+        saveStake = SaveStake(gameRepository),
     )
 }
