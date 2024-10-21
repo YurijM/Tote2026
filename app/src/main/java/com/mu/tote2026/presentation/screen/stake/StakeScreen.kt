@@ -47,7 +47,8 @@ import com.mu.tote2026.ui.common.UiState
 
 @Composable
 fun StakeScreen(
-    viewModel: StakeViewModel = hiltViewModel()
+    viewModel: StakeViewModel = hiltViewModel(),
+    toStakeList: () -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
@@ -112,7 +113,7 @@ fun StakeScreen(
                         onGoal2Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 2, goal)) }
                     )
 
-                    //if (viewModel.isExtraTime) {
+                    if (viewModel.isExtraTime) {
                         ExtraTime(
                             viewModel.stake,
                             errorMessage = viewModel.errorExtraTime,
@@ -131,7 +132,7 @@ fun StakeScreen(
                                 onClick = { selectedItem -> viewModel.onEvent(StakeEvent.OnPenaltyChange(selectedItem)) }
                             )
                         }*/
-                    //}
+                    }
                     HorizontalDivider(
                         modifier = Modifier.padding(top = 8.dp),
                         thickness = 1.dp,
@@ -141,7 +142,7 @@ fun StakeScreen(
                         titleOk = stringResource(id = R.string.save),
                         enabledOk = viewModel.enabled,
                         onOK = { viewModel.onEvent(StakeEvent.OnSave) },
-                        onCancel = { viewModel.onEvent(StakeEvent.OnCancel) }
+                        onCancel = { toStakeList() }
                     )
                     if (error.isNotBlank()) {
                         TextError(

@@ -22,6 +22,7 @@ import com.mu.tote2026.presentation.navigation.destination.game.gameList
 import com.mu.tote2026.presentation.navigation.destination.prognosis.prognosis
 import com.mu.tote2026.presentation.navigation.destination.rating.rating
 import com.mu.tote2026.presentation.navigation.destination.stake.navigateToStake
+import com.mu.tote2026.presentation.navigation.destination.stake.navigateToStakeList
 import com.mu.tote2026.presentation.navigation.destination.stake.stake
 import com.mu.tote2026.presentation.navigation.destination.stake.stakes
 import com.mu.tote2026.presentation.utils.Route.RATING_SCREEN
@@ -40,7 +41,9 @@ fun NavGraphMain(
                 navMainController.navigateToStake(gameId, gamblerId)
             }
         )
-        stake()
+        stake(
+            toStakeList = { navMainController.navigateToStakeList() }
+        )
         prognosis()
         gameList()
 

@@ -7,8 +7,12 @@ import com.mu.tote2026.presentation.utils.KEY_GAMBLER_ID
 import com.mu.tote2026.presentation.utils.KEY_ID
 import com.mu.tote2026.presentation.utils.Route.STAKE_SCREEN
 
-fun NavGraphBuilder.stake() {
+fun NavGraphBuilder.stake(
+    toStakeList: () -> Unit
+) {
     composable("$STAKE_SCREEN/{$KEY_ID}/{$KEY_GAMBLER_ID}") {
-        StakeScreen()
+        StakeScreen(
+            toStakeList = toStakeList
+        )
     }
 }
