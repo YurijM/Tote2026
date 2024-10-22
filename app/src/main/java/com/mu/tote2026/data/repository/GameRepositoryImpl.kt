@@ -85,8 +85,10 @@ class GameRepositoryImpl(
                 if (value != null) {
                     val games = value.toObjects(GameModel::class.java)
                     games.removeAll { game -> game.start.toLong() < currentTimeMillis() }
-                    for (game in games) {
-                        game.stakes.toMutableList().removeAll { stake -> stake.gamblerId != gamblerId }
+                    games.forEachIndexed { index, game ->
+                        val stakes = game.stakes.toMutableList()
+                        stakes.removeAll { stake -> stake.gamblerId != gamblerId }
+                        games[index] = game.copy(stakes = stakes)
                     }
                     games.sortBy { game -> game.id.toInt() }
 
@@ -110,8 +112,10 @@ class GameRepositoryImpl(
 
         firestore.collection(GAMES).document(gameId).get()
             .addOnSuccessListener { task ->
-                val game = task.toObject(GameModel::class.java) ?: GameModel(gameId)
-                game.stakes.toMutableList().removeAll { it.gamblerId != gamblerId }
+                var game = task.toObject(GameModel::class.java) ?: GameModel(gameId)
+                val stakes = game.stakes.toMutableList()
+                stakes.removeAll { stake -> stake.gamblerId != gamblerId }
+                game = game.copy(stakes = stakes)
 
                 trySend(UiState.Success(game))
             }
