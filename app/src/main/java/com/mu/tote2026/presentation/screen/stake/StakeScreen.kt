@@ -387,20 +387,9 @@ private fun ExtraTime(
                 ),
                 modifier = Modifier.width(dimensionResource(R.dimen.goal_edit_width))
             )
-            /*AppOutlinedTextField(
-                modifier = Modifier.width(52.dp),
-                label = "",
-                textAlign = TextAlign.Center,
-                value = addGoal1,
-                onChange = { newValue -> onAddGoal1Change(newValue) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.NumberPassword,
-                )
-            )*/
         }
         Text(
             text = " : ",
-            //style = MaterialTheme.typography.displaySmall
         )
         Box(
             modifier = Modifier.weight(1f),
@@ -415,16 +404,6 @@ private fun ExtraTime(
                 ),
                 modifier = Modifier.width(dimensionResource(R.dimen.goal_edit_width))
             )
-            /*AppOutlinedTextField(
-                modifier = Modifier.width(52.dp),
-                label = "",
-                textAlign = TextAlign.Center,
-                value = addGoal2,
-                onChange = { newValue -> onAddGoal2Change(newValue) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.NumberPassword,
-                )
-            )*/
         }
     }
     if (errorMessage.isNotBlank()) {
@@ -433,11 +412,6 @@ private fun ExtraTime(
             textAlign = TextAlign.Center
         )
     }
-    /*HorizontalDivider(
-        modifier = Modifier.padding(vertical = 8.dp),
-        thickness = 1.dp,
-        color = MaterialTheme.colorScheme.onSurface,
-    )*/
 }
 
 /*@Composable

@@ -21,7 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.mu.tote2026.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,10 +38,11 @@ fun AppOutlinedTextField(
     value: String = "",
     onChange: (String) -> Unit,
     fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
-    height: Dp = with(LocalDensity.current) {
+    /*height: Dp = with(LocalDensity.current) {
         //MaterialTheme.typography.displayLarge.lineHeight.toDp()
         MaterialTheme.typography.displayMedium.lineHeight.toDp()
-    },
+    },*/
+    height: Dp = dimensionResource(R.dimen.outlined_field_height),
     textAlign: TextAlign = TextAlign.Unspecified,
     label: String = "",
     @DrawableRes painterId: Int? = null,
