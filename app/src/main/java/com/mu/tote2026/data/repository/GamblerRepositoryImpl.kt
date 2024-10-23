@@ -75,7 +75,7 @@ class GamblerRepositoryImpl(
         val listener = firestore.collection(GAMBLERS).document(id)   //.whereEqualTo("id", id)
             .addSnapshotListener { snapshot, exception ->
                 if (snapshot != null) {
-                    GAMBLER = snapshot.toObject(GamblerModel::class.java)!!
+                    GAMBLER = snapshot.toObject(GamblerModel::class.java) ?: GamblerModel()
                     trySend(UiState.Success(GAMBLER))
                 } else {
                     trySend(UiState.Error(exception?.message ?: exception.toString()))
