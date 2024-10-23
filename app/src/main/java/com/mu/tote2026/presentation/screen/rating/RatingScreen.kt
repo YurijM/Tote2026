@@ -1,6 +1,7 @@
 package com.mu.tote2026.presentation.screen.rating
 
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -13,6 +14,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,10 +31,12 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.mu.tote2026.data.repository.GAMBLER
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
@@ -76,6 +81,9 @@ fun RatingScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        if (GAMBLER.rate == 0)
+            RateIsAbsent()
+
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
@@ -126,5 +134,31 @@ fun RatingScreen(
     if (error.isNotBlank()) {
         val context = LocalContext.current
         Toast.makeText(context, errorTranslate(error), Toast.LENGTH_LONG).show()
+    }
+}
+
+@Composable
+private fun RateIsAbsent() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp),
+        border = BorderStroke(
+            width = 2.dp,
+            color = MaterialTheme.colorScheme.error
+        )
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            text = "Так как Вы ещё не перечислили свою ставку, " +
+                    "то Вам пока доступен только просмотр списка " +
+                    "уже зарегистрированных участников",
+            textAlign = TextAlign.Center,
+            //color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.error
+        )
     }
 }
