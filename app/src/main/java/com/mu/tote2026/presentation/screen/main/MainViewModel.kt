@@ -11,6 +11,7 @@ import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.presentation.utils.Errors.ERROR_PROFILE_IS_EMPTY
 import com.mu.tote2026.presentation.utils.checkProfile
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,19 +37,23 @@ class MainViewModel @Inject constructor(
 
     init {
         gamblerUseCase.getGambler(CURRENT_ID).onEach { gamblerState ->
-            _state.value = GamblerState(gamblerState)
+            toLog("MainViewModel CURRENT_ID: $CURRENT_ID")
+            if (CURRENT_ID.isNotBlank()) {
+                _state.value = GamblerState(gamblerState)
 
-            val result = GamblerState(gamblerState).result
+                val result = GamblerState(gamblerState).result
 
-            if (result is UiState.Success) {
-                gambler = result.data
-                if (!gambler.checkProfile())
-                    _state.value = GamblerState(UiState.Error(ERROR_PROFILE_IS_EMPTY))
+                if (result is UiState.Success) {
+                    gambler = result.data
+                    if (!gambler.checkProfile())
+                        _state.value = GamblerState(UiState.Error(ERROR_PROFILE_IS_EMPTY))
+                }
             }
         }.launchIn(viewModelScope)
     }
 
     fun signOut() {
+        CURRENT_ID = ""
         firebaseAuth.signOut()
     }
 

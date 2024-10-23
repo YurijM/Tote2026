@@ -31,7 +31,7 @@ fun SignUpScreen(
     val result = state.result
 
     LaunchedEffect(key1 = result) {
-        toLog("result: $result")
+        toLog("SignUpScreen result: $result")
         when (result) {
             is UiState.Loading -> {
                 isLoading.value = true

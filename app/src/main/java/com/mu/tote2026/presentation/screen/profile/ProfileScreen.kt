@@ -60,7 +60,7 @@ fun ProfileScreen(
     val context = LocalContext.current
 
     LaunchedEffect(key1 = result) {
-        toLog("result: $result")
+        toLog("ProfileScreen result: $result")
         when (result) {
             is UiState.Loading -> {
                 isLoading = true
