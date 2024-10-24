@@ -33,7 +33,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
@@ -73,31 +72,22 @@ fun AdminGamblerListItemScreen(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.height(20.dp)
-                    /*modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 4.dp)*/
                 )
                 Text(
                     text = gambler.email,
+                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.height(20.dp)
-                    /*modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 4.dp)*/
                 )
             }
             Text(
                 text = buildAnnotatedString {
                     withStyle(
-                        style = SpanStyle(
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Black
-                        )
+                        style = SpanStyle(fontWeight = FontWeight.Bold)
                     ) {
                         append("${gambler.rate}")
                     }
-                    append("руб.")
+                    append(" руб.")
                 }
             )
         }
