@@ -20,10 +20,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.ui.theme.Color2
 
@@ -53,7 +55,7 @@ fun RatingItemScreen(
             onSuccess = { loadingPhoto = false },
             colorFilter = if (loadingPhoto) ColorFilter.tint(Color2) else null,
             modifier = Modifier
-                .size(36.dp)
+                .size(dimensionResource(R.dimen.gambler_photo_size))
                 .aspectRatio(1f / 1f)
                 .clip(CircleShape)
         )
