@@ -40,7 +40,7 @@ fun RatingScreen(
     val result = state.result
 
     LaunchedEffect(key1 = result) {
-        toLog("StakeListScreen result: $result")
+        toLog("RatingScreen result: $result")
         when (result) {
             is UiState.Loading -> {
                 isLoading = true
@@ -104,7 +104,6 @@ private fun RateIsAbsent() {
                     "то Вам пока доступен только просмотр списка " +
                     "уже зарегистрированных участников",
             textAlign = TextAlign.Center,
-            //color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.error
         )

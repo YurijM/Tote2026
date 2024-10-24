@@ -45,7 +45,7 @@ class GamblerRepositoryImpl(
                     trySend(UiState.Error("getGamblerList: error is not defined"))
                 }
             }
-        awaitClose  {
+        awaitClose {
             toLog("getGamblerList: listener remove")
             listener.remove()
             close()
@@ -86,10 +86,10 @@ class GamblerRepositoryImpl(
         awaitClose {
             toLog("getGambler: awaitClose")
             listener.remove()
+            close()
         }
     }
 
-    //override fun saveGambler(id: String, gambler: GamblerModel): Flow<UiState<GamblerModel>> = callbackFlow {
     override fun saveGambler(gambler: GamblerModel): Flow<UiState<GamblerModel>> = callbackFlow {
         trySend(UiState.Loading)
 

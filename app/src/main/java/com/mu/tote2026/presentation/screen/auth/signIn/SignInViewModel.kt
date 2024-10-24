@@ -5,7 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mu.tote2026.data.repository.CURRENT_ID
+import com.mu.tote2026.data.repository.GAMBLER
 import com.mu.tote2026.domain.usecase.auth_usecase.AuthUseCase
+import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.presentation.utils.checkEmail
 import com.mu.tote2026.presentation.utils.checkPassword
 import com.mu.tote2026.ui.common.UiState
@@ -19,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val authUseCase: AuthUseCase
+    private val authUseCase: AuthUseCase,
+    private val gamblerUseCase: GamblerUseCase
 ) : ViewModel() {
     private val _state: MutableStateFlow<SignInState> = MutableStateFlow(SignInState())
     val state: StateFlow<SignInState> = _state.asStateFlow()
@@ -50,22 +54,28 @@ class SignInViewModel @Inject constructor(
                 enabledButton = checkValues()
             }
             is SignInEvent.OnSignIn -> {
-                /*viewModelScope.launch {
-                    authUseCase.signIn(email, password).collect { signState ->
-                        _state.value = SignInState(signState)
-                    }
-                }*/
                 authUseCase.signIn(email, password).onEach { signState ->
                     _state.value = SignInState(signState)
+
+                    if (signState is UiState.Success) {
+                        gamblerUseCase.getGambler(CURRENT_ID).onEach { currentGamblerState ->
+                            when (currentGamblerState) {
+                                is UiState.Loading -> _state.value = SignInState(currentGamblerState)
+                                is UiState.Success -> {
+                                    GAMBLER = currentGamblerState.data
+                                    _state.value = SignInState(UiState.Success(true))
+                                }
+                                is UiState.Error -> _state.value = SignInState(UiState.Error(currentGamblerState.error))
+                                else -> {}
+                            }
+                        }.launchIn(viewModelScope)
+                    }
                 }.launchIn(viewModelScope)
             }
         }
     }
 
     private fun checkValues(): Boolean = (errorEmail.isBlank() && errorPassword.isBlank())
-    /*private fun checkValues(): Boolean = (errorEmail != null && errorEmail!!.isBlank()) &&
-                (errorPassword != null && errorPassword!!.isBlank())*/
-    //private fun checkValues(): Boolean = errorEmail.isNullOrBlank() && errorPassword.isNullOrBlank()
 
     companion object {
         data class SignInState(
