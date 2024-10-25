@@ -16,3 +16,7 @@ val Color10 = Color(0xFFb9F6CA)
 val Color20 = Color(0xFF69F0AE)
 val Color40 = Color(0xFF00E676)
 val Color70 = Color(0xFF00C853)
+
+val colorWin = Color.Red
+val colorDraw = Color.Green
+val colorDefeat = Color.Green

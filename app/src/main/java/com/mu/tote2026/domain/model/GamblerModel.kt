@@ -12,5 +12,6 @@ data class GamblerModel(
     val pointsPrev: Double = 0.00,
     val points: Double = 0.00,
     val placePrev: Int = 0,
-    val place: Int = 0
+    val place: Int = 0,
+    val cashPrize: Int = 0
 )

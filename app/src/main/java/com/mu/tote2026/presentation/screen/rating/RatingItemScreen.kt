@@ -1,13 +1,19 @@
 package com.mu.tote2026.presentation.screen.rating
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,6 +27,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +35,9 @@ import coil.compose.AsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.ui.theme.Color2
+import com.mu.tote2026.ui.theme.colorDefeat
+import com.mu.tote2026.ui.theme.colorDraw
+import com.mu.tote2026.ui.theme.colorWin
 
 @Composable
 fun RatingItemScreen(
@@ -38,39 +48,102 @@ fun RatingItemScreen(
     )
     var loadingPhoto by remember { mutableStateOf(true) }
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+    val placeColor = when (gambler.place) {
+        1 -> colorWin
+        2 -> colorDraw
+        3 -> colorDefeat
+        else -> MaterialTheme.colorScheme.onSurface
+    }
+    var arrow = ""
+    val arrowValue = gambler.place - gambler.placePrev
+    var color = MaterialTheme.colorScheme.onSurface
+
+    val isDynamic = if (gambler.placePrev == 0) {
+        false
+    } else {
+        if (gambler.place > gambler.placePrev) {
+            arrow = "↑"
+            color = colorWin
+            true
+        } else if (gambler.place < gambler.placePrev) {
+            arrow = "↓"
+            color = colorDefeat
+            true
+        } else false
+    }
+
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 8.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
         modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                horizontal = 8.dp,
-                vertical = 4.dp
-            )
+            .fillMaxWidth(.95f)
+            .padding(vertical = 8.dp)
     ) {
-        AsyncImage(
-            model = gambler.photoUrl,
-            placeholder = placeholder,
-            contentDescription = "User Photo",
-            contentScale = ContentScale.Crop,
-            onSuccess = { loadingPhoto = false },
-            colorFilter = if (loadingPhoto) ColorFilter.tint(Color2) else null,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .size(dimensionResource(R.dimen.gambler_photo_size))
-                .aspectRatio(1f / 1f)
-                .clip(CircleShape)
-        )
-        Text(
-            gambler.nickname,
-            fontSize = 20.sp,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = 4.dp)
-        )
-        Text(
-            gambler.points.toString(),
-            fontSize = 20.sp,
-        )
+                .fillMaxSize()
+                .padding(horizontal = 8.dp, vertical = 4.dp)
+        ) {
+            AsyncImage(
+                model = gambler.photoUrl,
+                placeholder = placeholder,
+                contentDescription = "User Photo",
+                contentScale = ContentScale.Crop,
+                onSuccess = { loadingPhoto = false },
+                colorFilter = if (loadingPhoto) ColorFilter.tint(Color2) else null,
+                modifier = Modifier
+                    .size(dimensionResource(R.dimen.gambler_photo_size))
+                    .aspectRatio(1f / 1f)
+                    .clip(CircleShape)
+            )
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 4.dp)
+            ) {
+                Text(
+                    gambler.nickname,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.height(20.dp)
+                )
+                Text(
+                    text = "Выигрыш - ${gambler.cashPrize} руб.",
+                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
+                )
+            }
+            if (gambler.place != 0 && gambler.placePrev != 0) {
+                Text(
+                    gambler.place.toString(),
+                    fontSize = 20.sp,
+                    color = placeColor,
+                    modifier = Modifier.padding(end = 4.dp)
+                )
+                if (isDynamic) {
+                    Text(
+                        text = arrow,
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = color,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Text(
+                        text = arrowValue.toString(),
+                        color = color,
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+                }
+                Text(
+                    gambler.points.toString(),
+                    fontSize = 20.sp,
+                )
+            }
+        }
     }
 }
