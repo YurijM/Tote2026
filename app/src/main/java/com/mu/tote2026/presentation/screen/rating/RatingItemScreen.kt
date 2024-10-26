@@ -122,12 +122,12 @@ fun RatingItemScreen(
                     text = arrowValue,
                     fontSize = MaterialTheme.typography.labelLarge.fontSize,
                     color = color,
-                    modifier = Modifier.fillMaxWidth(.3f)  //.width(28.dp)
+                    modifier = Modifier.fillMaxWidth(.3f)
                 )
                 Text(
                     text = gambler.points.toString(),
                     textAlign = TextAlign.End,
-                    modifier = Modifier.fillMaxWidth(1f)   //.width(56.dp)
+                    modifier = Modifier.fillMaxWidth(1f)
                 )
             }
         }
