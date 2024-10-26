@@ -95,7 +95,8 @@ fun RatingItemScreen(
             )
             Column(
                 modifier = Modifier
-                    .fillMaxWidth(.65f)
+                    //.fillMaxWidth(.65f)
+                    .weight(.8f)
                     .padding(horizontal = 4.dp)
             ) {
                 Text(
@@ -122,12 +123,16 @@ fun RatingItemScreen(
                     text = arrowValue,
                     fontSize = MaterialTheme.typography.labelLarge.fontSize,
                     color = color,
-                    modifier = Modifier.fillMaxWidth(.3f)
+                    modifier = Modifier
+                        //.fillMaxWidth(.3f)
+                        .weight(.1f)
                 )
                 Text(
                     text = gambler.points.toString(),
                     textAlign = TextAlign.End,
-                    modifier = Modifier.fillMaxWidth(1f)
+                    modifier = Modifier
+                        //.fillMaxWidth(1f)
+                        .weight(.2f)
                 )
             }
         }
