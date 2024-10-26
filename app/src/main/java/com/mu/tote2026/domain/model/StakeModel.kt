@@ -8,4 +8,5 @@ data class StakeModel(
     val addGoal1: String = "",
     val addGoal2: String = "",
     val byPenalty: String = "",
+    val cashPrize: Int = 0,
 )
