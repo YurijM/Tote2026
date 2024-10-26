@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
@@ -96,7 +95,7 @@ fun RatingItemScreen(
             )
             Column(
                 modifier = Modifier
-                    .fillMaxWidth(.67f)
+                    .fillMaxWidth(.65f)
                     .padding(horizontal = 4.dp)
             ) {
                 Text(
@@ -123,12 +122,12 @@ fun RatingItemScreen(
                     text = arrowValue,
                     fontSize = MaterialTheme.typography.labelLarge.fontSize,
                     color = color,
-                    modifier = Modifier.width(28.dp)
+                    modifier = Modifier.fillMaxWidth(.3f)  //.width(28.dp)
                 )
                 Text(
                     text = gambler.points.toString(),
                     textAlign = TextAlign.End,
-                    modifier = Modifier.width(56.dp)
+                    modifier = Modifier.fillMaxWidth(1f)   //.width(56.dp)
                 )
             }
         }
