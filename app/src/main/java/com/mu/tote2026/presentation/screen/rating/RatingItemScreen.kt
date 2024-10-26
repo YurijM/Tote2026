@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
@@ -27,7 +28,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,9 +38,8 @@ import coil.compose.AsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.ui.theme.Color2
-import com.mu.tote2026.ui.theme.colorDefeat
-import com.mu.tote2026.ui.theme.colorDraw
-import com.mu.tote2026.ui.theme.colorWin
+import com.mu.tote2026.ui.theme.colorDown
+import com.mu.tote2026.ui.theme.colorUp
 
 @Composable
 fun RatingItemScreen(
@@ -48,28 +50,19 @@ fun RatingItemScreen(
     )
     var loadingPhoto by remember { mutableStateOf(true) }
 
-    val placeColor = when (gambler.place) {
-        1 -> colorWin
-        2 -> colorDraw
-        3 -> colorDefeat
-        else -> MaterialTheme.colorScheme.onSurface
-    }
-    var arrow = ""
-    val arrowValue = gambler.place - gambler.placePrev
+    val deltaPlace = gambler.placePrev - gambler.place
+    var arrow = "  "
+    var arrowValue = ""
     var color = MaterialTheme.colorScheme.onSurface
 
-    val isDynamic = if (gambler.placePrev == 0) {
-        false
-    } else {
-        if (gambler.place > gambler.placePrev) {
-            arrow = "↑"
-            color = colorWin
-            true
-        } else if (gambler.place < gambler.placePrev) {
-            arrow = "↓"
-            color = colorDefeat
-            true
-        } else false
+    if (deltaPlace > 0) {
+        arrow = "↑"
+        arrowValue = "+$deltaPlace"
+        color = colorUp
+    } else if (deltaPlace < 0) {
+        arrow = "↓"
+        arrowValue = "$deltaPlace"
+        color = colorDown
     }
 
     Card(
@@ -80,8 +73,8 @@ fun RatingItemScreen(
             containerColor = MaterialTheme.colorScheme.surface
         ),
         modifier = Modifier
-            .fillMaxWidth(.95f)
-            .padding(vertical = 8.dp)
+            .fillMaxWidth()
+            .padding(8.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -103,7 +96,7 @@ fun RatingItemScreen(
             )
             Column(
                 modifier = Modifier
-                    .weight(1f)
+                    .fillMaxWidth(.67f)
                     .padding(horizontal = 4.dp)
             ) {
                 Text(
@@ -114,34 +107,28 @@ fun RatingItemScreen(
                     modifier = Modifier.height(20.dp)
                 )
                 Text(
-                    text = "Выигрыш - ${gambler.cashPrize} руб.",
-                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
+                    text = stringResource(R.string.cashPrize, gambler.cashPrize),
+                    fontSize = MaterialTheme.typography.labelLarge.fontSize
                 )
             }
             if (gambler.place != 0 && gambler.placePrev != 0) {
                 Text(
-                    gambler.place.toString(),
-                    fontSize = 20.sp,
-                    color = placeColor,
-                    modifier = Modifier.padding(end = 4.dp)
+                    text = arrow,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = color,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
-                if (isDynamic) {
-                    Text(
-                        text = arrow,
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = color,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    Text(
-                        text = arrowValue.toString(),
-                        color = color,
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                }
                 Text(
-                    gambler.points.toString(),
-                    fontSize = 20.sp,
+                    text = arrowValue,
+                    fontSize = MaterialTheme.typography.labelLarge.fontSize,
+                    color = color,
+                    modifier = Modifier.width(28.dp)
+                )
+                Text(
+                    text = gambler.points.toString(),
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.width(56.dp)
                 )
             }
         }

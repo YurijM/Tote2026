@@ -33,8 +33,10 @@ class RatingViewModel @Inject constructor(
                 rateIsAbsent = (GAMBLER.rate == 0)
                 gamblers = ratingState.data
                     .filter { it.rate > 0 }
-                    .sortedBy { it.nickname }
-                    .toMutableList()
+                    .sortedWith(
+                        compareByDescending<GamblerModel> { it.points }
+                            .thenBy { it.nickname }
+                    ).toMutableList()
             }
         }.launchIn(viewModelScope)
     }

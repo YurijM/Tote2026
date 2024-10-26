@@ -57,6 +57,8 @@
     <string name="group_delete">Удаление группы</string>
     <string name="want_delete_group">Вы действительно хотите удалить группу \"%1$s\"?</string>
 
+    <string name="cashPrize">Выигрыш - %1$s руб.</string>
+
     <string name="game_number">Игра №%1$s</string>
     <string name="group_name">группа %1$s</string>
     <string name="add_time_scope">доп.время %1$s : %2$s</string>
