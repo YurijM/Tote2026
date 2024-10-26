@@ -33,7 +33,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
 import com.mu.tote2026.R
-import com.mu.tote2026.ui.theme.Color2
+import com.mu.tote2026.ui.theme.color2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,7 +68,7 @@ fun ApplicationBar(
                         contentDescription = "User Photo",
                         contentScale = ContentScale.Crop,
                         onSuccess = { loading = false },
-                        colorFilter = if (loading) ColorFilter.tint(Color2) else null,
+                        colorFilter = if (loading) ColorFilter.tint(color2) else null,
                         modifier = Modifier
                             .size(dimensionResource(id = R.dimen.app_bar_photo_size))
                             .aspectRatio(1f / 1f)

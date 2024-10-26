@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
-import com.mu.tote2026.ui.theme.Color2
+import com.mu.tote2026.ui.theme.color2
 
 @Composable
 fun AdminGamblerListItemScreen(
@@ -109,7 +109,7 @@ private fun GamblerPhoto(
         contentDescription = "Gambler Photo",
         contentScale = ContentScale.Crop,
         onSuccess = { loading = false },
-        colorFilter = if (loading) ColorFilter.tint(Color2) else null,
+        colorFilter = if (loading) ColorFilter.tint(color2) else null,
         modifier = Modifier
             .size(dimensionResource(id = R.dimen.gambler_photo_size))
             .aspectRatio(1f / 1f)
