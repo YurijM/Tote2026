@@ -10,7 +10,10 @@ const val MIN_PASSWORD_LENGTH = 6
 const val MALE = "мужской"
 const val FEMALE = "женский"
 
+val GROUPS = listOf("A", "B", "C", "D", "E", "F", "1/8 финала", "1/4 финала", "1/2 финала", "Финал")
 const val GROUPS_COUNT = 6
+
+const val BRUSH = "brush"
 
 const val KEY_ID = "id"
 const val KEY_GAMBLER_ID = "gamblerId"
