@@ -20,16 +20,17 @@ class AdminGroupListViewModel @Inject constructor(
     private val _state = MutableStateFlow(AdminGroupListState())
     val state = _state.asStateFlow()
 
-    var groupList = mutableListOf<GroupModel>()
     var message = mutableStateOf("")
         private set
 
     init {
         groupUseCase.getGroupList().onEach { groupListState ->
             _state.value = AdminGroupListState(groupListState)
+
             if (groupListState is UiState.Success) {
-                groupList = groupListState.data.toMutableList()
-                groupList.sortBy { it.id.toInt() }
+                _state.value = AdminGroupListState(
+                    UiState.Success(groupListState.data.sortedBy { it.id.toInt() })
+                )
             }
         }.launchIn(viewModelScope)
     }

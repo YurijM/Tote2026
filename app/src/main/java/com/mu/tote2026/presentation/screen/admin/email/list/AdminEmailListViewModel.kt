@@ -20,7 +20,6 @@ class AdminEmailListViewModel @Inject constructor(
     private val _state: MutableStateFlow<AdminEmailListState> = MutableStateFlow(AdminEmailListState())
     val state = _state.asStateFlow()
 
-    var emailList = mutableListOf<EmailModel>()
     var message = mutableStateOf("")
         private set
 
@@ -29,8 +28,9 @@ class AdminEmailListViewModel @Inject constructor(
             _state.value = AdminEmailListState(emailListState)
 
             if (emailListState is UiState.Success) {
-                emailList = emailListState.data.toMutableList()
-                emailList.sortBy { it.email }
+                _state.value = AdminEmailListState(
+                    UiState.Success(emailListState.data.sortedBy { it.email })
+                )
             }
         }.launchIn(viewModelScope)
     }

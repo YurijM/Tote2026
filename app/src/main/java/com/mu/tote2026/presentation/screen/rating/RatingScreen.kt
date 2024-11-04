@@ -24,20 +24,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
 @Composable
-fun RatingScreen(
-    viewModel: RatingViewModel = hiltViewModel()
-) {
+fun RatingScreen()
+{
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
+    val viewModel: RatingViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val result = state.result
+    var gamblers by remember { mutableStateOf<List<GamblerModel>>(listOf()) }
 
     LaunchedEffect(key1 = result) {
         toLog("RatingScreen result: $result")
@@ -48,6 +50,7 @@ fun RatingScreen(
 
             is UiState.Success -> {
                 isLoading = false
+                gamblers = result.data
             }
 
             is UiState.Error -> {
@@ -69,7 +72,7 @@ fun RatingScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(viewModel.gamblers) { gambler ->
+            items(gamblers) { gambler ->
                 RatingItemScreen(gambler)
             }
         }

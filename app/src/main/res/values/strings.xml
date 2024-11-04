@@ -47,7 +47,7 @@
     <string name="admin_game_list">Список игр</string>
     <string name="admin_stake_list">Список ставок</string>
     <string name="admin_finish">Окончание турнира</string>
-    <string name="prize_fund">Общий призовой фонд %1$s руб.</string>
+    <string name="prize_fund">(общий призовой фонд %1$s руб.)</string>
 
     <string name="email_delete">Удаление email</string>
     <string name="want_delete_email">Вы действительно хотите удалить email \"%1$s\"?</string>

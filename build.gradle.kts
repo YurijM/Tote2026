@@ -5,4 +5,7 @@ plugins {
     alias(libs.plugins.gms) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.dagger.hilt) apply false
+
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.serialization) apply false
 }

@@ -4,16 +4,19 @@ plugins {
     alias(libs.plugins.gms)
     alias(libs.plugins.ksp)
     alias(libs.plugins.dagger.hilt)
+
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.serialization)
 }
 
 android {
     namespace = "com.mu.tote2026"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.mu.tote2026"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -50,7 +53,9 @@ android {
 }
 
 dependencies {
-    // Firebase
+    implementation(libs.kotlinx.serialization.json)
+
+   // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)

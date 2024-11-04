@@ -19,8 +19,6 @@ class AdminGamblerListViewModel @Inject constructor(
     private val _state: MutableStateFlow<AdminGamblerListState> = MutableStateFlow(AdminGamblerListState())
     val state = _state.asStateFlow()
 
-    var gamblerList = mutableListOf<GamblerModel>()
-        private set
     var prizeFund = 0
 
     init {
@@ -28,9 +26,11 @@ class AdminGamblerListViewModel @Inject constructor(
             _state.value = AdminGamblerListState(gamblerListState)
 
             if (gamblerListState is UiState.Success) {
-                gamblerList = gamblerListState.data.toMutableList()
-                gamblerList.sortBy { it.nickname }
-                prizeFund = gamblerList.sumOf { it.rate }
+                val gamblers = AdminGamblerListState(
+                    UiState.Success(gamblerListState.data.sortedBy { it.nickname })
+                )
+                _state.value = gamblers
+                prizeFund = gamblerListState.data.sumOf { it.rate }
             }
         }.launchIn(viewModelScope)
     }

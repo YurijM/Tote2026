@@ -20,8 +20,6 @@ class RatingViewModel @Inject constructor(
     private val _state = MutableStateFlow(RatingState())
     val state = _state.asStateFlow()
 
-    var gamblers = mutableListOf<GamblerModel>()
-
     var rateIsAbsent = false
         private set
 
@@ -31,12 +29,16 @@ class RatingViewModel @Inject constructor(
 
             if (ratingState is UiState.Success) {
                 rateIsAbsent = (GAMBLER.rate == 0)
-                gamblers = ratingState.data
-                    .filter { it.rate > 0 }
-                    .sortedWith(
-                        compareByDescending<GamblerModel> { it.points }
-                            .thenBy { it.nickname }
-                    ).toMutableList()
+                _state.value = RatingState(
+                    UiState.Success(
+                        ratingState.data
+                            .filter { it.rate > 0 }
+                            .sortedWith(
+                                compareByDescending<GamblerModel> { it.points }
+                                    .thenBy { it.nickname }
+                            )
+                    )
+                )
             }
         }.launchIn(viewModelScope)
     }

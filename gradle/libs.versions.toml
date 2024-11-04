@@ -1,24 +1,29 @@
 [versions]
-agp = "8.7.1"
-kotlin = "1.9.0"
-coreKtx = "1.13.1"
+agp = "8.7.2"
+kotlin = "2.0.21"
+coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.6"
-activityCompose = "1.9.2"
-composeBom = "2024.09.03"
+lifecycleRuntimeKtx = "2.8.7"
+activityCompose = "1.9.3"
+composeBom = "2024.10.01"
 
 gms = "4.4.2"
-ksp = "1.9.0-1.0.13"
-daggerHilt = "2.51.1"
-daggerCompiler = "2.51.1"
+ksp = "2.0.21-1.0.26"
+daggerHilt = "2.52"
+daggerCompiler = "2.52"
 hiltNavigation = "1.2.0"
-androidxNavigation = "2.8.2"
-firebaseBom = "33.4.0"
+androidxNavigation = "2.8.3"
+firebaseBom = "33.5.1"
 coilCompose = "2.5.0"
 
+serialization = "2.0.0"
+serializationJson = "1.7.1"
+
 [libraries]
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationJson" }
+
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore-ktx" }
@@ -52,3 +57,6 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 gms = { id = "com.google.gms.google-services", version.ref = "gms" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
+
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization"}
