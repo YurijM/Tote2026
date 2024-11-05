@@ -20,15 +20,14 @@ class StakeListViewModel @Inject constructor(
     private val _state = MutableStateFlow(StakeListState())
     val state = _state.asStateFlow()
 
-    var games = mutableListOf<GameModel>()
-        private set
-
     init {
         gameUseCase.getGamblerStakes(CURRENT_ID).onEach { stakeListState ->
             _state.value = StakeListState(stakeListState)
 
             if (stakeListState is UiState.Success) {
-                games = stakeListState.data.toMutableList()
+                _state.value = StakeListState(
+                    UiState.Success(stakeListState.data)
+                )
             }
         }.launchIn(viewModelScope)
     }

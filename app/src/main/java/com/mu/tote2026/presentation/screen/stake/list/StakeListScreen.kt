@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.data.repository.CURRENT_ID
+import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.Title
@@ -29,14 +30,15 @@ import com.mu.tote2026.ui.common.UiState
 
 @Composable
 fun StakeListScreen(
-    viewModel: StakeListViewModel = hiltViewModel(),
     toStakeEdit: (String, String) -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
+    val viewModel: StakeListViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val result = state.result
+    var games by remember { mutableStateOf<List<GameModel>>(listOf()) }
 
     LaunchedEffect(key1 = result) {
         toLog("StakeListScreen result: $result")
@@ -47,6 +49,7 @@ fun StakeListScreen(
 
             is UiState.Success -> {
                 isLoading = false
+                games = result.data
             }
 
             is UiState.Error -> {
@@ -66,7 +69,7 @@ fun StakeListScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(viewModel.games) { game ->
+            items(games) { game ->
                 StakeListItem(
                     game,
                     onEdit = {
