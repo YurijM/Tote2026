@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,19 +20,14 @@ class AdminTeamListViewModel @Inject constructor(
     private val _state = MutableStateFlow(AdminTeamListState())
     val state = _state.asStateFlow()
 
-    var teamList = mutableListOf<TeamModel>()
-
     init {
         teamUseCase.getTeamList().onEach { teamListState ->
             _state.value = AdminTeamListState(teamListState)
 
             if (teamListState is UiState.Success) {
-                /*val teams = teamListState.data
-                teamList = teams.sortedWith(compareBy(TeamModel::group, TeamModel::itemNo)).toMutableList()*/
-                /*teamList = teamListState.data.toMutableList()
-                teamList.sortBy { it.team }*/
-                val teams = teamListState.data
-                teamList = teams.sortedBy { it.team }.toMutableList()
+                _state.value = AdminTeamListState(
+                    UiState.Success(teamListState.data.sortedBy { it.team })
+                )
             }
         }.launchIn(viewModelScope)
     }
@@ -39,11 +35,13 @@ class AdminTeamListViewModel @Inject constructor(
     fun onEvent(event: AdminTeamListEvent) {
         when (event) {
             is AdminTeamListEvent.OnLoad -> {
-                teamList.forEach { team ->
-                    teamUseCase.deleteTeam(team.team).launchIn(viewModelScope)
-                }
-                teams.forEach { team ->
-                    teamUseCase.saveTeam(team).launchIn(viewModelScope)
+                viewModelScope.launch {
+                    teams.forEach { team ->
+                        teamUseCase.deleteTeam(team.team).launchIn(viewModelScope)
+                    }
+                    teams.forEach { team ->
+                        teamUseCase.saveTeam(team).launchIn(viewModelScope)
+                    }
                 }
             }
         }
