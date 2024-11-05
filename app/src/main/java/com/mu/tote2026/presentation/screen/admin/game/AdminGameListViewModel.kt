@@ -20,15 +20,14 @@ class AdminGameListViewModel @Inject constructor(
     private val _state = MutableStateFlow(AdminGameListState())
     val state = _state.asStateFlow()
 
-    var gameList = mutableListOf<GameModel>()
-
     init {
         gameUseCase.getGameList().onEach { gameListState ->
             _state.value = AdminGameListState(gameListState)
 
             if (gameListState is UiState.Success) {
-                val games = gameListState.data
-                gameList = games.sortedBy { it.id.toInt() }.toMutableList()
+                _state.value = AdminGameListState(
+                    UiState.Success(gameListState.data.sortedBy { it.id.toInt() })
+                )
             }
         }.launchIn(viewModelScope)
     }
@@ -36,7 +35,7 @@ class AdminGameListViewModel @Inject constructor(
     fun onEvent(event: AdminGameListEvent) {
         when (event) {
             is AdminGameListEvent.OnLoad -> {
-                gameList.forEach { game ->
+                games.forEach { game ->
                     gameUseCase.deleteGame(game.id).launchIn(viewModelScope)
                 }
                 games.forEach { game ->
