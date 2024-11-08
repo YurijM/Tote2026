@@ -40,9 +40,9 @@ import com.mu.tote2026.presentation.utils.BRUSH
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
-import com.mu.tote2026.ui.theme.color4
-import com.mu.tote2026.ui.theme.color5
-import com.mu.tote2026.ui.theme.color6
+import com.mu.tote2026.ui.theme.Color4
+import com.mu.tote2026.ui.theme.Color5
+import com.mu.tote2026.ui.theme.Color6
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
@@ -239,12 +239,12 @@ fun Games_Table(
             Text(
                 text = value,
                 color = when (index) {
-                    5 -> color4
-                    6 -> color5
-                    7 -> color6
+                    5 -> Color4
+                    6 -> Color5
+                    7 -> Color6
                     10 -> when (value) {
-                        "1" -> color4
-                        "2" -> color5
+                        "1" -> Color4
+                        "2" -> Color5
                         else -> MaterialTheme.colorScheme.onSurface
                     }
 

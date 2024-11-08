@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
-import com.mu.tote2026.ui.theme.color2
-import com.mu.tote2026.ui.theme.colorDown
-import com.mu.tote2026.ui.theme.colorUp
+import com.mu.tote2026.ui.theme.Color2
+import com.mu.tote2026.ui.theme.ColorDown
+import com.mu.tote2026.ui.theme.ColorUp
 
 @Composable
 fun RatingItemScreen(
@@ -57,11 +57,11 @@ fun RatingItemScreen(
     if (deltaPlace > 0) {
         arrow = "↑"
         arrowValue = "+$deltaPlace"
-        color = colorUp
+        color = ColorUp
     } else if (deltaPlace < 0) {
         arrow = "↓"
         arrowValue = "$deltaPlace"
-        color = colorDown
+        color = ColorDown
     }
 
     Card(
@@ -87,7 +87,7 @@ fun RatingItemScreen(
                 contentDescription = "User Photo",
                 contentScale = ContentScale.Crop,
                 onSuccess = { loadingPhoto = false },
-                colorFilter = if (loadingPhoto) ColorFilter.tint(color2) else null,
+                colorFilter = if (loadingPhoto) ColorFilter.tint(Color2) else null,
                 modifier = Modifier
                     .size(dimensionResource(R.dimen.gambler_photo_size))
                     .aspectRatio(1f / 1f)

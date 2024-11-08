@@ -19,7 +19,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.Dp
 import coil.compose.AsyncImage
 import com.mu.tote2026.R
-import com.mu.tote2026.ui.theme.color2
+import com.mu.tote2026.ui.theme.Color2
 
 @Composable
 fun TeamFlag(
@@ -37,7 +37,7 @@ fun TeamFlag(
         contentDescription = "Team Photo",
         contentScale = ContentScale.Crop,
         onSuccess = { loading = false },
-        colorFilter = if (loading) ColorFilter.tint(color2) else null,
+        colorFilter = if (loading) ColorFilter.tint(Color2) else null,
         modifier = Modifier
             .size(size)
             .aspectRatio(1f / 1f)

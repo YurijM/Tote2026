@@ -38,7 +38,7 @@ import coil.compose.SubcomposeAsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.utils.bitmapToByteArray
 import com.mu.tote2026.presentation.utils.toLog
-import com.mu.tote2026.ui.theme.color2
+import com.mu.tote2026.ui.theme.Color2
 
 @Composable
 fun PhotoLoad(
@@ -106,7 +106,7 @@ fun PhotoLoad(
                     contentDescription = "gambler",
                     modifier = Modifier.width(dimensionResource(id = R.dimen.profile_photo_size)),
                     contentScale = ContentScale.Crop,
-                    colorFilter = ColorFilter.tint(color2)
+                    colorFilter = ColorFilter.tint(Color2)
                 )
             }
         }
