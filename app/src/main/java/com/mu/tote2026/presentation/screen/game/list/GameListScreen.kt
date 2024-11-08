@@ -252,7 +252,7 @@ fun Games_Table(
                     10 -> when (value) {
                         "1" -> ColorUp
                         "2" -> ColorDown
-                        else -> MaterialTheme.colorScheme.onSurface
+                        else -> ColorDefeat
                     }
 
                     else -> MaterialTheme.colorScheme.onSurface

@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -36,8 +38,11 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
+import com.mu.tote2026.presentation.utils.MALE
 import com.mu.tote2026.ui.theme.Color2
 import com.mu.tote2026.ui.theme.ColorDown
+import com.mu.tote2026.ui.theme.ColorFemale
+import com.mu.tote2026.ui.theme.ColorMale
 import com.mu.tote2026.ui.theme.ColorUp
 
 @Composable
@@ -62,6 +67,13 @@ fun RatingItemScreen(
         arrow = "↓"
         arrowValue = "$deltaPlace"
         color = ColorDown
+    }
+
+    var colorGender = ColorFemale
+    var painterGender = R.drawable.ic_female
+    if (gambler.gender == MALE) {
+        colorGender = ColorMale
+        painterGender = R.drawable.ic_male
     }
 
     Card(
@@ -99,13 +111,22 @@ fun RatingItemScreen(
                     .weight(.8f)
                     .padding(horizontal = 4.dp)
             ) {
-                Text(
-                    gambler.nickname,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.height(20.dp)
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        painter = painterResource(id = painterGender),
+                        contentDescription = null,
+                        tint = colorGender
+                    )
+                    Text(
+                        gambler.nickname,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.height(20.dp)
+                    )
+                }
                 Text(
                     text = stringResource(R.string.cashPrize, gambler.cashPrize),
                     fontSize = MaterialTheme.typography.labelLarge.fontSize
