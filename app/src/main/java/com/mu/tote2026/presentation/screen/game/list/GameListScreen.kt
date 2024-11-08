@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.screen.game.list
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mu.tote2026.domain.model.GroupTeamResultModel
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.utils.BRUSH
 import com.mu.tote2026.presentation.utils.errorTranslate
@@ -42,18 +44,21 @@ import com.mu.tote2026.ui.theme.color4
 import com.mu.tote2026.ui.theme.color5
 import com.mu.tote2026.ui.theme.color6
 
+@SuppressLint("MutableCollectionMutableState")
 @Composable
-fun GameListScreen(
-    viewModel: GameListViewModel = hiltViewModel()
-) {
+fun GameListScreen() {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
+    val viewModel: GameListViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val result = state.result
+    //var groupResult by remember { mutableStateOf(arrayListOf<List<TeamResultModel>>()) }
+    var groupResult by remember { mutableStateOf<Map<String, List<GroupTeamResultModel>>>(mapOf()) }
+    //var games by remember { mutableStateOf<List<GameModel>>(listOf()) }
 
     LaunchedEffect(key1 = result) {
-        toLog("GameListScreen result")
+        toLog("GameListScreen $result")
         when (result) {
             is UiState.Loading -> {
                 isLoading = true
@@ -61,6 +66,7 @@ fun GameListScreen(
 
             is UiState.Success -> {
                 isLoading = false
+                groupResult = result.data
             }
 
             is UiState.Error -> {
@@ -75,19 +81,26 @@ fun GameListScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        LazyColumn {
-            items(viewModel.groupResult) { group ->
+        /*LazyColumn {
+            items(groupResult) { result ->
                 Text(
-                    text = "Группа ${group[0].group}",
+                    text = "Team ${result.team}, - ${result.balls1} : ${result.balls2}"
+                )
+            }
+        }*/
+        LazyColumn {
+            items(groupResult.toList()) { group ->
+                Text(
+                    //text = "Группа ${group[0].group}",
+                    text = "Группа ${group.first}",
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Games_Table(
-                    result = group,
+                    result = group.second,
                     onClick = { /*if (GAMBLER.admin) toGroupGameList(group)*/ }
                 )
-
             }
         }
     }
@@ -156,7 +169,7 @@ fun <T> Table(
 
 @Composable
 fun Games_Table(
-    result: List<TeamResultModel>,
+    result: List<GroupTeamResultModel>,
     onClick: () -> Unit
 ) {
     val cellWidth: (Int) -> Dp = { index ->
@@ -194,7 +207,7 @@ fun Games_Table(
         )
     }
 
-    val cellText: @Composable (Int, TeamResultModel) -> Unit = { index, item ->
+    val cellText: @Composable (Int, GroupTeamResultModel) -> Unit = { index, item ->
         val value = when (index) {
             0 -> item.team
             1 -> item.score1
@@ -234,6 +247,7 @@ fun Games_Table(
                         "2" -> color5
                         else -> MaterialTheme.colorScheme.onSurface
                     }
+
                     else -> MaterialTheme.colorScheme.onSurface
                 },
                 textAlign = if (isDigit) TextAlign.Center else TextAlign.Start,
