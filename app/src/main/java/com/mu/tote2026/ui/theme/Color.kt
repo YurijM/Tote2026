@@ -19,6 +19,11 @@ val Color70 = Color(0xFF00C853)
 
 val ColorUp = Color(0xFFFD0301)
 val ColorDown = Color(0xFF0213FD)
-val ColorDefeat = Color(0xFF0D98BA)
+
+var ColorWin = Color(0xFFFF0000)
+var ColorDraw = Color(0xFF00AA00)
+var ColorDefeat = Color(0xFF333333)
+
+//val ColorDefeat = Color(0xFF0D98BA)
 val ColorFine = Color(0xFF000000)
 

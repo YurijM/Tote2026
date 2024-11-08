@@ -261,10 +261,10 @@ class GameRepositoryImpl(
 
             if (game.goal1.isNotBlank() && game.goal2.isNotBlank()) {
                 result = if (isFirstTeam) {
-                    score = "${game.goal1}: ${game.goal2}"
+                    score = "${game.goal1}:${game.goal2}"
                     getScore(result, game.goal1.toInt(), game.goal2.toInt())
                 } else {
-                    score = "${game.goal2}: ${game.goal1}"
+                    score = "${game.goal2}:${game.goal1}"
                     getScore(result, game.goal2.toInt(), game.goal1.toInt())
                 }
             }

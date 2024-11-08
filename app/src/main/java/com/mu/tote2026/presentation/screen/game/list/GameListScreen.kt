@@ -40,9 +40,12 @@ import com.mu.tote2026.presentation.utils.BRUSH
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
-import com.mu.tote2026.ui.theme.Color4
-import com.mu.tote2026.ui.theme.Color5
-import com.mu.tote2026.ui.theme.Color6
+import com.mu.tote2026.ui.theme.ColorDefeat
+import com.mu.tote2026.ui.theme.ColorDown
+import com.mu.tote2026.ui.theme.ColorDraw
+import com.mu.tote2026.ui.theme.ColorFine
+import com.mu.tote2026.ui.theme.ColorUp
+import com.mu.tote2026.ui.theme.ColorWin
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
@@ -239,12 +242,16 @@ fun Games_Table(
             Text(
                 text = value,
                 color = when (index) {
-                    5 -> Color4
-                    6 -> Color5
-                    7 -> Color6
+                    1 -> getScoreColor(item.score1.split(":"))
+                    2 -> getScoreColor(item.score2.split(":"))
+                    3 -> getScoreColor(item.score3.split(":"))
+                    4 -> getScoreColor(item.score4.split(":"))
+                    5 -> ColorWin
+                    6 -> ColorDraw
+                    7 -> ColorDefeat
                     10 -> when (value) {
-                        "1" -> Color4
-                        "2" -> Color5
+                        "1" -> ColorUp
+                        "2" -> ColorDown
                         else -> MaterialTheme.colorScheme.onSurface
                     }
 
@@ -267,4 +274,14 @@ fun Games_Table(
         cellContent = cellText,
         onClick = { onClick() }
     )
+}
+
+fun getScoreColor(list: List<String>): Color {
+    return if (list.size == 2) {
+        when {
+            (list[0].toInt() > list[1].toInt()) -> ColorWin
+            (list[0].toInt() < list[1].toInt()) -> ColorDefeat
+            else -> ColorDraw
+        }
+    } else ColorFine
 }
