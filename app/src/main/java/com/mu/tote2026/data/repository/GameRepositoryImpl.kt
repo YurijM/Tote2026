@@ -221,9 +221,9 @@ class GameRepositoryImpl(
         val resultList = mutableListOf<GroupTeamResultModel>()
         for (itemNo in 1..4) {
             val teamResult = groupGames
-                .filter { it.team1ItemNo.toInt() == itemNo || it.team2ItemNo.toInt() == itemNo }
+                .filter { it.team1ItemNo == itemNo.toString() || it.team2ItemNo == itemNo.toString() }
                 .sortedBy {
-                    if (it.team1ItemNo.toInt() == itemNo)
+                    if (it.team1ItemNo == itemNo.toString())
                         it.team2ItemNo
                     else
                         it.team1ItemNo

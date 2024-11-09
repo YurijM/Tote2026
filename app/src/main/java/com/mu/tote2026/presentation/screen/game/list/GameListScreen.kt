@@ -178,9 +178,9 @@ fun Games_Table(
     val cellWidth: (Int) -> Dp = { index ->
         when (index) {
             0 -> 112.dp
-            1, 2, 3, 4 -> 40.dp
+            1, 2, 3, 4 -> 36.dp
             5, 6, 7, 10 -> 32.dp
-            8 -> 56.dp
+            8 -> 52.dp
             9 -> 36.dp
             else -> 0.dp
         }
