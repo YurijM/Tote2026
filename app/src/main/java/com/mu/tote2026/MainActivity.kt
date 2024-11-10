@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.presentation.navigation.NavGraph
+import com.mu.tote2026.presentation.navigation.NavGraphSafety
 import com.mu.tote2026.ui.theme.Tote2026Theme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,6 +41,8 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     //MainScreen()
                     NavGraph(navController = navController)
+                    //NavGraphSafety(navController = navController)
+
                 }
             }
         }

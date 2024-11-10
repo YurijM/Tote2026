@@ -18,14 +18,13 @@ import com.mu.tote2026.presentation.navigation.destination.admin.group.navigateT
 import com.mu.tote2026.presentation.navigation.destination.admin.group.navigateToAdminGroupList
 import com.mu.tote2026.presentation.navigation.destination.admin.main.adminMain
 import com.mu.tote2026.presentation.navigation.destination.admin.team.adminTeamList
-import com.mu.tote2026.presentation.navigation.destination.game.gameList
+import com.mu.tote2026.presentation.navigation.destination.game.games
 import com.mu.tote2026.presentation.navigation.destination.prognosis.prognosis
 import com.mu.tote2026.presentation.navigation.destination.rating.rating
 import com.mu.tote2026.presentation.navigation.destination.stake.navigateToStake
 import com.mu.tote2026.presentation.navigation.destination.stake.navigateToStakeList
 import com.mu.tote2026.presentation.navigation.destination.stake.stake
 import com.mu.tote2026.presentation.navigation.destination.stake.stakes
-import com.mu.tote2026.presentation.utils.Route.RATING_SCREEN
 
 @Composable
 fun NavGraphMain(
@@ -33,7 +32,8 @@ fun NavGraphMain(
 ) {
     NavHost(
         navController = navMainController,
-        startDestination = RATING_SCREEN
+        //startDestination = RATING_SCREEN
+        startDestination = RatingRoute
     ) {
         rating()
         stakes(
@@ -45,7 +45,7 @@ fun NavGraphMain(
             toStakeList = { navMainController.navigateToStakeList() }
         )
         prognosis()
-        gameList()
+        games()
 
         adminMain(
             toItem = { route ->
