@@ -3,6 +3,7 @@ package com.mu.tote2026.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.mu.tote2026.presentation.navigation.Destinations.RatingRoute
 import com.mu.tote2026.presentation.navigation.destination.admin.email.adminEmail
 import com.mu.tote2026.presentation.navigation.destination.admin.email.adminEmailList
 import com.mu.tote2026.presentation.navigation.destination.admin.email.navigateToAdminEmail
@@ -32,7 +33,6 @@ fun NavGraphMain(
 ) {
     NavHost(
         navController = navMainController,
-        //startDestination = RATING_SCREEN
         startDestination = RatingRoute
     ) {
         rating()

@@ -2,13 +2,13 @@ package com.mu.tote2026.presentation.navigation.destination.stake
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.mu.tote2026.presentation.navigation.Destinations.StakesRoute
 import com.mu.tote2026.presentation.screen.stake.list.StakeListScreen
-import com.mu.tote2026.presentation.utils.Route.STAKE_LIST_SCREEN
 
 fun NavGraphBuilder.stakes(
     toStakeEdit: (String, String) -> Unit
 ) {
-    composable(STAKE_LIST_SCREEN) {
+    composable<StakesRoute> {
         StakeListScreen(
             toStakeEdit = toStakeEdit
         )

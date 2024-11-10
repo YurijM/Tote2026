@@ -2,6 +2,7 @@ package com.mu.tote2026.presentation.utils
 
 import androidx.annotation.StringRes
 import com.mu.tote2026.R
+import com.mu.tote2026.presentation.navigation.Destinations
 
 const val DEBUG_TAG = "tote2026"
 const val YEAR_START = 2024
@@ -20,17 +21,9 @@ const val KEY_GAMBLER_ID = "gamblerId"
 const val NEW_DOC = "new"
 
 object Route {
-    const val SPLASH_SCREEN = "splash_screen"
-    const val AUTH_SCREEN = "auth_screen"
-    const val SIGN_IN_SCREEN = "sign_in_screen"
-    const val SIGN_UP_SCREEN = "sign_up_screen"
-    const val MAIN_SCREEN = "main_screen"
     const val PROFILE_SCREEN = "profile_screen"
-    const val RATING_SCREEN = "rating_screen"
     const val STAKE_LIST_SCREEN = "stake_list_screen"
     const val STAKE_SCREEN = "stake_screen"
-    const val PROGNOSIS_SCREEN = "prognosis_screen"
-    const val GAME_LIST_SCREEN = "game_list_screen"
     const val ADMIN_MAIN_SCREEN = "admin_main_screen"
     const val ADMIN_EMAIL_LIST_SCREEN = "admin_email_list_screen"
     const val ADMIN_EMAIL_SCREEN = "admin_email_screen"
@@ -58,27 +51,30 @@ object Errors {
 sealed class BottomNavItem(
     val titleId: Int,
     val iconId: Int,
-    val route: String
+    val destination: Destinations
 ) {
-    data object RatingItem: BottomNavItem(
+    data object RatingItem : BottomNavItem(
         titleId = R.string.rating,
         iconId = R.drawable.ic_rating,
-        route = Route.RATING_SCREEN
+        destination = Destinations.RatingRoute
     )
-    data object StakeItem: BottomNavItem(
+
+    data object StakesItem : BottomNavItem(
         titleId = R.string.stakes,
         iconId = R.drawable.ic_ruble,
-        route = Route.STAKE_LIST_SCREEN
+        destination = Destinations.StakesRoute
     )
-    data object PrognosisItem: BottomNavItem(
+
+    data object PrognosisItem : BottomNavItem(
         titleId = R.string.prognosis,
         iconId = R.drawable.ic_prognosis,
-        route = Route.PROGNOSIS_SCREEN
+        destination = Destinations.PrognosisRoute
     )
-    data object GamesItem: BottomNavItem(
+
+    data object GamesItem : BottomNavItem(
         titleId = R.string.games,
         iconId = R.drawable.ic_games,
-        route = Route.GAME_LIST_SCREEN
+        destination = Destinations.GamesRoute
     )
 }
 
@@ -86,31 +82,37 @@ sealed class AdminNavItem(
     @StringRes val titleId: Int,
     val route: String
 ) {
-    data object AdminEmailItem: AdminNavItem(
+    data object AdminEmailItem : AdminNavItem(
         titleId = R.string.admin_email_list,
         route = Route.ADMIN_EMAIL_LIST_SCREEN
     )
-    data object AdminGamblerItem: AdminNavItem(
+
+    data object AdminGamblerItem : AdminNavItem(
         titleId = R.string.admin_gambler_list,
         route = Route.ADMIN_GAMBLER_LIST_SCREEN
     )
-    data object AdminGroupItem: AdminNavItem(
+
+    data object AdminGroupItem : AdminNavItem(
         titleId = R.string.admin_group_list,
         route = Route.ADMIN_GROUP_LIST_SCREEN
     )
-    data object AdminTeamItem: AdminNavItem(
+
+    data object AdminTeamItem : AdminNavItem(
         titleId = R.string.admin_team_list,
         route = Route.ADMIN_TEAM_LIST_SCREEN
     )
-    data object AdminGameItem: AdminNavItem(
+
+    data object AdminGameItem : AdminNavItem(
         titleId = R.string.admin_game_list,
         route = Route.ADMIN_GAME_LIST_SCREEN
     )
-    data object AdminStakeItem: AdminNavItem(
+
+    data object AdminStakeItem : AdminNavItem(
         titleId = R.string.admin_stake_list,
         route = Route.ADMIN_STAKE_LIST_SCREEN
     )
-    data object AdminFinishItem: AdminNavItem(
+
+    data object AdminFinishItem : AdminNavItem(
         titleId = R.string.admin_finish,
         route = Route.ADMIN_FINISH_SCREEN
     )

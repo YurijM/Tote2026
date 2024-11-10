@@ -35,7 +35,7 @@ fun MainScreen(
 ) {
     val navMainController = rememberNavController()
     val navBackStackEntry by navMainController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
+    val currentDestination = navBackStackEntry?.destination
 
     val context = LocalContext.current as Activity
 
@@ -74,7 +74,7 @@ fun MainScreen(
         bottomBar = {
             if (viewModel.gambler.rate > 0) {
                 BottomNav(
-                    currentRoute,
+                    currentDestination,
                     viewModel.currentYear
                 ) { route ->
                     navMainController.navigate(route)

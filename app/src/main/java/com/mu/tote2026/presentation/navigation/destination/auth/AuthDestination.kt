@@ -3,13 +3,10 @@ package com.mu.tote2026.presentation.navigation.destination.auth
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.mu.tote2026.presentation.navigation.AuthRoute
-import com.mu.tote2026.presentation.navigation.SignInRoute
-import com.mu.tote2026.presentation.navigation.SignUpRoute
+import com.mu.tote2026.presentation.navigation.Destinations.AuthRoute
+import com.mu.tote2026.presentation.navigation.Destinations.SignInRoute
+import com.mu.tote2026.presentation.navigation.Destinations.SignUpRoute
 import com.mu.tote2026.presentation.screen.auth.AuthScreen
-import com.mu.tote2026.presentation.utils.Route.AUTH_SCREEN
-import com.mu.tote2026.presentation.utils.Route.SIGN_IN_SCREEN
-import com.mu.tote2026.presentation.utils.Route.SIGN_UP_SCREEN
 
 fun NavGraphBuilder.auth(
     toSignUp: () -> Unit,

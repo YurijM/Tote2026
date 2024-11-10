@@ -3,6 +3,7 @@ package com.mu.tote2026.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.mu.tote2026.presentation.navigation.Destinations.SplashRoute
 import com.mu.tote2026.presentation.navigation.destination.auth.auth
 import com.mu.tote2026.presentation.navigation.destination.auth.navigateToAuth
 import com.mu.tote2026.presentation.navigation.destination.auth.navigateToSignIn

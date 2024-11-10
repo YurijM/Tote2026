@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,15 +20,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import com.mu.tote2026.R
+import com.mu.tote2026.presentation.navigation.Destinations
 import com.mu.tote2026.presentation.utils.BottomNavItem
 import com.mu.tote2026.presentation.utils.YEAR_START
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun BottomNav(
-    currentRoute: String?,
+    currentDestination: NavDestination?,
     currentYear: Int,
-    onNavigate: (String) -> Unit,
+    onNavigate: (Destinations) -> Unit,
 ) {
     val years = YEAR_START.toString() +
             if (currentYear != YEAR_START) {
@@ -37,7 +42,7 @@ fun BottomNav(
             } + " ©"
     val navItems = listOf(
         BottomNavItem.RatingItem,
-        BottomNavItem.StakeItem,
+        BottomNavItem.StakesItem,
         BottomNavItem.PrognosisItem,
         BottomNavItem.GamesItem,
     )
@@ -47,6 +52,8 @@ fun BottomNav(
         ) {
             navItems.forEach { item ->
                 val title = stringResource(id = item.titleId)
+                val isSelected =
+                    currentDestination?.hierarchy?.any { it.hasRoute((item.destination::class).qualifiedName.toString(), null) } == true
 
                 NavigationBarItem(
                     colors = NavigationBarItemDefaults.colors(
@@ -55,8 +62,8 @@ fun BottomNav(
                         selectedTextColor = MaterialTheme.colorScheme.onSurface,
                         selectedIconColor = MaterialTheme.colorScheme.onSurface
                     ),
-                    selected = (item.route == currentRoute),
-                    onClick = { onNavigate(item.route) },
+                    selected = isSelected,
+                    onClick = { onNavigate(item.destination) },
                     icon = {
                         Icon(
                             painter = painterResource(id = item.iconId),
@@ -81,8 +88,7 @@ fun BottomNav(
             Icon(
                 painter = painterResource(id = R.drawable.author),
                 contentDescription = "author",
-                modifier =Modifier.size(28.dp),
-                //tint = MaterialTheme.colorScheme.onPrimaryContainer
+                modifier = Modifier.size(28.dp),
             )
             Text(
                 text = years,
