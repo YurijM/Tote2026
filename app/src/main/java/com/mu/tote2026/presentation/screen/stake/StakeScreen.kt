@@ -1,6 +1,5 @@
 package com.mu.tote2026.presentation.screen.stake
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -96,11 +96,13 @@ fun StakeScreen(
                     error = error
                 )*/
                 Card(
-                    border = BorderStroke(
-                        width = 2.dp,
-                        color = MaterialTheme.colorScheme.outline
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 8.dp
                     ),
-                    modifier = Modifier.fillMaxSize(.85f)
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    modifier = Modifier.fillMaxWidth(.85f).padding(vertical = 8.dp)
                 ) {
                     GameInfo(
                         id = viewModel.game.id,

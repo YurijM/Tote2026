@@ -37,8 +37,8 @@ fun NavGraphMain(
     ) {
         rating()
         stakes(
-            toStakeEdit = { gameId, gamblerId ->
-                navMainController.navigateToStake(gameId, gamblerId)
+            toStakeEdit = { args ->
+                navMainController.navigateToStake(args)
             }
         )
         stake(

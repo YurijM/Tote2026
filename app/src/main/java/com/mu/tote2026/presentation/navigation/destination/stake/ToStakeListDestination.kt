@@ -1,11 +1,12 @@
 package com.mu.tote2026.presentation.navigation.destination.stake
 
 import androidx.navigation.NavController
-import com.mu.tote2026.presentation.utils.Route.STAKE_LIST_SCREEN
+import com.mu.tote2026.presentation.navigation.Destinations.StakeRoute
+import com.mu.tote2026.presentation.navigation.Destinations.StakesRoute
 
 fun NavController.navigateToStakeList() {
-    navigate(STAKE_LIST_SCREEN) {
-        popUpTo(STAKE_LIST_SCREEN) {
+    navigate(StakesRoute) {
+        popUpTo(StakeRoute) {
             inclusive = true
         }
     }

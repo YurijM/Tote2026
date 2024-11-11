@@ -6,15 +6,15 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
+import com.mu.tote2026.presentation.navigation.Destinations.StakeRoute
 import com.mu.tote2026.presentation.utils.Errors.ADD_GOAL_INCORRECT
 import com.mu.tote2026.presentation.utils.GROUPS_COUNT
-import com.mu.tote2026.presentation.utils.KEY_GAMBLER_ID
-import com.mu.tote2026.presentation.utils.KEY_ID
-import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,10 +61,9 @@ class StakeViewModel @Inject constructor(
         private set
 
     init {
-        val gameId = savedStateHandle.get<String>(KEY_ID) ?: NEW_DOC
-        val gamblerId = savedStateHandle.get<String>(KEY_GAMBLER_ID) ?: NEW_DOC
-
-        gameUseCase.getGamblerGameStake(gameId, gamblerId).onEach { gameState ->
+        val args = savedStateHandle.toRoute<StakeRoute>()
+        toLog("args: $args")
+        gameUseCase.getGamblerGameStake(args.gameId, args.gamblerId).onEach { gameState ->
             _state.value = StakeState(gameState)
 
             if (gameState is UiState.Success) {
@@ -73,7 +72,7 @@ class StakeViewModel @Inject constructor(
                 stake = if (game.stakes.isNotEmpty())
                     game.stakes[0]
                 else
-                    StakeModel(gameId, gamblerId)
+                    StakeModel(args.gameId, args.gamblerId)
 
                 oldStake = stake
 
