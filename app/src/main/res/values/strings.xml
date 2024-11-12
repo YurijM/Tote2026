@@ -66,5 +66,6 @@
     <string name="stake_is_absent">Ставка отсутсвует</string>
     <string name="stake">Ставка</string>
     <string name="add_time_score">Счёт в дополнительное время</string>
+    <string name="by_penalty">по пенальти</string>
     <string name="generate_stake">Сгенерировать ставку</string>
 </resources>

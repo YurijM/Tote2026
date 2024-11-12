@@ -5,8 +5,8 @@ import com.mu.tote2026.presentation.navigation.Destinations.StakesDestination
 
 fun NavController.navigateToStakeList() {
     navigate(StakesDestination) {
-        /*popUpTo(StakeDestination) {
+        popUpTo(StakesDestination) {
             inclusive = true
-        }*/
+        }
     }
 }

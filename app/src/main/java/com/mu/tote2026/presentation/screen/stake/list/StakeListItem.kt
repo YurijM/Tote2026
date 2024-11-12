@@ -117,18 +117,14 @@ fun StakeListItem(
                 )
             } else {
                 val stake = game.stakes[0]
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(horizontal = 4.dp)
+                Column (
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.wrapContentWidth()
                 ) {
                     Text(
-                        text = stake.goal1
-                    )
-                    Text(text = ":")
-                    Text(
-                        text = stake.goal2
+                        text = "${stake.goal1}:${stake.goal2}",
+                        lineHeight = .1.em
                     )
                     Playoff(stake)
                 }

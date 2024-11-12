@@ -95,6 +95,11 @@ class StakeViewModel @Inject constructor(
                 )
                 enabled = checkValues()
             }
+            is StakeEvent.OnByPenaltyChange -> {
+                toLog("by penalty: ${event.team}")
+                stake = stake.copy(byPenalty = event.team)
+                enabled = checkValues()
+            }
             is StakeEvent.OnSave -> {
                 gameUseCase.saveStake(oldStake, stake).onEach { saveStakeState ->
                     _state.value = when (saveStakeState) {
@@ -176,10 +181,11 @@ class StakeViewModel @Inject constructor(
         else
             true
 
-        isByPenalty = (stake.addGoal1.isNotBlank() && stake.addGoal1 >= stake.goal1
+        /*isByPenalty = (stake.addGoal1.isNotBlank() && stake.addGoal1 >= stake.goal1
                 && stake.addGoal2.isNotBlank() && stake.addGoal2 >= stake.goal2
-                && stake.addGoal1 == stake.addGoal2)
-
+                && stake.addGoal1 == stake.addGoal2)*/
+        isByPenalty = stake.addGoal1 == stake.addGoal2
+        toLog("stake.byPenalty: ${stake.byPenalty}")
         if (isByPenalty) {
             result = result && stake.byPenalty.isNotBlank()
         } else {

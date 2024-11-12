@@ -36,6 +36,7 @@ import com.mu.tote2026.R
 import com.mu.tote2026.data.repository.GAMBLER
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
+import com.mu.tote2026.presentation.components.AppDropDownList
 import com.mu.tote2026.presentation.components.AppOutlinedTextField
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.OkAndCancel
@@ -161,18 +162,18 @@ private fun EditCard(
                 onAddGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(true, 1, goal)) },
                 onAddGoal2Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(true, 2, goal)) }
             )
-            /*if (viewModel.isByPenalty) {
+            if (viewModel.isByPenalty) {
                 ByPenalty(
                     teams = listOf(
                         "",
                         viewModel.game.team1,
                         viewModel.game.team2
                     ),
-                    selectedTeam = viewModel.game.penalty,
+                    selectedTeam = viewModel.stake.byPenalty,
                     errorMessage = viewModel.errorByPenalty,
-                    onClick = { selectedItem -> viewModel.onEvent(StakeEvent.OnPenaltyChange(selectedItem)) }
+                    onClick = { selectedItem -> viewModel.onEvent(StakeEvent.OnByPenaltyChange(selectedItem)) }
                 )
-            }*/
+            }
         }
         HorizontalDivider(
             modifier = Modifier.padding(top = 8.dp),
@@ -357,7 +358,7 @@ private fun ExtraTime(
     }
 }
 
-/*@Composable
+@Composable
 fun ByPenalty(
     teams: List<String>,
     selectedTeam: String,
@@ -369,7 +370,7 @@ fun ByPenalty(
         contentAlignment = Alignment.Center
     ) {
         AppDropDownList(
-            modifier = Modifier.width(180.dp),
+            //modifier = Modifier.width(40.dp),
             list = teams,
             label = stringResource(R.string.by_penalty),
             selectedItem = selectedTeam,
@@ -382,14 +383,14 @@ fun ByPenalty(
             textAlign = TextAlign.Center
         )
     }
-    HorizontalDivider(
+    /*HorizontalDivider(
         modifier = Modifier.padding(vertical = 8.dp),
         thickness = 1.dp,
         color = MaterialTheme.colorScheme.onSurface,
-    )
+    )*/
 }
 
-@Composable
+/*@Composable
 private fun GamePlayed(
     game: GameModel,
     flags: GameFlagsModel,
