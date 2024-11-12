@@ -24,7 +24,7 @@ import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.Title
-import com.mu.tote2026.presentation.navigation.Destinations.StakeRoute
+import com.mu.tote2026.presentation.navigation.Destinations.StakeDestination
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
@@ -32,7 +32,7 @@ import com.mu.tote2026.ui.common.UiState
 @Composable
 fun StakeListScreen(
     //toStakeEdit: (String, String) -> Unit
-    toStakeEdit: (StakeRoute) -> Unit
+    toStakeEdit: (StakeDestination) -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
@@ -83,7 +83,7 @@ fun StakeListScreen(
                                 gamblerId = CURRENT_ID
                             )
                             //toStakeEdit(stake.gameId, stake.gamblerId)
-                            toStakeEdit(StakeRoute(stake.gameId, stake.gamblerId))
+                            toStakeEdit(StakeDestination(stake.gameId, stake.gamblerId))
                     }
                 )
             }

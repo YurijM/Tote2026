@@ -2,7 +2,7 @@ package com.mu.tote2026.presentation.navigation.destination.main
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.mu.tote2026.presentation.navigation.Destinations.MainRoute
+import com.mu.tote2026.presentation.navigation.Destinations.MainDestination
 import com.mu.tote2026.presentation.screen.main.MainScreen
 
 fun NavGraphBuilder.main(
@@ -15,7 +15,7 @@ fun NavGraphBuilder.main(
             toProfile = toProfile,
         )
     }*/
-    composable<MainRoute> {
+    composable<MainDestination> {
         MainScreen(
             toAuth = toAuth,
             toProfile = toProfile,

@@ -1,8 +1,8 @@
 package com.mu.tote2026.presentation.navigation.destination.auth
 
 import androidx.navigation.NavController
-import com.mu.tote2026.presentation.navigation.Destinations.AuthRoute
-import com.mu.tote2026.presentation.navigation.Destinations.SplashRoute
+import com.mu.tote2026.presentation.navigation.Destinations.AuthDestination
+import com.mu.tote2026.presentation.navigation.Destinations.SplashDestination
 
 fun NavController.navigateToAuth() {
     /*navigate(AUTH_SCREEN) {
@@ -10,8 +10,8 @@ fun NavController.navigateToAuth() {
             inclusive = true
         }
     }*/
-    navigate(AuthRoute) {
-        popUpTo(SplashRoute) {
+    navigate(AuthDestination) {
+        popUpTo(SplashDestination) {
             inclusive = true
         }
     }

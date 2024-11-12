@@ -2,7 +2,7 @@ package com.mu.tote2026.presentation.navigation.destination.auth
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.mu.tote2026.presentation.navigation.Destinations.SignUpRoute
+import com.mu.tote2026.presentation.navigation.Destinations.SignUpDestination
 import com.mu.tote2026.presentation.screen.auth.signup.SignUpScreen
 
 fun NavGraphBuilder.signUp(
@@ -13,7 +13,7 @@ fun NavGraphBuilder.signUp(
             toProfile = toProfile
         )
     }*/
-    composable<SignUpRoute> {
+    composable<SignUpDestination> {
         SignUpScreen(
             toProfile = toProfile
         )

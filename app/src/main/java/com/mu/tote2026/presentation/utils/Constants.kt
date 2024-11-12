@@ -17,13 +17,10 @@ const val GROUPS_COUNT = 6
 const val BRUSH = "brush"
 
 const val KEY_ID = "id"
-const val KEY_GAMBLER_ID = "gamblerId"
 const val NEW_DOC = "new"
 
 object Route {
     const val PROFILE_SCREEN = "profile_screen"
-    const val STAKE_LIST_SCREEN = "stake_list_screen"
-    const val STAKE_SCREEN = "stake_screen"
     const val ADMIN_MAIN_SCREEN = "admin_main_screen"
     const val ADMIN_EMAIL_LIST_SCREEN = "admin_email_list_screen"
     const val ADMIN_EMAIL_SCREEN = "admin_email_screen"
@@ -56,25 +53,25 @@ sealed class BottomNavItem(
     data object RatingItem : BottomNavItem(
         titleId = R.string.rating,
         iconId = R.drawable.ic_rating,
-        destination = Destinations.RatingRoute
+        destination = Destinations.RatingDestination
     )
 
     data object StakesItem : BottomNavItem(
         titleId = R.string.stakes,
         iconId = R.drawable.ic_ruble,
-        destination = Destinations.StakesRoute
+        destination = Destinations.StakesDestination
     )
 
     data object PrognosisItem : BottomNavItem(
         titleId = R.string.prognosis,
         iconId = R.drawable.ic_prognosis,
-        destination = Destinations.PrognosisRoute
+        destination = Destinations.PrognosisDestination
     )
 
     data object GamesItem : BottomNavItem(
         titleId = R.string.games,
         iconId = R.drawable.ic_games,
-        destination = Destinations.GamesRoute
+        destination = Destinations.GamesDestination
     )
 }
 

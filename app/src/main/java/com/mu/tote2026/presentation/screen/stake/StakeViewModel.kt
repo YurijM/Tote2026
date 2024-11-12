@@ -10,7 +10,7 @@ import androidx.navigation.toRoute
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
-import com.mu.tote2026.presentation.navigation.Destinations.StakeRoute
+import com.mu.tote2026.presentation.navigation.Destinations.StakeDestination
 import com.mu.tote2026.presentation.utils.Errors.ADD_GOAL_INCORRECT
 import com.mu.tote2026.presentation.utils.GROUPS_COUNT
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
@@ -61,7 +61,7 @@ class StakeViewModel @Inject constructor(
         private set
 
     init {
-        val args = savedStateHandle.toRoute<StakeRoute>()
+        val args = savedStateHandle.toRoute<StakeDestination>()
         toLog("args: $args")
         gameUseCase.getGamblerGameStake(args.gameId, args.gamblerId).onEach { gameState ->
             _state.value = StakeState(gameState)

@@ -3,9 +3,9 @@ package com.mu.tote2026.presentation.navigation.destination.auth
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.mu.tote2026.presentation.navigation.Destinations.AuthRoute
-import com.mu.tote2026.presentation.navigation.Destinations.SignInRoute
-import com.mu.tote2026.presentation.navigation.Destinations.SignUpRoute
+import com.mu.tote2026.presentation.navigation.Destinations.AuthDestination
+import com.mu.tote2026.presentation.navigation.Destinations.SignInDestination
+import com.mu.tote2026.presentation.navigation.Destinations.SignUpDestination
 import com.mu.tote2026.presentation.screen.auth.AuthScreen
 
 fun NavGraphBuilder.auth(
@@ -18,7 +18,7 @@ fun NavGraphBuilder.auth(
             toSignIn = toSignIn
         )
     }*/
-    composable<AuthRoute> {
+    composable<AuthDestination> {
         AuthScreen(
             toSignUp = toSignUp,
             toSignIn = toSignIn
@@ -32,8 +32,8 @@ fun NavController.navigateToSignUp() {
             //inclusive = true
         }
     }*/
-    navigate(SignUpRoute) {
-        popUpTo(AuthRoute) {
+    navigate(SignUpDestination) {
+        popUpTo(AuthDestination) {
             //inclusive = true
         }
     }
@@ -45,8 +45,8 @@ fun NavController.navigateToSignIn() {
             //inclusive = true
         }
     }*/
-    navigate(SignInRoute) {
-        popUpTo(AuthRoute) {
+    navigate(SignInDestination) {
+        popUpTo(AuthDestination) {
             //inclusive = true
         }
     }

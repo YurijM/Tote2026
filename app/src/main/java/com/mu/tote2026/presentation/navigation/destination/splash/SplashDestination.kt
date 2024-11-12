@@ -2,7 +2,7 @@ package com.mu.tote2026.presentation.navigation.destination.splash
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.mu.tote2026.presentation.navigation.Destinations.SplashRoute
+import com.mu.tote2026.presentation.navigation.Destinations.SplashDestination
 import com.mu.tote2026.presentation.screen.splash.SplashScreen
 
 fun NavGraphBuilder.splash(
@@ -15,7 +15,7 @@ fun NavGraphBuilder.splash(
             toMain = toMain
         )
     }*/
-    composable<SplashRoute> {
+    composable<SplashDestination> {
         SplashScreen(
             toAuth = toAuth,
             toMain = toMain

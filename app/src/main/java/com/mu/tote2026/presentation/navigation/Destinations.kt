@@ -4,27 +4,27 @@ import kotlinx.serialization.Serializable
 
 sealed class Destinations {
     @Serializable
-    data object SplashRoute: Destinations()
+    data object SplashDestination: Destinations()
     @Serializable
-    object MainRoute: Destinations()
+    object MainDestination: Destinations()
     @Serializable
-    object AuthRoute: Destinations()
+    object AuthDestination: Destinations()
     @Serializable
-    object SignInRoute: Destinations()
+    object SignInDestination: Destinations()
     @Serializable
-    object SignUpRoute: Destinations()
+    object SignUpDestination: Destinations()
 
     @Serializable
-    object RatingRoute: Destinations()
+    object RatingDestination: Destinations()
     @Serializable
-    object StakesRoute: Destinations()
+    object StakesDestination: Destinations()
     @Serializable
-    data class StakeRoute(
+    data class StakeDestination(
         val gameId: String = "",
         val gamblerId: String = "",
     ): Destinations()
     @Serializable
-    object PrognosisRoute: Destinations()
+    object PrognosisDestination: Destinations()
     @Serializable
-    object GamesRoute: Destinations()
+    object GamesDestination: Destinations()
 }
