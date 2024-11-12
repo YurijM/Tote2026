@@ -31,7 +31,6 @@ import com.mu.tote2026.ui.common.UiState
 
 @Composable
 fun StakeListScreen(
-    //toStakeEdit: (String, String) -> Unit
     toStakeEdit: (StakeDestination) -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
@@ -82,7 +81,6 @@ fun StakeListScreen(
                                 gameId = game.id,
                                 gamblerId = CURRENT_ID
                             )
-                            //toStakeEdit(stake.gameId, stake.gamblerId)
                             toStakeEdit(StakeDestination(stake.gameId, stake.gamblerId))
                     }
                 )

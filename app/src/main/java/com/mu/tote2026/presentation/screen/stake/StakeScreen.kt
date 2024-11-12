@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
+import com.mu.tote2026.data.repository.GAMBLER
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.presentation.components.AppOutlinedTextField
@@ -48,12 +49,12 @@ import com.mu.tote2026.ui.common.UiState
 
 @Composable
 fun StakeScreen(
-    viewModel: StakeViewModel = hiltViewModel(),
     toStakeList: () -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
+    val viewModel: StakeViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val result = state.result
 
@@ -91,90 +92,29 @@ fun StakeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                /*EditCard(
+                EditCard(
                     viewModel = viewModel,
-                    error = error
-                )*/
-                Card(
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 8.dp
-                    ),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    ),
-                    modifier = Modifier.fillMaxWidth(.85f).padding(vertical = 8.dp)
-                ) {
-                    GameInfo(
-                        id = viewModel.game.id,
-                        start = viewModel.game.start,
-                        group = viewModel.game.group,
-                        groupId = viewModel.game.groupId,
-                    )
-                    MainTime(
-                        viewModel.game,
-                        viewModel.stake,
-                        errorMessage = viewModel.errorMainTime,
-                        onGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 1, goal))  },
-                        onGoal2Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 2, goal)) }
-                    )
-
-                    if (viewModel.isExtraTime) {
-                        ExtraTime(
-                            viewModel.stake,
-                            errorMessage = viewModel.errorExtraTime,
-                            onAddGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(true, 1, goal)) },
-                            onAddGoal2Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(true, 2, goal)) }
-                        )
-                        /*if (viewModel.isByPenalty) {
-                            ByPenalty(
-                                teams = listOf(
-                                    "",
-                                    viewModel.game.team1,
-                                    viewModel.game.team2
-                                ),
-                                selectedTeam = viewModel.game.penalty,
-                                errorMessage = viewModel.errorByPenalty,
-                                onClick = { selectedItem -> viewModel.onEvent(StakeEvent.OnPenaltyChange(selectedItem)) }
-                            )
-                        }*/
-                    }
-                    HorizontalDivider(
-                        modifier = Modifier.padding(top = 8.dp),
-                        thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.outline,
-                    )
-                    OkAndCancel(
-                        titleOk = stringResource(id = R.string.save),
-                        enabledOk = viewModel.enabled,
-                        onOK = {
-                            viewModel.onEvent(StakeEvent.OnSave) },
-                        onCancel = { toStakeList() }
-                    )
-                    if (error.isNotBlank()) {
-                        TextError(
-                            error = error,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                }
+                    error = error,
+                    onCancel = toStakeList
+                )
             }
 
-            /*if (GAMBLER.isAdmin) {
+            if (GAMBLER.isAdmin) {
                 item {
                     OkAndCancel(
-                        titleOk = "Сгенерировать ставку",
+                        titleOk = stringResource(R.string.generate_stake),
                         enabledOk = true,
                         showCancel = false,
-                        onOK = { *//*viewModel.onEvent(StakeEvent.OnGenerateStake)*//* },
+                        onOK = { viewModel.onEvent(StakeEvent.OnGenerateStake) },
                         onCancel = {}
                     )
                     Text(
-                        text = "", //viewModel.generatedStake.value,
+                        text = viewModel.generatedStake.value,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
-            }*/
+            }
         }
     }
 
@@ -183,24 +123,22 @@ fun StakeScreen(
     }
 }
 
-/*@Composable
+@Composable
 private fun EditCard(
     viewModel: StakeViewModel,
-    error: String
+    error: String,
+    onCancel: () -> Unit
 ) {
     Card(
-        border = BorderStroke(
-            width = 2.dp,
-            color = MaterialTheme.colorScheme.outline
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 8.dp
         ),
-        modifier = Modifier.fillMaxSize(.85f)
-        *//*modifier = Modifier
-            .width(400.dp)
-            .padding(
-                start = 24.dp,
-                end = 24.dp,
-                bottom = 12.dp
-            ),*//*
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        modifier = Modifier
+            .fillMaxWidth(.85f)
+            .padding(vertical = 8.dp)
     ) {
         GameInfo(
             id = viewModel.game.id,
@@ -208,25 +146,22 @@ private fun EditCard(
             group = viewModel.game.group,
             groupId = viewModel.game.groupId,
         )
-        *//*MainTime(
-            team1 = viewModel.game.team1,
-            team2 = viewModel.game.team2,
-            goal1 = viewModel.game.goal1,
-            goal2 = viewModel.game.goal2,
-            flags = viewModel.flags.first { it.gameId == viewModel.game.gameId },
+        MainTime(
+            viewModel.game,
+            viewModel.stake,
             errorMessage = viewModel.errorMainTime,
-            onGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 1, goal)) },
+            onGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 1, goal))  },
             onGoal2Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 2, goal)) }
-        )*//*
-        *//*if (viewModel.isExtraTime) {
+        )
+
+        if (viewModel.isExtraTime) {
             ExtraTime(
-                addGoal1 = viewModel.game.addGoal1,
-                addGoal2 = viewModel.game.addGoal2,
+                viewModel.stake,
                 errorMessage = viewModel.errorExtraTime,
                 onAddGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(true, 1, goal)) },
                 onAddGoal2Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(true, 2, goal)) }
             )
-            if (viewModel.isByPenalty) {
+            /*if (viewModel.isByPenalty) {
                 ByPenalty(
                     teams = listOf(
                         "",
@@ -237,23 +172,29 @@ private fun EditCard(
                     errorMessage = viewModel.errorByPenalty,
                     onClick = { selectedItem -> viewModel.onEvent(StakeEvent.OnPenaltyChange(selectedItem)) }
                 )
-            }
-        }*//*
-        *//*OkAndCancel(
+            }*/
+        }
+        HorizontalDivider(
+            modifier = Modifier.padding(top = 8.dp),
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.outline,
+        )
+        OkAndCancel(
             titleOk = stringResource(id = R.string.save),
             enabledOk = viewModel.enabled,
-            onOK = { viewModel.onEvent(StakeEvent.OnSave) },
-            onCancel = { viewModel.onEvent(StakeEvent.OnCancel) }
-        )*//*
+            onOK = {
+                viewModel.onEvent(StakeEvent.OnSave) },
+            onCancel = onCancel        //{ toStakeList() }
+        )
         if (error.isNotBlank()) {
             TextError(
                 error = error,
                 textAlign = TextAlign.Center
             )
-            //Spacer(modifier = Modifier.height(4.dp))
         }
     }
-}*/
+
+}
 
 @Composable
 private fun GameInfo(

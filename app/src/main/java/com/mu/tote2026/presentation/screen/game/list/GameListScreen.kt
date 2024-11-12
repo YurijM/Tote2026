@@ -56,9 +56,7 @@ fun GameListScreen() {
     val viewModel: GameListViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val result = state.result
-    //var groupResult by remember { mutableStateOf(arrayListOf<List<TeamResultModel>>()) }
     var groupResult by remember { mutableStateOf<Map<String, List<GroupTeamResultModel>>>(mapOf()) }
-    //var games by remember { mutableStateOf<List<GameModel>>(listOf()) }
 
     LaunchedEffect(key1 = result) {
         toLog("GameListScreen $result")
@@ -84,17 +82,9 @@ fun GameListScreen() {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        /*LazyColumn {
-            items(groupResult) { result ->
-                Text(
-                    text = "Team ${result.team}, - ${result.balls1} : ${result.balls2}"
-                )
-            }
-        }*/
         LazyColumn {
             items(groupResult.toList()) { group ->
                 Text(
-                    //text = "Группа ${group[0].group}",
                     text = "Группа ${group.first}",
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold,
@@ -187,12 +177,12 @@ fun Games_Table(
     }
     val headerCellTitle: @Composable (Int) -> Unit = { index ->
         val value = when (index) {
-            0 -> "Команда" //stringResource(id = R.string.team)
+            0 -> "Команда"
             1, 2, 3, 4 -> index.toString()
             5 -> "В"
             6 -> "Н"
             7 -> "П"
-            8 -> "Мячи"  //stringResource(R.string.balls)
+            8 -> "Мячи"
             9 -> "О"
             10 -> "М"
             else -> ""

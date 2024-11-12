@@ -14,6 +14,7 @@ import com.mu.tote2026.presentation.navigation.Destinations.StakeDestination
 import com.mu.tote2026.presentation.utils.Errors.ADD_GOAL_INCORRECT
 import com.mu.tote2026.presentation.utils.GROUPS_COUNT
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
+import com.mu.tote2026.presentation.utils.generateResult
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,6 +58,9 @@ class StakeViewModel @Inject constructor(
     var errorByPenalty = ""
         private set
 
+    var generatedStake = mutableStateOf("")
+        private set
+
     var enabled = false
         private set
 
@@ -91,7 +95,6 @@ class StakeViewModel @Inject constructor(
                 )
                 enabled = checkValues()
             }
-
             is StakeEvent.OnSave -> {
                 gameUseCase.saveStake(oldStake, stake).onEach { saveStakeState ->
                     _state.value = when (saveStakeState) {
@@ -104,6 +107,9 @@ class StakeViewModel @Inject constructor(
                         else -> StakeState(UiState.Default)
                     }
                 }.launchIn(viewModelScope)
+            }
+            is StakeEvent.OnGenerateStake -> {
+                generatedStake.value = generateResult()
             }
 
             else -> {}

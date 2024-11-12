@@ -23,7 +23,6 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        //startDestination = SPLASH_SCREEN
         startDestination = SplashDestination
     ) {
         test()
