@@ -27,4 +27,6 @@ sealed class Destinations {
     object PrognosisDestination: Destinations()
     @Serializable
     object GamesDestination: Destinations()
+    @Serializable
+    data class GroupGamesDestination(val group: String): Destinations()
 }

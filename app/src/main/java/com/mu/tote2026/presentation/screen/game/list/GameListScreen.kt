@@ -34,8 +34,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.mu.tote2026.data.repository.GAMBLER
 import com.mu.tote2026.domain.model.GroupTeamResultModel
 import com.mu.tote2026.presentation.components.AppProgressBar
+import com.mu.tote2026.presentation.navigation.Destinations.GroupGamesDestination
 import com.mu.tote2026.presentation.utils.BRUSH
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
@@ -49,7 +51,9 @@ import com.mu.tote2026.ui.theme.ColorWin
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
-fun GameListScreen() {
+fun GameListScreen(
+    toGroupGameList: (GroupGamesDestination) -> Unit
+) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
@@ -92,7 +96,7 @@ fun GameListScreen() {
                 )
                 Games_Table(
                     result = group.second,
-                    onClick = { /*if (GAMBLER.admin) toGroupGameList(group)*/ }
+                    onClick = { if (GAMBLER.isAdmin) toGroupGameList(GroupGamesDestination(group.first)) }
                 )
             }
         }
