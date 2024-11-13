@@ -48,11 +48,13 @@ class SignInViewModel @Inject constructor(
                 errorEmail = checkEmail(email = event.email)
                 enabledButton = checkValues()
             }
+
             is SignInEvent.OnPasswordChange -> {
                 password = event.password
                 errorPassword = checkPassword(event.password, null)
                 enabledButton = checkValues()
             }
+
             is SignInEvent.OnSignIn -> {
                 authUseCase.signIn(email, password).onEach { signState ->
                     _state.value = SignInState(signState)
@@ -65,6 +67,7 @@ class SignInViewModel @Inject constructor(
                                     GAMBLER = currentGamblerState.data
                                     _state.value = SignInState(UiState.Success(true))
                                 }
+
                                 is UiState.Error -> _state.value = SignInState(UiState.Error(currentGamblerState.error))
                                 else -> {}
                             }
@@ -77,9 +80,7 @@ class SignInViewModel @Inject constructor(
 
     private fun checkValues(): Boolean = (errorEmail.isBlank() && errorPassword.isBlank())
 
-    companion object {
-        data class SignInState(
-            val result: UiState<Boolean> = UiState.Default,
-        )
-    }
+    data class SignInState(
+        val result: UiState<Boolean> = UiState.Default,
+    )
 }

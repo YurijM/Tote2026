@@ -37,13 +37,13 @@ class AdminGamblerViewModel @Inject constructor(
     init {
         val id = savedStateHandle.get<String>(KEY_ID)
         if (!id.isNullOrBlank()) {
-                gamblerUseCase.getGambler(id).onEach { gamblerState ->
-                    _state.value = AdminGamblerState(gamblerState)
-                    if (gamblerState is UiState.Success) {
-                        gambler = gamblerState.data
-                    }
-                }.launchIn(viewModelScope)
-            }
+            gamblerUseCase.getGambler(id).onEach { gamblerState ->
+                _state.value = AdminGamblerState(gamblerState)
+                if (gamblerState is UiState.Success) {
+                    gambler = gamblerState.data
+                }
+            }.launchIn(viewModelScope)
+        }
     }
 
     fun onEvent(event: AdminGamblerEvent) {
@@ -56,11 +56,13 @@ class AdminGamblerViewModel @Inject constructor(
                     gambler.copy(rate = 0)
                 }
             }
+
             is AdminGamblerEvent.OnIsAdminChange -> {
                 gambler = gambler.copy(
                     isAdmin = event.isAdmin
                 )
             }
+
             is AdminGamblerEvent.OnSave -> {
                 gamblerUseCase.saveGambler(gambler).onEach { gamblerSaveState ->
                     _state.value = AdminGamblerState(gamblerSaveState)
@@ -81,9 +83,7 @@ class AdminGamblerViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        data class AdminGamblerState(
-            val result: UiState<GamblerModel> = UiState.Default
-        )
-    }
+    data class AdminGamblerState(
+        val result: UiState<GamblerModel> = UiState.Default
+    )
 }

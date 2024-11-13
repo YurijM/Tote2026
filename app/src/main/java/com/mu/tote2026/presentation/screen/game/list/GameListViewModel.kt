@@ -31,9 +31,7 @@ class GameListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    //companion object {
     data class GroupTeamResultState(
         val result: UiState<Map<String, List<GroupTeamResultModel>>> = UiState.Default
     )
-    //}
 }

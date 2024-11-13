@@ -57,9 +57,7 @@ class MainViewModel @Inject constructor(
         firebaseAuth.signOut()
     }
 
-    companion object {
-        data class GamblerState(
-            val result: UiState<GamblerModel> = UiState.Default,
-        )
-    }
+    data class GamblerState(
+        val result: UiState<GamblerModel> = UiState.Default,
+    )
 }

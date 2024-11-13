@@ -35,9 +35,7 @@ class AdminGamblerListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    companion object {
-        data class AdminGamblerListState(
-            val result: UiState<List<GamblerModel>> = UiState.Default
-        )
-    }
+    data class AdminGamblerListState(
+        val result: UiState<List<GamblerModel>> = UiState.Default
+    )
 }

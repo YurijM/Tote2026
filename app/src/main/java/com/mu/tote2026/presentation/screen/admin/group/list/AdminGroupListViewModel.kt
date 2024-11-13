@@ -46,9 +46,7 @@ class AdminGroupListViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        data class AdminGroupListState(
-            val result: UiState<List<GroupModel>> = UiState.Default
-        )
-    }
+    data class AdminGroupListState(
+        val result: UiState<List<GroupModel>> = UiState.Default
+    )
 }

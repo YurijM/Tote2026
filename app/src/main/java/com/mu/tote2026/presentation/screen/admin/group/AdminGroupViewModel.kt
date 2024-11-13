@@ -62,10 +62,12 @@ class AdminGroupViewModel @Inject constructor(
                 group = group.copy(id = event.id)
                 enabledSaveButton = checkValues()
             }
+
             is AdminGroupEvent.OnGroupChange -> {
                 group = group.copy(group = event.group)
                 enabledSaveButton = checkValues()
             }
+
             is AdminGroupEvent.OnSave -> {
                 groupUseCase.saveGroup(group).onEach { groupState ->
                     _state.value = AdminGroupState(groupState)
@@ -84,9 +86,7 @@ class AdminGroupViewModel @Inject constructor(
                 groupError.isBlank()
     }
 
-    companion object {
-        data class AdminGroupState(
-            val result: UiState<GroupModel> = UiState.Default
-        )
-    }
+    data class AdminGroupState(
+        val result: UiState<GroupModel> = UiState.Default
+    )
 }

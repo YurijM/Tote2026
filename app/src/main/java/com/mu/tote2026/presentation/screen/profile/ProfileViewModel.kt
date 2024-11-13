@@ -63,15 +63,18 @@ class ProfileViewModel @Inject constructor(
                 gambler = gambler.copy(nickname = event.nickname)
                 enabledSaveButton = checkValues()
             }
+
             is ProfileEvent.OnGenderChange -> {
                 gambler = gambler.copy(gender = event.gender)
                 enabledSaveButton = checkValues()
             }
+
             is ProfileEvent.OnPhotoChange -> {
                 gambler = gambler.copy(photoUrl = event.uri.toString())
                 photoUri = event.uri
                 enabledSaveButton = checkValues()
             }
+
             is ProfileEvent.OnSave -> {
                 if (photoUri != null) {
                     _state.value = GamblerState(UiState.Loading)
@@ -95,6 +98,7 @@ class ProfileViewModel @Inject constructor(
                     }.launchIn(viewModelScope)
                 }
             }
+
             is ProfileEvent.OnCancel -> {
                 if (currentGambler.checkProfile())
                     _state.value = GamblerState(UiState.Success(currentGambler))
@@ -105,18 +109,16 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun checkValues(): Boolean {
-            nicknameError = checkIsFieldEmpty(gambler.nickname)
-            photoUrlError = checkIsFieldEmpty(gambler.photoUrl)
-            genderError = checkIsFieldEmpty(gambler.gender)
+        nicknameError = checkIsFieldEmpty(gambler.nickname)
+        photoUrlError = checkIsFieldEmpty(gambler.photoUrl)
+        genderError = checkIsFieldEmpty(gambler.gender)
 
         return nicknameError.isNullOrBlank() &&
                 photoUrlError.isNullOrBlank() &&
                 genderError.isNullOrBlank()
     }
 
-    companion object {
-        data class GamblerState(
-            val result: UiState<GamblerModel> = UiState.Default,
-        )
-    }
+    data class GamblerState(
+        val result: UiState<GamblerModel> = UiState.Default,
+    )
 }

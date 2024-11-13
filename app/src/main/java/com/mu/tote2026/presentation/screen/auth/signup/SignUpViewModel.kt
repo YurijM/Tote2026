@@ -68,9 +68,9 @@ class SignUpViewModel @Inject constructor(
                         _state.value = SignUpState(emailState)
 
                         if (emailState is UiState.Success && emailState.data) {
-                           authUseCase.signUp(email, password).collect { signState ->
-                               _state.value = SignUpState(signState)
-                           }
+                            authUseCase.signUp(email, password).collect { signState ->
+                                _state.value = SignUpState(signState)
+                            }
                         }
                     }
                 }
@@ -83,9 +83,7 @@ class SignUpViewModel @Inject constructor(
             (errorPasswordConfirm != null && errorPasswordConfirm!!.isBlank())*/
     private fun checkValues(): Boolean = (errorEmail.isBlank() && errorPassword.isBlank() && errorPasswordConfirm.isBlank())
 
-    companion object {
-        data class SignUpState(
-            val result: UiState<Boolean> = UiState.Default,
-        )
-    }
+    data class SignUpState(
+        val result: UiState<Boolean> = UiState.Default,
+    )
 }

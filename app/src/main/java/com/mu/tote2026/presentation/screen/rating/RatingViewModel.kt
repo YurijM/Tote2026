@@ -43,9 +43,7 @@ class RatingViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    companion object {
-        data class RatingState(
-            val result: UiState<List<GamblerModel>> = UiState.Default
-        )
-    }
+    data class RatingState(
+        val result: UiState<List<GamblerModel>> = UiState.Default
+    )
 }

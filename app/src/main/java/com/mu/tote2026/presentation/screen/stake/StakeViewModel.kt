@@ -95,11 +95,13 @@ class StakeViewModel @Inject constructor(
                 )
                 enabled = checkValues()
             }
+
             is StakeEvent.OnByPenaltyChange -> {
                 toLog("by penalty: ${event.team}")
                 stake = stake.copy(byPenalty = event.team)
                 enabled = checkValues()
             }
+
             is StakeEvent.OnSave -> {
                 gameUseCase.saveStake(oldStake, stake).onEach { saveStakeState ->
                     _state.value = when (saveStakeState) {
@@ -107,12 +109,14 @@ class StakeViewModel @Inject constructor(
                             exit = true
                             StakeState(UiState.Success(game))
                         }
+
                         is UiState.Loading -> StakeState(UiState.Loading)
                         is UiState.Error -> StakeState(UiState.Error(saveStakeState.error))
                         else -> StakeState(UiState.Default)
                     }
                 }.launchIn(viewModelScope)
             }
+
             is StakeEvent.OnGenerateStake -> {
                 generatedStake.value = generateResult()
             }
@@ -208,9 +212,7 @@ class StakeViewModel @Inject constructor(
         return result
     }
 
-    companion object {
-        data class StakeState(
-            val result: UiState<GameModel> = UiState.Default
-        )
-    }
+    data class StakeState(
+        val result: UiState<GameModel> = UiState.Default
+    )
 }

@@ -51,9 +51,7 @@ class AdminEmailListViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        data class AdminEmailListState(
-            val result: UiState<List<EmailModel>> = UiState.Default
-        )
-    }
+    data class AdminEmailListState(
+        val result: UiState<List<EmailModel>> = UiState.Default
+    )
 }

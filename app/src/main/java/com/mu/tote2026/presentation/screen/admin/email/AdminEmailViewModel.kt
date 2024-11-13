@@ -57,6 +57,7 @@ class AdminEmailViewModel @Inject constructor(
                     email = event.email
                 )
             }
+
             is AdminEmailEvent.OnSave -> {
                 emailUseCase.saveEmail(email).onEach { emailState ->
                     _state.value = AdminEmailState(emailState)
@@ -67,9 +68,7 @@ class AdminEmailViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        data class AdminEmailState(
-            val result: UiState<EmailModel> = UiState.Default
-        )
-    }
+    data class AdminEmailState(
+        val result: UiState<EmailModel> = UiState.Default
+    )
 }

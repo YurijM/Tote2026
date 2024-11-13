@@ -32,9 +32,7 @@ class StakeListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    companion object {
-        data class StakeListState(
-            val result: UiState<List<GameModel>> = UiState.Default
-        )
-    }
+    data class StakeListState(
+        val result: UiState<List<GameModel>> = UiState.Default
+    )
 }
