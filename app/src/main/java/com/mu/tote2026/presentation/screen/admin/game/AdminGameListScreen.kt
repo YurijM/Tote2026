@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.presentation.components.AppProgressBar
+import com.mu.tote2026.presentation.components.GameItem
 import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.errorTranslate
@@ -82,10 +83,10 @@ fun AdminGameListScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp)
+                .padding(vertical = 8.dp)
         ) {
             items(games) { game ->
-                AdminGameListItemScreen(game)
+                GameItem(game, onEdit = {})
             }
         }
     }

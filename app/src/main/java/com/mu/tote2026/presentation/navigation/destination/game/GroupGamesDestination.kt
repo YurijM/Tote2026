@@ -5,12 +5,8 @@ import androidx.navigation.compose.composable
 import com.mu.tote2026.presentation.navigation.Destinations.GroupGamesDestination
 import com.mu.tote2026.presentation.screen.game.group.GroupGameListScreen
 
-fun NavGraphBuilder.groupGames(
-    toGameList: () -> Unit
-) {
+fun NavGraphBuilder.groupGames() {
     composable<GroupGamesDestination> { backStackEntry ->
-        GroupGameListScreen(
-            toGameList = toGameList
-        )
+        GroupGameListScreen()
     }
 }

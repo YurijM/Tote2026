@@ -23,6 +23,7 @@ import com.mu.tote2026.data.repository.CURRENT_ID
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.presentation.components.AppProgressBar
+import com.mu.tote2026.presentation.components.GameItem
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.navigation.Destinations.StakeDestination
 import com.mu.tote2026.presentation.utils.errorTranslate
@@ -71,18 +72,17 @@ fun StakeListScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             items(games) { game ->
-                StakeListItem(
+                val stake = if (game.stakes.isNotEmpty())
+                    game.stakes[0]
+                else
+                    StakeModel(
+                        gameId = game.id,
+                        gamblerId = CURRENT_ID
+                    )
+                GameItem(
                     game,
-                    onEdit = {
-                        val stake = if (game.stakes.isNotEmpty())
-                            game.stakes[0]
-                        else
-                            StakeModel(
-                                gameId = game.id,
-                                gamblerId = CURRENT_ID
-                            )
-                            toStakeEdit(StakeDestination(stake.gameId, stake.gamblerId))
-                    }
+                    stake,
+                    onEdit = { toStakeEdit(StakeDestination(stake.gameId, stake.gamblerId)) }
                 )
             }
         }

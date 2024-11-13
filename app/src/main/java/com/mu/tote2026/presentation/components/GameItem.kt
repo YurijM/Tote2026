@@ -1,4 +1,4 @@
-package com.mu.tote2026.presentation.screen.stake.list
+package com.mu.tote2026.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,15 +23,39 @@ import androidx.compose.ui.unit.em
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
-import com.mu.tote2026.presentation.components.TeamFlag
 import com.mu.tote2026.presentation.utils.GROUPS_COUNT
 import com.mu.tote2026.presentation.utils.asDateTime
 
 @Composable
-fun StakeListItem(
+fun GameItem(
     game: GameModel,
+    stake: StakeModel? = null,
     onEdit: () -> Unit
 ) {
+    data class Result(
+        val goal1: String,
+        val goal2: String,
+        val addGoal1: String,
+        val addGoal2: String,
+        val byPenalty: String
+    )
+    var result = Result(
+        game.goal1,
+        game.goal2,
+        game.addGoal1,
+        game.addGoal2,
+        game.byPenalty
+    )
+    if (stake != null) {
+        result = Result(
+            stake.goal1,
+            stake.goal2,
+            stake.addGoal1,
+            stake.addGoal2,
+            stake.byPenalty
+        )
+    }
+
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 8.dp
@@ -94,12 +118,14 @@ fun StakeListItem(
                         modifier = Modifier.padding(end = 4.dp)
                     )
                     TeamFlag(game.flag1)
+                    Text(" ${result.goal1}")
                 }
-                Text(text = " - ")
+                Text(text = " : ")
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.weight(1f)
                 ) {
+                    Text("${result.goal2} ")
                     TeamFlag(game.flag2)
                     Text(
                         text = game.team2,
@@ -110,43 +136,31 @@ fun StakeListItem(
                 }
             }
 
-            if (game.stakes.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.stake_is_absent),
-                    fontWeight = FontWeight.Bold
-                )
-            } else {
-                val stake = game.stakes[0]
-                Column (
+            if (result.addGoal1.isNotBlank() && result.addGoal2.isNotBlank()) {
+                Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier.wrapContentWidth()
                 ) {
                     Text(
-                        text = "${stake.goal1}:${stake.goal2}",
+                        text = stringResource(R.string.add_time_scope, result.addGoal1, result.addGoal2),
                         lineHeight = .1.em
                     )
-                    Playoff(stake)
+                    if (result.byPenalty.isNotBlank()) {
+                        Text(
+                            text = stringResource(R.string.winner_by_penalty, result.byPenalty),
+                            lineHeight = .1.em
+                        )
+                    }
                 }
             }
-        }
-    }
-}
 
-@Composable
-private fun Playoff(
-    stake: StakeModel
-) {
-    if (stake.addGoal1.isNotBlank() && stake.addGoal2.isNotBlank()) {
-        Text(
-            text = stringResource(R.string.add_time_scope, stake.addGoal1, stake.addGoal2),
-            lineHeight = .1.em
-        )
-    }
-    if (stake.byPenalty.isNotBlank()) {
-        Text(
-            text = stringResource(R.string.winner_by_penalty, stake.byPenalty),
-            lineHeight = .1.em
-        )
+            if (stake != null && result.goal1.isBlank() && result.goal2.isBlank()) {
+                Text(
+                    text = stringResource(R.string.stake_is_absent),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
     }
 }
