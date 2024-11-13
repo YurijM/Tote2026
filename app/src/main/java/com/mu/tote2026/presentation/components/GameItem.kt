@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GameModel
+import com.mu.tote2026.domain.model.ResultModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.presentation.utils.GROUPS_COUNT
 import com.mu.tote2026.presentation.utils.asDateTime
@@ -32,22 +33,16 @@ fun GameItem(
     stake: StakeModel? = null,
     onEdit: () -> Unit
 ) {
-    data class Result(
-        val goal1: String,
-        val goal2: String,
-        val addGoal1: String,
-        val addGoal2: String,
-        val byPenalty: String
-    )
-    var result = Result(
-        game.goal1,
-        game.goal2,
-        game.addGoal1,
-        game.addGoal2,
-        game.byPenalty
-    )
-    if (stake != null) {
-        result = Result(
+    val result = if (stake == null) {
+        ResultModel(
+            game.goal1,
+            game.goal2,
+            game.addGoal1,
+            game.addGoal2,
+            game.byPenalty
+        )
+    } else {
+        ResultModel(
             stake.goal1,
             stake.goal2,
             stake.addGoal1,

@@ -21,7 +21,6 @@ import com.mu.tote2026.presentation.navigation.destination.admin.main.adminMain
 import com.mu.tote2026.presentation.navigation.destination.admin.team.adminTeamList
 import com.mu.tote2026.presentation.navigation.destination.game.games
 import com.mu.tote2026.presentation.navigation.destination.game.groupGames
-import com.mu.tote2026.presentation.navigation.destination.game.navigateToGames
 import com.mu.tote2026.presentation.navigation.destination.game.navigateToGroupGame
 import com.mu.tote2026.presentation.navigation.destination.prognosis.prognosis
 import com.mu.tote2026.presentation.navigation.destination.rating.rating
@@ -53,9 +52,7 @@ fun NavGraphMain(
                 navMainController.navigateToGroupGame(args)
             }
         )
-        groupGames(
-            toGameList = {navMainController.navigateToGames()}
-        )
+        groupGames()
 
         adminMain(
             toItem = { route ->

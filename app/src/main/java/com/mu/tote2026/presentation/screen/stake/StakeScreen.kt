@@ -185,7 +185,7 @@ private fun EditCard(
             enabledOk = viewModel.enabled,
             onOK = {
                 viewModel.onEvent(StakeEvent.OnSave) },
-            onCancel = onCancel        //{ toStakeList() }
+            onCancel = onCancel
         )
         if (error.isNotBlank()) {
             TextError(
@@ -383,11 +383,6 @@ fun ByPenalty(
             textAlign = TextAlign.Center
         )
     }
-    /*HorizontalDivider(
-        modifier = Modifier.padding(vertical = 8.dp),
-        thickness = 1.dp,
-        color = MaterialTheme.colorScheme.onSurface,
-    )*/
 }
 
 /*@Composable
