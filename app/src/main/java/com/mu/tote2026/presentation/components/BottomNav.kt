@@ -1,6 +1,7 @@
 package com.mu.tote2026.presentation.components
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -85,8 +86,8 @@ fun BottomNav(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.author),
+            Image(
+                painterResource(id = R.drawable.author),
                 contentDescription = "author",
                 modifier = Modifier.size(28.dp),
             )
