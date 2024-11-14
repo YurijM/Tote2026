@@ -178,7 +178,6 @@ private fun EditCard(
         HorizontalDivider(
             modifier = Modifier.padding(top = 8.dp),
             thickness = 1.dp,
-            color = MaterialTheme.colorScheme.outline,
         )
         OkAndCancel(
             titleOk = stringResource(id = R.string.save),
@@ -370,7 +369,6 @@ fun ByPenalty(
         contentAlignment = Alignment.Center
     ) {
         AppDropDownList(
-            //modifier = Modifier.width(40.dp),
             list = teams,
             label = stringResource(R.string.by_penalty),
             selectedItem = selectedTeam,

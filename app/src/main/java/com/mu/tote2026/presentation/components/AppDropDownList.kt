@@ -35,7 +35,6 @@ import com.mu.tote2026.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDropDownList(
-    modifier: Modifier = Modifier,
     list: List<String>,
     label: String,
     selectedItem: String,
@@ -68,7 +67,10 @@ fun AppDropDownList(
                 value = selectedItem,
                 label = {
                     if (label.isNotBlank()) {
-                        Text(label)
+                        Text(
+                            text = label,
+                            textAlign = TextAlign.Center
+                        )
                     }
                 },
                 innerTextField = innerTextField,
@@ -81,7 +83,7 @@ fun AppDropDownList(
                         imageVector = Icons.Filled.ArrowDropDown,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onBackground,
-                        modifier = modifier.rotate(if (expanded) 180f else 0f)
+                        modifier = Modifier.rotate(if (expanded) 180f else 0f)
                     )
                 },
                 contentPadding = if (label.isBlank())
@@ -93,14 +95,13 @@ fun AppDropDownList(
                     )
                 else
                     contentPaddingWithLabel(
-                        top = 0.dp,
+                        top = 8.dp,
                         start = 8.dp,
                         end = 8.dp,
                         bottom = 0.dp
                     ),
                 container = {
                     OutlinedTextFieldDefaults.Container(
-                        //modifier = modifier,
                         enabled = true,
                         isError = false,
                         interactionSource = interactionSource,
@@ -127,11 +128,6 @@ fun AppDropDownList(
                             modifier = Modifier.fillMaxWidth(),
                             text = item,
                             textAlign = TextAlign.Center
-                            /*style = TextStyle(
-                                platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false,
-                                ),
-                            )*/
                         )
                     }
                 )

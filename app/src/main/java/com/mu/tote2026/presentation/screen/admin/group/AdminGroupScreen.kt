@@ -35,7 +35,6 @@ import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
-
 @Composable
 fun AdminGroupScreen(
     viewModel: AdminGroupViewModel = hiltViewModel(),
@@ -95,8 +94,9 @@ fun AdminGroupScreen(
                     ),
                     error = viewModel.idError,
                     modifier = Modifier.padding(
-                        horizontal = 20.dp,
-                        vertical = 12.dp
+                        top = 12.dp,
+                        start = 20.dp,
+                        end = 20.dp,
                     )
                 )
                 AppOutlinedTextField(
@@ -108,8 +108,9 @@ fun AdminGroupScreen(
                         keyboardType = KeyboardType.Text
                     ),
                     modifier = Modifier.padding(
-                        horizontal = 20.dp,
-                        vertical = 12.dp
+                        start = 20.dp,
+                        end = 20.dp,
+                        bottom = 8.dp,
                     )
                 )
                 HorizontalDivider(thickness = 1.dp)

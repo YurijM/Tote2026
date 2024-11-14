@@ -15,7 +15,6 @@ import com.mu.tote2026.presentation.utils.Errors.ADD_GOAL_INCORRECT
 import com.mu.tote2026.presentation.utils.GROUPS_COUNT
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
 import com.mu.tote2026.presentation.utils.generateResult
-import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -66,7 +65,6 @@ class StakeViewModel @Inject constructor(
 
     init {
         val args = savedStateHandle.toRoute<StakeDestination>()
-        toLog("args: $args")
         gameUseCase.getGamblerGameStake(args.gameId, args.gamblerId).onEach { gameState ->
             _state.value = StakeState(gameState)
 
@@ -97,7 +95,6 @@ class StakeViewModel @Inject constructor(
             }
 
             is StakeEvent.OnByPenaltyChange -> {
-                toLog("by penalty: ${event.team}")
                 stake = stake.copy(byPenalty = event.team)
                 enabled = checkValues()
             }
@@ -175,23 +172,13 @@ class StakeViewModel @Inject constructor(
         }
 
     private fun checkExtraTime(): Boolean {
-        var result = if (stake.addGoal1.isNotBlank())
-            stake.addGoal1 >= stake.goal1
-        else
-            true
+        var result = (stake.addGoal1.isNotBlank() && (stake.addGoal1 >= stake.goal1))
+        result = (result && (stake.addGoal2.isNotBlank()) && (stake.addGoal2 >= stake.goal2))
 
-        result = result && if (stake.addGoal2.isNotBlank())
-            stake.addGoal2 >= stake.goal2
-        else
-            true
+        isByPenalty = result && (stake.addGoal1 == stake.addGoal2)
 
-        /*isByPenalty = (stake.addGoal1.isNotBlank() && stake.addGoal1 >= stake.goal1
-                && stake.addGoal2.isNotBlank() && stake.addGoal2 >= stake.goal2
-                && stake.addGoal1 == stake.addGoal2)*/
-        isByPenalty = stake.addGoal1 == stake.addGoal2
-        toLog("stake.byPenalty: ${stake.byPenalty}")
         if (isByPenalty) {
-            result = result && stake.byPenalty.isNotBlank()
+            result = stake.byPenalty.isNotBlank()
         } else {
             stake = stake.copy(byPenalty = "")
         }
