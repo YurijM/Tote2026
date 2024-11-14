@@ -138,7 +138,7 @@ fun GameItem(
                     modifier = Modifier.wrapContentWidth()
                 ) {
                     Text(
-                        text = stringResource(R.string.add_time_scope, result.addGoal1, result.addGoal2),
+                        text = stringResource(R.string.add_time_score, result.addGoal1, result.addGoal2),
                         lineHeight = .1.em
                     )
                     if (result.byPenalty.isNotBlank()) {

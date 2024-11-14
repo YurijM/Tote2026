@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -100,6 +102,22 @@ fun StakeScreen(
                 )
             }
 
+            if (viewModel.teamGames.isNotEmpty()) {
+                item {
+                    Text(
+                        text = stringResource(R.string.games_played_yet),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                items(viewModel.teamGames) { game ->
+                    GamePlayed(
+                        game = game,
+                        team1 = viewModel.game.team1,
+                        team2 = viewModel.game.team2
+                    )
+                }
+            }
+
             if (GAMBLER.isAdmin) {
                 item {
                     OkAndCancel(
@@ -151,7 +169,7 @@ private fun EditCard(
             viewModel.game,
             viewModel.stake,
             errorMessage = viewModel.errorMainTime,
-            onGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 1, goal))  },
+            onGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 1, goal)) },
             onGoal2Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 2, goal)) }
         )
 
@@ -183,7 +201,8 @@ private fun EditCard(
             titleOk = stringResource(id = R.string.save),
             enabledOk = viewModel.enabled,
             onOK = {
-                viewModel.onEvent(StakeEvent.OnSave) },
+                viewModel.onEvent(StakeEvent.OnSave)
+            },
             onCancel = onCancel
         )
         if (error.isNotBlank()) {
@@ -310,7 +329,7 @@ private fun ExtraTime(
 ) {
     Text(
         modifier = Modifier.fillMaxWidth(),
-        text = stringResource(id = R.string.add_time_score),
+        text = stringResource(id = R.string.add_time),
         textAlign = TextAlign.Center
     )
     Row(
@@ -383,10 +402,9 @@ fun ByPenalty(
     }
 }
 
-/*@Composable
+@Composable
 private fun GamePlayed(
     game: GameModel,
-    flags: GameFlagsModel,
     team1: String,
     team2: String
 ) {
@@ -406,21 +424,21 @@ private fun GamePlayed(
                 Text(
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.End,
-                    text = game.team1,
+                    text = "${game.team1} ",
                     fontWeight = if (game.team1 in listOf(team1, team2))
                         FontWeight.Bold
                     else
                         FontWeight.Normal
                 )
-                ShowFlag(flags.flag1)
+                TeamFlag(game.flag1)
                 Text(
                     modifier = Modifier.padding(horizontal = 4.dp),
                     text = "${game.goal1}:${game.goal2}"
                 )
-                ShowFlag(flags.flag2)
+                TeamFlag(game.flag2)
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = game.team2,
+                    text = " ${game.team2}",
                     fontWeight = if (game.team2 in listOf(team1, team2))
                         FontWeight.Bold
                     else
@@ -429,21 +447,15 @@ private fun GamePlayed(
             }
             if (game.addGoal1.isNotBlank()) {
                 Text(
-                    */
-/*text = "${game.goal1}:${game.goal2}" +
+                    text = "${game.goal1}:${game.goal2}" +
                             if (game.addGoal1.isNotBlank())
-                                ", ${stringResource(id = R.string.add_time)} ${game.addGoal1}:${game.addGoal2}" +
-                                        if (game.penalty.isNotBlank())
-                                            ", ${stringResource(id = R.string.by_penalty)} ${game.penalty}"
+                                ", ${stringResource(id = R.string.add_time_score)} ${game.addGoal1}:${game.addGoal2}" +
+                                        if (game.byPenalty.isNotBlank())
+                                            ", ${stringResource(id = R.string.by_penalty)} ${game.byPenalty}"
                                         else ""
-                            else ""*//*
-
-                    text = "${stringResource(id = R.string.add_time)} ${game.addGoal1}:${game.addGoal2}" +
-                            if (game.penalty.isNotBlank())
-                                ", ${stringResource(id = R.string.by_penalty)} ${game.penalty}"
                             else ""
                 )
             }
         }
     }
-}*/
+}

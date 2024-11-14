@@ -61,13 +61,14 @@
 
     <string name="game_number">Игра №%1$s</string>
     <string name="group_name">группа %1$s</string>
-    <string name="add_time_scope">доп.время %1$s : %2$s</string>
+    <string name="add_time_score">доп.время %1$s : %2$s</string>
     <string name="winner_by_penalty">победитель по пенальти - %1$s</string>
     <string name="stake_is_absent">Ставка отсутсвует</string>
     <string name="stake">Ставка</string>
-    <string name="add_time_score">Счёт в дополнительное время</string>
+    <string name="add_time">дополнительное время</string>
     <string name="by_penalty">по пенальти</string>
     <string name="generate_stake">Сгенерировать ставку</string>
 
     <string name="group_games">Игры в группе</string>
+    <string name="games_played_yet">Прошедшие игры с участием данных команд:</string>
 </resources>

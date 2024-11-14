@@ -36,6 +36,8 @@ class StakeViewModel @Inject constructor(
     var stake by mutableStateOf(StakeModel())
         private set
     private var oldStake = StakeModel()
+    var teamGames by mutableStateOf(listOf<GameModel>())
+        private set
 
     var exit by mutableStateOf(false)
         private set
@@ -79,6 +81,21 @@ class StakeViewModel @Inject constructor(
                 oldStake = stake
 
                 enabled = checkValues()
+
+                gameUseCase.getGameList().onEach { gameListState ->
+                    if (gameListState is UiState.Success) {
+                        teamGames = gameListState.data
+                            .filter {
+                                (it.team1 in listOf(game.team1, game.team2) || it.team2 in listOf(game.team1, game.team2))
+                                        //&& it.start.toLong() < System.currentTimeMillis()
+                                        && it.id != game.id
+                            }
+                            .sortedWith(
+                                compareBy<GameModel> { it.team1 == game.team2 || it.team2 == game.team2 }
+                                    .thenBy { it.team1 == game.team1 || it.team2 == game.team1 }
+                            )
+                    }
+                }.launchIn(viewModelScope)
             }
         }.launchIn(viewModelScope)
     }
