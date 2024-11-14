@@ -26,13 +26,15 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.presentation.components.AppProgressBar
+import com.mu.tote2026.presentation.navigation.Destinations.GamblerPhotoDestination
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
 @Composable
-fun RatingScreen()
-{
+fun RatingScreen(
+    toGamblerPhoto: (GamblerPhotoDestination) -> Unit
+) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
@@ -73,7 +75,10 @@ fun RatingScreen()
             modifier = Modifier.fillMaxWidth()
         ) {
             items(gamblers) { gambler ->
-                RatingItemScreen(gambler)
+                RatingItemScreen(
+                    gambler,
+                    toGamblerPhoto = { toGamblerPhoto(GamblerPhotoDestination(gambler.photoUrl)) },
+                )
             }
         }
     }

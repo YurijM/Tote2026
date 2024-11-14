@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.screen.rating
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -47,7 +48,8 @@ import com.mu.tote2026.ui.theme.ColorUp
 
 @Composable
 fun RatingItemScreen(
-    gambler: GamblerModel
+    gambler: GamblerModel,
+    toGamblerPhoto: () -> Unit
 ) {
     val placeholder = rememberVectorPainter(
         image = Icons.Rounded.AccountCircle
@@ -104,10 +106,10 @@ fun RatingItemScreen(
                     .size(dimensionResource(R.dimen.gambler_photo_size))
                     .aspectRatio(1f / 1f)
                     .clip(CircleShape)
+                    .clickable { toGamblerPhoto() }
             )
             Column(
                 modifier = Modifier
-                    //.fillMaxWidth(.65f)
                     .weight(.8f)
                     .padding(horizontal = 4.dp)
             ) {
@@ -145,14 +147,12 @@ fun RatingItemScreen(
                     fontSize = MaterialTheme.typography.labelLarge.fontSize,
                     color = color,
                     modifier = Modifier
-                        //.fillMaxWidth(.3f)
                         .weight(.1f)
                 )
                 Text(
                     text = gambler.points.toString(),
                     textAlign = TextAlign.End,
                     modifier = Modifier
-                        //.fillMaxWidth(1f)
                         .weight(.2f)
                 )
             }

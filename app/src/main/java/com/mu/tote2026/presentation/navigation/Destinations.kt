@@ -17,6 +17,10 @@ sealed class Destinations {
     @Serializable
     object RatingDestination: Destinations()
     @Serializable
+    data class GamblerPhotoDestination(
+        val photoUrl: String = ""
+    ): Destinations()
+    @Serializable
     object StakesDestination: Destinations()
     @Serializable
     data class StakeDestination(

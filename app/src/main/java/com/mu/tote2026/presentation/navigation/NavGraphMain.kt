@@ -23,6 +23,8 @@ import com.mu.tote2026.presentation.navigation.destination.game.games
 import com.mu.tote2026.presentation.navigation.destination.game.groupGames
 import com.mu.tote2026.presentation.navigation.destination.game.navigateToGroupGame
 import com.mu.tote2026.presentation.navigation.destination.prognosis.prognosis
+import com.mu.tote2026.presentation.navigation.destination.rating.gamblerPhoto
+import com.mu.tote2026.presentation.navigation.destination.rating.navigateToGamblerPhoto
 import com.mu.tote2026.presentation.navigation.destination.rating.rating
 import com.mu.tote2026.presentation.navigation.destination.stake.navigateToStake
 import com.mu.tote2026.presentation.navigation.destination.stake.navigateToStakeList
@@ -37,7 +39,12 @@ fun NavGraphMain(
         navController = navMainController,
         startDestination = RatingDestination
     ) {
-        rating()
+        rating(
+            toGamblerPhoto = { args ->
+                navMainController.navigateToGamblerPhoto(args)
+            }
+        )
+        gamblerPhoto()
         stakes(
             toStakeEdit = { args ->
                 navMainController.navigateToStake(args)
