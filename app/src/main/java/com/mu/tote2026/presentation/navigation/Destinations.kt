@@ -32,5 +32,11 @@ sealed class Destinations {
     @Serializable
     object GamesDestination: Destinations()
     @Serializable
-    data class GroupGamesDestination(val group: String): Destinations()
+    data class GroupGamesDestination(
+        val group: String = ""
+    ): Destinations()
+    @Serializable
+    data class GameDestination(
+        val id: String = ""
+    ): Destinations()
 }

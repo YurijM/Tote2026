@@ -21,12 +21,15 @@ import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.GameItem
 import com.mu.tote2026.presentation.components.Title
+import com.mu.tote2026.presentation.navigation.Destinations.GameDestination
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
 @Composable
-fun GroupGameListScreen() {
+fun GroupGameListScreen(
+    toGameEdit: (GameDestination) -> Unit
+) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
@@ -62,7 +65,7 @@ fun GroupGameListScreen() {
         Title(stringResource(R.string.group_games))
         LazyColumn {
             items(games.toList()) { game ->
-                GameItem(game) { }
+                GameItem(game) { toGameEdit(GameDestination(game.id)) }
             }
         }
     }

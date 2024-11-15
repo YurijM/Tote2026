@@ -68,7 +68,8 @@
     <string name="add_time">дополнительное время</string>
     <string name="by_penalty">по пенальти</string>
     <string name="generate_stake">Сгенерировать ставку</string>
-
     <string name="group_games">Игры в группе</string>
     <string name="games_played_yet">Прошедшие игры с участием данных команд:</string>
+
+    <string name="game">Игра</string>
 </resources>

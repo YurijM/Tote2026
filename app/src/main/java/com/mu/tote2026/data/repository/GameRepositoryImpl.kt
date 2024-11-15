@@ -43,8 +43,23 @@ class GameRepositoryImpl(
         }
     }
 
-    override fun getGame(id: String): Flow<UiState<GameModel>> {
-        TODO("Not yet implemented")
+    override fun getGame(id: String): Flow<UiState<GameModel>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        firestore.collection(GAMES).document(id).get()
+            .addOnSuccessListener { task ->
+                var game = task.toObject(GameModel::class.java) ?: GameModel(id)
+
+                trySend(UiState.Success(game))
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error(error.message ?: "getGame: error is not defined"))
+            }
+
+        awaitClose {
+            toLog("getGame: awaitClose")
+            close()
+        }
     }
 
     override fun saveGame(game: GameModel): Flow<UiState<GameModel>> = callbackFlow {
