@@ -2,7 +2,6 @@ package com.mu.tote2026.presentation.screen.stake
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,14 +28,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.data.repository.GAMBLER
-import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.ByPenalty
 import com.mu.tote2026.presentation.components.ExtraTime
 import com.mu.tote2026.presentation.components.GameInfo
+import com.mu.tote2026.presentation.components.GamesPlayed
 import com.mu.tote2026.presentation.components.MainTime
 import com.mu.tote2026.presentation.components.OkAndCancel
-import com.mu.tote2026.presentation.components.TeamFlag
 import com.mu.tote2026.presentation.components.TextError
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.toLog
@@ -155,7 +153,7 @@ fun StakeScreen(
                     )
                 }
                 items(viewModel.teamGames) { game ->
-                    GamePlayed(
+                    GamesPlayed(
                         game = game,
                         team1 = viewModel.game.team1,
                         team2 = viewModel.game.team2
@@ -184,63 +182,5 @@ fun StakeScreen(
 
     if (isLoading) {
         AppProgressBar()
-    }
-}
-
-@Composable
-private fun GamePlayed(
-    game: GameModel,
-    team1: String,
-    team2: String
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 4.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.End,
-                    text = "${game.team1} ",
-                    fontWeight = if (game.team1 in listOf(team1, team2))
-                        FontWeight.Bold
-                    else
-                        FontWeight.Normal
-                )
-                TeamFlag(game.flag1)
-                Text(
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                    text = "${game.goal1}:${game.goal2}"
-                )
-                TeamFlag(game.flag2)
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = " ${game.team2}",
-                    fontWeight = if (game.team2 in listOf(team1, team2))
-                        FontWeight.Bold
-                    else
-                        FontWeight.Normal
-                )
-            }
-            if (game.addGoal1.isNotBlank()) {
-                Text(
-                    text = "${game.goal1}:${game.goal2}" +
-                            if (game.addGoal1.isNotBlank())
-                                ", ${stringResource(id = R.string.add_time_score)} ${game.addGoal1}:${game.addGoal2}" +
-                                        if (game.byPenalty.isNotBlank())
-                                            ", ${stringResource(id = R.string.by_penalty)} ${game.byPenalty}"
-                                        else ""
-                            else ""
-                )
-            }
-        }
     }
 }

@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,10 +21,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
-import com.mu.tote2026.domain.model.GameModel
+import com.mu.tote2026.data.repository.GAMBLER
+import com.mu.tote2026.presentation.components.ByPenalty
+import com.mu.tote2026.presentation.components.ExtraTime
+import com.mu.tote2026.presentation.components.GameInfo
+import com.mu.tote2026.presentation.components.MainTime
+import com.mu.tote2026.presentation.components.OkAndCancel
+import com.mu.tote2026.presentation.components.TextError
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.navigation.Destinations.GroupGamesDestination
 import com.mu.tote2026.presentation.utils.toLog
@@ -36,7 +47,6 @@ fun GameScreen(
     val viewModel: GameViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val result = state.result
-    var game by remember { mutableStateOf(GameModel()) }
 
     LaunchedEffect(key1 = result) {
         toLog("GameScreen result: $result")
@@ -47,9 +57,8 @@ fun GameScreen(
 
             is UiState.Success -> {
                 isLoading = false
-                game = result.data
 
-                if (viewModel.exit) toGroupGamesList(GroupGamesDestination(game.group))
+                if (viewModel.exit) toGroupGamesList(GroupGamesDestination(viewModel.game.group))
             }
 
             is UiState.Error -> {
@@ -73,25 +82,81 @@ fun GameScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                Text("${game.team1} - ${game.team2}")
+                Card(
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 8.dp
+                    ),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(.85f)
+                        .padding(vertical = 8.dp)
+                ) {
+                    GameInfo(viewModel.game)
+                    MainTime(
+                        game = viewModel.game,
+                        errorMessage = viewModel.errorMainTime,
+                        onGoal1Change = { goal -> viewModel.onEvent(GameEvent.OnGoalChange(false, 1, goal)) },
+                        onGoal2Change = { goal -> viewModel.onEvent(GameEvent.OnGoalChange(false, 2, goal)) },
+                    )
+                    if (viewModel.isExtraTime) {
+                        ExtraTime(
+                            game = viewModel.game,
+                            errorMessage = viewModel.errorExtraTime,
+                            onAddGoal1Change = { goal -> viewModel.onEvent(GameEvent.OnGoalChange(true, 1, goal)) },
+                            onAddGoal2Change = { goal -> viewModel.onEvent(GameEvent.OnGoalChange(true, 2, goal)) }
+                        )
+                        if (viewModel.isByPenalty) {
+                            ByPenalty(
+                                teams = listOf(
+                                    "",
+                                    viewModel.game.team1,
+                                    viewModel.game.team2
+                                ),
+                                selectedTeam = viewModel.game.byPenalty,
+                                errorMessage = viewModel.errorByPenalty,
+                                onClick = { selectedItem -> viewModel.onEvent(GameEvent.OnByPenaltyChange(selectedItem)) }
+                            )
+                        }
+                    }
+                    HorizontalDivider(
+                        modifier = Modifier.padding(top = 8.dp),
+                        thickness = 1.dp,
+                    )
+                    OkAndCancel(
+                        titleOk = stringResource(id = R.string.save),
+                        enabledOk = viewModel.enabled,
+                        onOK = {
+                            viewModel.onEvent(GameEvent.OnSave)
+                        },
+                        onCancel = { toGroupGamesList(GroupGamesDestination(viewModel.game.group)) }
+                    )
+                    if (error.isNotBlank()) {
+                        TextError(
+                            error = error,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
             }
 
-            /*if (GAMBLER.isAdmin) {
+            if (GAMBLER.isAdmin) {
                 item {
                     OkAndCancel(
                         titleOk = stringResource(R.string.generate_stake),
                         enabledOk = true,
                         showCancel = false,
-                        onOK = { viewModel.onEvent(StakeEvent.OnGenerateStake) },
+                        onOK = { viewModel.onEvent(GameEvent.OnGenerateGame) },
                         onCancel = {}
                     )
                     Text(
-                        text = viewModel.generatedStake.value,
+                        text = viewModel.generatedGame.value,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
-            }*/
+            }
         }
     }
 }

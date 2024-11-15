@@ -6,5 +6,9 @@ import com.mu.tote2026.presentation.navigation.Destinations.GroupGamesDestinatio
 fun NavController.navigateToGroupGames(
     args: GroupGamesDestination
 ) {
-    navigate(GroupGamesDestination(args.group))
+    navigate(GroupGamesDestination(args.group)) {
+        popUpTo(GroupGamesDestination(args.group)) {
+            inclusive = true
+        }
+    }
 }
