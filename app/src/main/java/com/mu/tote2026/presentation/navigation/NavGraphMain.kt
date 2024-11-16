@@ -23,6 +23,7 @@ import com.mu.tote2026.presentation.navigation.destination.game.game
 import com.mu.tote2026.presentation.navigation.destination.game.games
 import com.mu.tote2026.presentation.navigation.destination.game.groupGames
 import com.mu.tote2026.presentation.navigation.destination.game.navigateToGame
+import com.mu.tote2026.presentation.navigation.destination.game.navigateToGames
 import com.mu.tote2026.presentation.navigation.destination.game.navigateToGroupGames
 import com.mu.tote2026.presentation.navigation.destination.prognosis.prognosis
 import com.mu.tote2026.presentation.navigation.destination.rating.gamblerPhoto
@@ -72,7 +73,8 @@ fun NavGraphMain(
         game(
             toGroupGamesList = { args ->
                 navMainController.navigateToGroupGames(args)
-            }
+            },
+            toGameList = { navMainController.navigateToGames() }
         )
 
         adminMain(

@@ -7,11 +7,13 @@ import com.mu.tote2026.presentation.navigation.Destinations.GroupGamesDestinatio
 import com.mu.tote2026.presentation.screen.game.GameScreen
 
 fun NavGraphBuilder.game(
-    toGroupGamesList: (GroupGamesDestination) -> Unit
+    toGroupGamesList: (GroupGamesDestination) -> Unit,
+    toGameList: () -> Unit
 ) {
     composable<GameDestination> { backStackEntry ->
         GameScreen(
-            toGroupGamesList = toGroupGamesList
+            toGroupGamesList = toGroupGamesList,
+            toGameList = toGameList
         )
     }
 }

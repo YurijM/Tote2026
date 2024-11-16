@@ -34,12 +34,14 @@ import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.TextError
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.navigation.Destinations.GroupGamesDestination
+import com.mu.tote2026.presentation.utils.GROUPS_COUNT
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
 @Composable
 fun GameScreen(
-    toGroupGamesList: (GroupGamesDestination) -> Unit
+    toGroupGamesList: (GroupGamesDestination) -> Unit,
+    toGameList: () -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
@@ -58,7 +60,12 @@ fun GameScreen(
             is UiState.Success -> {
                 isLoading = false
 
-                if (viewModel.exit) toGroupGamesList(GroupGamesDestination(viewModel.game.group))
+                if (viewModel.exit) {
+                    if (viewModel.game.groupId.toInt() <= GROUPS_COUNT)
+                        toGroupGamesList(GroupGamesDestination(viewModel.game.group))
+                    else
+                        toGameList()
+                }
             }
 
             is UiState.Error -> {
@@ -127,10 +134,12 @@ fun GameScreen(
                     OkAndCancel(
                         titleOk = stringResource(id = R.string.save),
                         enabledOk = viewModel.enabled,
-                        onOK = {
-                            viewModel.onEvent(GameEvent.OnSave)
-                        },
-                        onCancel = { toGroupGamesList(GroupGamesDestination(viewModel.game.group)) }
+                        onOK = { viewModel.onEvent(GameEvent.OnSave) },
+                        onCancel = { if (viewModel.game.groupId.toInt() <= GROUPS_COUNT)
+                            toGroupGamesList(GroupGamesDestination(viewModel.game.group))
+                        else
+                            toGameList()
+                        }
                     )
                     if (error.isNotBlank()) {
                         TextError(
