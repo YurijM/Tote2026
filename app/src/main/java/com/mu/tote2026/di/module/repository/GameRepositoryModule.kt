@@ -9,7 +9,6 @@ import com.mu.tote2026.domain.usecase.game_usecase.GetGamblerGameStake
 import com.mu.tote2026.domain.usecase.game_usecase.GetGamblerStakes
 import com.mu.tote2026.domain.usecase.game_usecase.GetGame
 import com.mu.tote2026.domain.usecase.game_usecase.GetGameList
-import com.mu.tote2026.domain.usecase.game_usecase.GetGroupTeamResult
 import com.mu.tote2026.domain.usecase.game_usecase.SaveGame
 import com.mu.tote2026.domain.usecase.game_usecase.SaveStake
 import dagger.Module
@@ -34,8 +33,6 @@ object GameRepositoryModule {
         getGame = GetGame(gameRepository),
         saveGame = SaveGame(gameRepository),
         deleteGame = DeleteGame(gameRepository),
-
-        getGroupTeamResult = GetGroupTeamResult(gameRepository),
 
         getGamblerStakes = GetGamblerStakes(gameRepository),
         getGamblerGameStake = GetGamblerGameStake(gameRepository),

@@ -35,11 +35,17 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.data.repository.GAMBLER
+import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.GroupTeamResultModel
 import com.mu.tote2026.presentation.components.AppProgressBar
+import com.mu.tote2026.presentation.components.GameItem
+import com.mu.tote2026.presentation.navigation.Destinations.GameDestination
 import com.mu.tote2026.presentation.navigation.Destinations.GroupGamesDestination
 import com.mu.tote2026.presentation.utils.BRUSH
+import com.mu.tote2026.presentation.utils.GROUPS
+import com.mu.tote2026.presentation.utils.GROUPS_COUNT
 import com.mu.tote2026.presentation.utils.errorTranslate
+import com.mu.tote2026.presentation.utils.getGroupTeamResult
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import com.mu.tote2026.ui.theme.ColorDefeat
@@ -52,7 +58,8 @@ import com.mu.tote2026.ui.theme.ColorWin
 @SuppressLint("MutableCollectionMutableState")
 @Composable
 fun GameListScreen(
-    toGroupGameList: (GroupGamesDestination) -> Unit
+    toGroupGameList: (GroupGamesDestination) -> Unit,
+    toGameEdit: (GameDestination) -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
@@ -60,7 +67,8 @@ fun GameListScreen(
     val viewModel: GameListViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val result = state.result
-    var groupResult by remember { mutableStateOf<Map<String, List<GroupTeamResultModel>>>(mapOf()) }
+    //var groupResult by remember { mutableStateOf<Map<String, List<GroupTeamResultModel>>>(mapOf()) }
+    var games by remember { mutableStateOf<List<GameModel>>(listOf()) }
 
     LaunchedEffect(key1 = result) {
         toLog("GameListScreen $result")
@@ -71,7 +79,7 @@ fun GameListScreen(
 
             is UiState.Success -> {
                 isLoading = false
-                groupResult = result.data
+                games = result.data
             }
 
             is UiState.Error -> {
@@ -87,16 +95,31 @@ fun GameListScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         LazyColumn {
-            items(groupResult.toList()) { group ->
+            GROUPS.takeLast(GROUPS.size - GROUPS_COUNT).reversed().forEach { group ->
+                if (games.filter { it.group == group }.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = group,
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+                items(games.filter { it.group == group }.sortedByDescending { it.id.toInt() }) { game ->
+                    GameItem(game) { toGameEdit(GameDestination(game.id)) }
+                }
+            }
+            items(GROUPS.take(GROUPS_COUNT)) { group ->
                 Text(
-                    text = "Группа ${group.first}",
+                    text = "Группа $group",
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Games_Table(
-                    result = group.second,
-                    onClick = { if (GAMBLER.isAdmin) toGroupGameList(GroupGamesDestination(group.first)) }
+                    result = getGroupTeamResult(games.filter { it.group == group }),
+                    onClick = { if (GAMBLER.isAdmin) toGroupGameList(GroupGamesDestination(group)) }
                 )
             }
         }

@@ -554,5 +554,47 @@ class AdminGameListViewModel @Inject constructor(
             flag2 = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Ftur" +
                     ".png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7",
         ),
+        GameModel(
+            id = "37",
+            start = convertDateTimeToTimestamp("28.06.2026 19:00"),
+            group = "1/8 финала",
+            groupId = "9",
+            team1 = "Германия",
+            team1ItemNo = "",
+            flag1 = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fger" +
+                    ".png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7",
+            team2 = "Франция",
+            team2ItemNo = "",
+            flag2 = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Ffra" +
+                    ".png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7",
+        ),
+        GameModel(
+            id = "38",
+            start = convertDateTimeToTimestamp("28.06.2026 22:00"),
+            group = "1/8 финала",
+            groupId = "9",
+            team1 = "Дания",
+            team1ItemNo = "",
+            flag1 = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fden" +
+                    ".png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7",
+            team2 = "Румыния",
+            team2ItemNo = "",
+            flag2 = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Frou" +
+                    ".png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+        ),
+        GameModel(
+            id = "39",
+            start = convertDateTimeToTimestamp("28.06.2026 22:00"),
+            group = "1/4 финала",
+            groupId = "10",
+            team1 = "Сербия",
+            team1ItemNo = "",
+            flag1 = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fsrb" +
+                    ".png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7",
+            team2 = "Бельгия",
+            team2ItemNo = "",
+            flag2 = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fbel" +
+                    ".png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+        ),
     )
 }

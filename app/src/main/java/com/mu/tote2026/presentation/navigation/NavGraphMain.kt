@@ -59,6 +59,9 @@ fun NavGraphMain(
         games(
             toGroupGameList = { args ->
                 navMainController.navigateToGroupGames(args)
+            },
+            toGameEdit = { args ->
+                navMainController.navigateToGame(args)
             }
         )
         groupGames(

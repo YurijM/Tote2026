@@ -2,7 +2,7 @@ package com.mu.tote2026.presentation.screen.game.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mu.tote2026.domain.model.GroupTeamResultModel
+import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,22 +16,22 @@ import javax.inject.Inject
 class GameListViewModel @Inject constructor(
     gameUseCase: GameUseCase
 ) : ViewModel() {
-    private val _state: MutableStateFlow<GroupTeamResultState> = MutableStateFlow(GroupTeamResultState())
+    private val _state: MutableStateFlow<GamesState> = MutableStateFlow(GamesState())
     val state = _state.asStateFlow()
 
     init {
-        gameUseCase.getGroupTeamResult().onEach { groupTeamResultState ->
-            _state.value = GroupTeamResultState(groupTeamResultState)
+        gameUseCase.getGameList().onEach { gameState ->
+            _state.value = GamesState(gameState)
 
-            if (groupTeamResultState is UiState.Success) {
-                _state.value = GroupTeamResultState(
-                    UiState.Success(groupTeamResultState.data)
+            if (gameState is UiState.Success) {
+                _state.value = GamesState(
+                    UiState.Success(gameState.data)
                 )
             }
         }.launchIn(viewModelScope)
     }
 
-    data class GroupTeamResultState(
-        val result: UiState<Map<String, List<GroupTeamResultModel>>> = UiState.Default
+    data class GamesState(
+        val result: UiState<List<GameModel>> = UiState.Default
     )
 }
