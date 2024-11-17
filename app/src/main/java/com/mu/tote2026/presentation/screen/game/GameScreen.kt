@@ -6,10 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,12 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.data.repository.GAMBLER
-import com.mu.tote2026.presentation.components.ByPenalty
-import com.mu.tote2026.presentation.components.ExtraTime
-import com.mu.tote2026.presentation.components.GameInfo
-import com.mu.tote2026.presentation.components.MainTime
 import com.mu.tote2026.presentation.components.OkAndCancel
-import com.mu.tote2026.presentation.components.TextError
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.navigation.Destinations.GroupGamesDestination
 import com.mu.tote2026.presentation.utils.GROUPS_COUNT
@@ -89,7 +80,7 @@ fun GameScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
-                Card(
+                /*Card(
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 8.dp
                     ),
@@ -147,13 +138,13 @@ fun GameScreen(
                             textAlign = TextAlign.Center
                         )
                     }
-                }
+                }*/
             }
 
             if (GAMBLER.isAdmin) {
                 item {
                     OkAndCancel(
-                        titleOk = stringResource(R.string.generate_stake),
+                        titleOk = stringResource(R.string.generate_result),
                         enabledOk = true,
                         showCancel = false,
                         onOK = { viewModel.onEvent(GameEvent.OnGenerateGame) },
