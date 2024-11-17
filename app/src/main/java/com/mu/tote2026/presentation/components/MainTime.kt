@@ -22,7 +22,7 @@ import com.mu.tote2026.domain.model.StakeModel
 @Composable
 fun MainTime(
     game: GameModel,
-    stake: StakeModel? = null,
+    stake: StakeModel,
     errorMessage: String,
     onGoal1Change: (String) -> Unit,
     onGoal2Change: (String) -> Unit,
@@ -57,7 +57,7 @@ fun MainTime(
             contentAlignment = Alignment.CenterEnd
         ) {
             AppOutlinedTextField(
-                value = if (stake != null) stake.goal1 else game.goal1,
+                value = stake.goal1,
                 textAlign = TextAlign.Center,
                 onChange = { newValue -> onGoal1Change(newValue) },
                 keyboardOptions = KeyboardOptions(
@@ -72,7 +72,7 @@ fun MainTime(
             contentAlignment = Alignment.CenterStart
         ) {
             AppOutlinedTextField(
-                value = if (stake != null) stake.goal2 else game.goal2,
+                value = stake.goal2,
                 textAlign = TextAlign.Center,
                 onChange = { newValue -> onGoal2Change(newValue) },
                 keyboardOptions = KeyboardOptions(

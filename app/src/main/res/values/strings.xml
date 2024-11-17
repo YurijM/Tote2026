@@ -72,4 +72,5 @@
     <string name="games_played_yet">Прошедшие игры с участием данных команд:</string>
 
     <string name="game">Игра</string>
+    <string name="generate_result">Сгенерировать результат</string>
 </resources>
