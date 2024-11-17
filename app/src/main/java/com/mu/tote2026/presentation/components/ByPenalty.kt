@@ -13,7 +13,7 @@ import com.mu.tote2026.R
 fun ByPenalty(
     teams: List<String>,
     selectedTeam: String,
-    errorMessage: String,
+    error: String,
     onClick: (String) -> Unit
 ) {
     Box(
@@ -27,9 +27,9 @@ fun ByPenalty(
             onClick = { selectedItem -> onClick(selectedItem) }
         )
     }
-    if (errorMessage.isNotBlank()) {
+    if (error.isNotBlank()) {
         TextError(
-            error = errorMessage,
+            error = error,
             textAlign = TextAlign.Center
         )
     }

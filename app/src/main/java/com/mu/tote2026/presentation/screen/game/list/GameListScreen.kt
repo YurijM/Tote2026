@@ -45,6 +45,7 @@ import com.mu.tote2026.presentation.navigation.Destinations.GroupGamesDestinatio
 import com.mu.tote2026.presentation.utils.BRUSH
 import com.mu.tote2026.presentation.utils.GROUPS
 import com.mu.tote2026.presentation.utils.GROUPS_COUNT
+import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.getGroupTeamResult
 import com.mu.tote2026.presentation.utils.toLog
@@ -127,7 +128,7 @@ fun GameListScreen(
     }
     if (GAMBLER.isAdmin) {
         AppFabAdd(
-            onAdd = { /*toGame(ID_NEW_GAME)*/ }
+            onAdd = { toGameEdit(GameDestination(NEW_DOC)) }
         )
     }
 

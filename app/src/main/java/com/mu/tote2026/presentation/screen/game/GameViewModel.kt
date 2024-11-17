@@ -9,9 +9,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
+import com.mu.tote2026.domain.usecase.team_usecase.TeamUseCase
 import com.mu.tote2026.presentation.navigation.Destinations.GameDestination
 import com.mu.tote2026.presentation.utils.Errors.ADD_GOAL_INCORRECT
+import com.mu.tote2026.presentation.utils.GROUPS
 import com.mu.tote2026.presentation.utils.GROUPS_COUNT
+import com.mu.tote2026.presentation.utils.NEW_DOC
+import com.mu.tote2026.presentation.utils.asTime
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
 import com.mu.tote2026.presentation.utils.generateResult
 import com.mu.tote2026.ui.common.UiState
@@ -25,26 +29,39 @@ import javax.inject.Inject
 @HiltViewModel
 class GameViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val gameUseCase: GameUseCase
+    private val gameUseCase: GameUseCase,
+    private val teamUseCase: TeamUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(GameState())
     val state = _state.asStateFlow()
 
+    private val args = savedStateHandle.toRoute<GameDestination>()
+    private val isNewGame = args.id == NEW_DOC
+
     var game by mutableStateOf(GameModel())
+    val teams = mutableListOf<String>()
 
     var exit by mutableStateOf(false)
         private set
+
+    var startTime = "00:00"
 
     var isExtraTime = false
         private set
     var isByPenalty = false
         private set
 
-    private var errorGoal1 = ""
-    private var errorGoal2 = ""
+    var errorGoal1 = ""
+        private set
+    var errorGoal2 = ""
+        private set
     private var errorAddGoal1 = ""
     private var errorAddGoal2 = ""
 
+    var errorStart = ""
+        private set
+    var errorGameId = ""
+        private set
     var errorMainTime = ""
         private set
     var errorExtraTime = ""
@@ -58,13 +75,21 @@ class GameViewModel @Inject constructor(
     var generatedGame = mutableStateOf("")
 
     init {
-        val args = savedStateHandle.toRoute<GameDestination>()
         gameUseCase.getGame(args.id).onEach { gameState ->
             _state.value = GameState(gameState)
 
             if (gameState is UiState.Success) {
                 game = gameState.data
                 enabled = checkValues()
+
+                teamUseCase.getTeamList().onEach { teamListState ->
+                    if (teamListState is UiState.Success) {
+                        teamListState.data.sortedBy { it.team }.forEach { team ->
+                            teams.add(team.team)
+                        }
+
+                    }
+                }.launchIn(viewModelScope)
             }
         }.launchIn(viewModelScope)
 
@@ -72,6 +97,24 @@ class GameViewModel @Inject constructor(
 
     fun onEvent(event: GameEvent) {
         when (event) {
+            is GameEvent.OnStartChange -> {
+                game = game.copy(start = event.start)
+                startTime = game.start.asTime()
+                errorStart = checkIsFieldEmpty(event.start)
+            }
+            is GameEvent.OnGameIdChange -> {
+                game = game.copy(id = event.id)
+                errorGameId = checkIsFieldEmpty(event.id)
+            }
+            is GameEvent.OnGroupChange -> {
+                game = game.copy(group = event.group)
+            }
+            is GameEvent.OnTeamChange -> {
+                game = if (event.teamNo == 1)
+                    game.copy(team1 = event.team)
+                else
+                    game.copy(team2 = event.team)
+            }
             is GameEvent.OnGoalChange -> {
                 checkGoal(
                     event.extraTime,
@@ -104,6 +147,8 @@ class GameViewModel @Inject constructor(
             is GameEvent.OnGenerateGame -> {
                 generatedGame.value = generateResult()
             }
+
+            else -> {}
         }
     }
 
@@ -111,10 +156,10 @@ class GameViewModel @Inject constructor(
         if (!extraTime) {
             if (teamNo == 1) {
                 game = game.copy(goal1 = goal)
-                errorGoal1 = checkIsFieldEmpty(goal)
+                errorGoal1 = if (isNewGame) "" else checkIsFieldEmpty(goal)
             } else {
                 game = game.copy(goal2 = goal)
-                errorGoal2 = checkIsFieldEmpty(goal)
+                errorGoal2 = if (isNewGame) "" else checkIsFieldEmpty(goal)
             }
             errorMainTime = errorGoal1.ifBlank { errorGoal2 }
         } else {
@@ -138,23 +183,36 @@ class GameViewModel @Inject constructor(
     }
 
     private fun checkMainTime(): Boolean =
-        if (game.goal1.isNotBlank()
-            && game.goal2.isNotBlank()
+        if (game.id.isNotBlank()
+            && game.start.isNotBlank()
+            && game.group.isNotBlank()
+            && game.team1.isNotBlank()
+            && game.team2.isNotBlank()
         ) {
-            isExtraTime = (game.groupId.isNotBlank()
-                    && game.groupId.toInt() >= GROUPS_COUNT
-                    && game.goal1 == game.goal2)
-            if (!isExtraTime) {
-                game = game.copy(
-                    addGoal1 = "",
-                    addGoal2 = "",
-                    byPenalty = "",
-                )
+            if (isNewGame) {
+                true
+            } else {
+                if (game.goal1.isNotBlank()
+                    && game.goal2.isNotBlank()
+                ) {
+                    isExtraTime = (GROUPS.indexOf(game.group) >= GROUPS_COUNT
+                            && game.goal1 == game.goal2)
+                    if (!isExtraTime) {
+                        game = game.copy(
+                            addGoal1 = "",
+                            addGoal2 = "",
+                            byPenalty = "",
+                        )
+                    }
+                    true
+                } else {
+                    true //false
+                }
             }
-            true
         } else {
             false
         }
+
 
     private fun checkExtraTime(): Boolean {
         var result = (game.addGoal1.isNotBlank() && (game.addGoal1 >= game.goal1))

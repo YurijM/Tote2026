@@ -103,6 +103,19 @@ fun String.asDateTime(withSeconds: Boolean = false, toLocale: Boolean = false): 
     }
 }
 
+fun String.asTime(): String {
+    val format = "HH:mm"
+
+    val formatter = SimpleDateFormat(format, Locale.getDefault())
+
+    return try {
+        formatter.format(Date(this.toLong()))
+    } catch (e: Exception) {
+        toLog("Ошибка asTime ${e.message}")
+        ""
+    }
+}
+
 fun generateResult() : String {
     val goal1 = (0..3).random()
     val goal2 = (0..3).random()

@@ -107,7 +107,7 @@ fun StakeScreen(
                     if (viewModel.isExtraTime) {
                         ExtraTime(
                             stake = viewModel.stake,
-                            errorMessage = viewModel.errorExtraTime,
+                            error = viewModel.errorExtraTime,
                             onAddGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(true, 1, goal)) },
                             onAddGoal2Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(true, 2, goal)) },
                         )
@@ -119,7 +119,7 @@ fun StakeScreen(
                                     viewModel.game.team2
                                 ),
                                 selectedTeam = viewModel.stake.byPenalty,
-                                errorMessage = viewModel.errorByPenalty,
+                                error = viewModel.errorByPenalty,
                                 onClick = { selectedItem -> viewModel.onEvent(StakeEvent.OnByPenaltyChange(selectedItem)) }
                             )
                         }

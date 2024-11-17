@@ -14,12 +14,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import com.mu.tote2026.R
+import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 
 @Composable
 fun ExtraTime(
-    stake: StakeModel,
-    errorMessage: String,
+    game: GameModel? = null,
+    stake: StakeModel? = null,
+    error: String,
     onAddGoal1Change: (String) -> Unit,
     onAddGoal2Change: (String) -> Unit,
 ) {
@@ -37,7 +39,7 @@ fun ExtraTime(
             contentAlignment = Alignment.CenterEnd
         ) {
             AppOutlinedTextField(
-                value = stake.addGoal1,
+                value = if (game != null) game.addGoal1 else stake?.addGoal1 ?: "",
                 textAlign = TextAlign.Center,
                 onChange = { newValue -> onAddGoal1Change(newValue) },
                 keyboardOptions = KeyboardOptions(
@@ -54,7 +56,7 @@ fun ExtraTime(
             contentAlignment = Alignment.CenterStart
         ) {
             AppOutlinedTextField(
-                value = stake.addGoal2,
+                value = if (game != null) game.addGoal2 else stake?.addGoal2 ?: "",
                 textAlign = TextAlign.Center,
                 onChange = { newValue -> onAddGoal2Change(newValue) },
                 keyboardOptions = KeyboardOptions(
@@ -64,9 +66,9 @@ fun ExtraTime(
             )
         }
     }
-    if (errorMessage.isNotBlank()) {
+    if (error.isNotBlank()) {
         TextError(
-            error = errorMessage,
+            error = error,
             textAlign = TextAlign.Center
         )
     }

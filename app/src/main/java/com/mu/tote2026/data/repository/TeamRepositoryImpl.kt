@@ -40,7 +40,7 @@ class TeamRepositoryImpl(
 
         firestore.collection(TEAMS).document(id).get()
             .addOnSuccessListener { task ->
-                val team = task.toObject(TeamModel::class.java) ?: TeamModel(id)
+                val team = task.toObject(TeamModel::class.java) ?: TeamModel()
                 trySend(UiState.Success(team))
             }
             .addOnFailureListener { error ->

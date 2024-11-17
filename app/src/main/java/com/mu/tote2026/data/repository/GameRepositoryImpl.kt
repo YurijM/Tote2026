@@ -44,7 +44,7 @@ class GameRepositoryImpl(
 
         firestore.collection(GAMES).document(id).get()
             .addOnSuccessListener { task ->
-                var game = task.toObject(GameModel::class.java) ?: GameModel(id)
+                var game = task.toObject(GameModel::class.java) ?: GameModel()
 
                 trySend(UiState.Success(game))
             }
