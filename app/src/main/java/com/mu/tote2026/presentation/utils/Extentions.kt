@@ -103,6 +103,20 @@ fun String.asDateTime(withSeconds: Boolean = false, toLocale: Boolean = false): 
     }
 }
 
+fun String.asDate(toLocale: Boolean = false): String {
+    val format = "dd.MM.y"
+    val formatter = SimpleDateFormat(format, Locale.getDefault())
+
+    if (toLocale) formatter.timeZone = TimeZone.getTimeZone("Europe/Moscow")
+
+    return try {
+        formatter.format(Date(this.toLong()))
+    } catch (e: Exception) {
+        toLog("Ошибка asDate ${e.message}")
+        ""
+    }
+}
+
 fun String.asTime(): String {
     val format = "HH:mm"
 

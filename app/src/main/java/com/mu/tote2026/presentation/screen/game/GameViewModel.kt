@@ -40,11 +40,10 @@ class GameViewModel @Inject constructor(
 
     var game by mutableStateOf(GameModel())
     val teams = mutableListOf<String>()
+    var startTime = ""
 
     var exit by mutableStateOf(false)
         private set
-
-    var startTime = "00:00"
 
     var isExtraTime = false
         private set
@@ -57,7 +56,6 @@ class GameViewModel @Inject constructor(
         private set
     private var errorAddGoal1 = ""
     private var errorAddGoal2 = ""
-
     var errorStart = ""
         private set
     var errorGameId = ""
@@ -80,6 +78,7 @@ class GameViewModel @Inject constructor(
 
             if (gameState is UiState.Success) {
                 game = gameState.data
+                startTime = game.start.asTime().ifBlank { "00:00" }
                 enabled = checkValues()
 
                 teamUseCase.getTeamList().onEach { teamListState ->
@@ -123,12 +122,10 @@ class GameViewModel @Inject constructor(
                 )
                 enabled = checkValues()
             }
-
             is GameEvent.OnByPenaltyChange -> {
                 game = game.copy(byPenalty = event.team)
                 enabled = checkValues()
             }
-
             is GameEvent.OnSave -> {
                 gameUseCase.saveGame(game).onEach { gameSaveState ->
                     _state.value = when (gameSaveState) {
