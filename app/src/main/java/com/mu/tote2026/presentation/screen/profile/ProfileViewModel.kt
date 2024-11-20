@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.screen.profile
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -29,10 +30,11 @@ class ProfileViewModel @Inject constructor(
 
     var gambler by mutableStateOf(GamblerModel())
         private set
+    var exit by mutableStateOf(false)
+        private set
     private var currentGambler: GamblerModel = GamblerModel()
 
-    //private var photoUri by mutableStateOf<Uri?>(null)
-    private var photoUri by mutableStateOf<ByteArray?>(null)
+    private var photoUri by mutableStateOf<Uri?>(null)
 
     var enabledSaveButton by mutableStateOf(false)
         private set
@@ -45,15 +47,13 @@ class ProfileViewModel @Inject constructor(
 
     init {
         gamblerUseCase.getGambler(CURRENT_ID).onEach { gamblerState ->
-            val result = GamblerState(gamblerState).result
+            _state.value = GamblerState(gamblerState)
 
-            if (result is UiState.Success) {
-                gambler = result.data
+            if (gamblerState is UiState.Success) {
+                gambler = gamblerState.data
                 currentGambler = gambler
                 enabledSaveButton = checkValues()
             }
-
-            //_state.value = GamblerState(gamblerState)
         }.launchIn(viewModelScope)
     }
 
@@ -84,25 +84,28 @@ class ProfileViewModel @Inject constructor(
                             gambler = gambler.copy(photoUrl = photoState.data)
                             gamblerUseCase.saveGambler(gambler).onEach { gamblerState ->
                                 _state.value = GamblerState(gamblerState)
+                                if (gamblerState is UiState.Success) exit = true
                             }.launchIn(viewModelScope)
                         } else if (photoState is UiState.Error) {
                             _state.value = GamblerState(UiState.Error(photoState.error))
                         }
                     }.launchIn(viewModelScope)
                 } else {
-                    //gamblerUseCase.saveGambler(CURRENT_ID, gambler).onEach { gamblerState ->
                     gamblerUseCase.saveGambler(gambler).onEach { gamblerState ->
                         _state.value = GamblerState(gamblerState)
-                        if (gamblerState is UiState.Success)
-                            currentGambler = gamblerState.data
+                        if (gamblerState is UiState.Success) {
+                            exit = true
+                        }
                     }.launchIn(viewModelScope)
                 }
             }
 
             is ProfileEvent.OnCancel -> {
-                if (currentGambler.checkProfile())
+                if (currentGambler.checkProfile()) {
+                    exit = true
+                    currentGambler = currentGambler.copy(nickname = "")
                     _state.value = GamblerState(UiState.Success(currentGambler))
-                else
+                } else
                     _state.value = GamblerState(UiState.Error(ERROR_PROFILE_IS_EMPTY))
             }
         }

@@ -49,7 +49,6 @@ class AuthRepositoryImpl @Inject constructor(
                                     trySend(UiState.Error(message))
                                 }
                         }
-
                 } else {
                     trySend(UiState.Error(ERROR_NEW_USER_IS_NOT_CREATED))
                 }

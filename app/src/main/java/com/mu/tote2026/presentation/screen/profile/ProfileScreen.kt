@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -40,7 +39,6 @@ import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.Errors.ERROR_PROFILE_IS_EMPTY
 import com.mu.tote2026.presentation.utils.FEMALE
 import com.mu.tote2026.presentation.utils.MALE
-import com.mu.tote2026.presentation.utils.bitmapToByteArray
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
@@ -57,8 +55,6 @@ fun ProfileScreen(
     val state by viewModel.state.collectAsState()
     val result = state.result
 
-    val context = LocalContext.current
-
     LaunchedEffect(key1 = result) {
         toLog("ProfileScreen result: $result")
         when (result) {
@@ -70,7 +66,7 @@ fun ProfileScreen(
             is UiState.Success -> {
                 isLoading = false
                 error = ""
-                toMain()
+                if (viewModel.exit) toMain()
             }
 
             is UiState.Error -> {
@@ -124,8 +120,7 @@ fun ProfileScreen(
                     PhotoLoad(
                         photoUrl = viewModel.gambler.photoUrl,
                         onSelect = { uri ->
-                            //viewModel.onEvent(ProfileEvent.OnPhotoChange(uri))
-                            viewModel.onEvent(ProfileEvent.OnPhotoChange(bitmapToByteArray(context, uri)))
+                            viewModel.onEvent(ProfileEvent.OnPhotoChange(uri))
                         },
                         modifier = Modifier.weight(1f)
                     )

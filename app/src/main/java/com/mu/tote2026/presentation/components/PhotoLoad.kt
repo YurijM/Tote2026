@@ -1,9 +1,7 @@
 package com.mu.tote2026.presentation.components
 
-import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -26,18 +24,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.mu.tote2026.R
-import com.mu.tote2026.presentation.utils.bitmapToByteArray
-import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.theme.Color2
 
 @Composable
@@ -47,33 +42,22 @@ fun PhotoLoad(
     onSelect: (uri: Uri) -> Unit,
 ) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
-    val context = LocalContext.current
-    //val bitmap = remember { mutableStateOf<Bitmap?>(null) }
-    val bitmap = remember { mutableStateOf<ByteArray?>(null) }
-
     val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia()
+        contract = ActivityResultContracts.GetContent()
     ) { uri ->
-        toLog("uri: $uri")
         if (uri != null) {
             imageUri = uri
             onSelect(imageUri!!)
         }
     }
 
-    imageUri?.let { uri ->
-        //bitmap.value = getBitmap(context, uri)
-        bitmap.value = bitmapToByteArray(context, uri)
-    }
-
     Column(
         modifier = modifier.padding(top = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (bitmap.value != null) {
+        if (imageUri != null) {
             Image(
-                //bitmap = bitmap.value!!.asImageBitmap(),
-                bitmap = BitmapFactory.decodeByteArray(bitmap.value, 0, bitmap.value!!.size).asImageBitmap(),
+                painter = rememberAsyncImagePainter(model = imageUri),
                 contentDescription = null,
                 modifier = Modifier
                     .requiredSize(dimensionResource(id = R.dimen.profile_photo_size))
@@ -114,43 +98,9 @@ fun PhotoLoad(
         Text(
             text = stringResource(id = (if (photoUrl.isBlank()) R.string.load_photo else R.string.change_photo)),
             modifier = Modifier.clickable {
-                launcher.launch(
-                    PickVisualMediaRequest(
-                        mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
-                    )
-                )
+                launcher.launch("image/*")
             },
             textDecoration = TextDecoration.Underline,
         )
     }
 }
-
-/*fun PhotoLoading() {
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia()
-    ) { uri ->
-        if (uri == null) return@rememberLauncherForActivityResult
-
-
-    }
-}*/
-
-/*private fun bitmapToByteArray(
-    context: Context,
-    uri: Uri
-): ByteArray {
-    val inputStream = context.contentResolver.openInputStream(uri)
-    val bitmap = BitmapFactory.decodeStream(inputStream)
-    val baos = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
-    return baos.toByteArray()
-}*/
-
-/*
-private fun getBitmap(
-    context: Context,
-    uri: Uri
-): Bitmap {
-  val inputStream = context.contentResolver.openInputStream(uri)
-  return BitmapFactory.decodeStream(inputStream)
-}*/

@@ -1,5 +1,6 @@
 package com.mu.tote2026.data.repository
 
+import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.mu.tote2026.data.repository.Collections.GAMBLERS
@@ -52,23 +53,6 @@ class GamblerRepositoryImpl(
         }
     }
 
-    /*override fun getGambler(email: String): Flow<UiState<GamblerModel>> = callbackFlow {
-        trySend(UiState.Loading)
-
-        firestore.collection(GAMBLERS).whereEqualTo("email", email).get()
-            .addOnSuccessListener { task ->
-                val gambler = task.toObjects(GamblerModel::class.java)[0]
-                trySend(UiState.Success(gambler))
-            }
-            .addOnFailureListener { error ->
-                trySend(UiState.Error(error.message ?: "getGambler: error is not defined"))
-            }
-
-        awaitClose {
-            close()
-        }
-    }*/
-
     override fun getGambler(id: String): Flow<UiState<GamblerModel>> = callbackFlow {
         trySend(UiState.Loading)
 
@@ -107,13 +91,11 @@ class GamblerRepositoryImpl(
         }
     }
 
-    //override fun saveGamblerPhoto(id: String, uri: Uri): Flow<UiState<String>> = callbackFlow {
-    override fun saveGamblerPhoto(id: String, uri: ByteArray): Flow<UiState<String>> = callbackFlow {
+    override fun saveGamblerPhoto(id: String, uri: Uri): Flow<UiState<String>> = callbackFlow {
         trySend(UiState.Loading)
 
         val path = storage.reference.child(FOLDER_GAMBLER_PHOTO).child(id)
-        path.putBytes(uri)
-        //path.putFile(uri)
+        path.putFile(uri)
             .addOnSuccessListener {
                 path.downloadUrl
                     .addOnSuccessListener { uriFirebase ->
