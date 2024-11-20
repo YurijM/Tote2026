@@ -77,14 +77,28 @@ class ProfileViewModel @Inject constructor(
 
             is ProfileEvent.OnSave -> {
                 if (photoUri != null) {
-                    _state.value = GamblerState(UiState.Loading)
+                    //_state.value = GamblerState(UiState.Loading)
 
                     gamblerUseCase.saveGamblerPhoto(CURRENT_ID, photoUri!!).onEach { photoState ->
                         if (photoState is UiState.Success) {
                             gambler = gambler.copy(photoUrl = photoState.data)
                             gamblerUseCase.saveGambler(gambler).onEach { gamblerState ->
-                                _state.value = GamblerState(gamblerState)
                                 if (gamblerState is UiState.Success) exit = true
+                                _state.value = GamblerState(gamblerState)
+                                /*if (gamblerState is UiState.Success) {
+                                    exit = true
+                                    gambler = gamblerState.data
+                                }*/
+                                /*_state.value = when (gamblerState) {
+                                    is UiState.Success -> {
+                                        exit = true
+                                        GamblerState(UiState.Success(gambler))
+                                    }
+
+                                    is UiState.Loading -> GamblerState(UiState.Loading)
+                                    is UiState.Error -> GamblerState(UiState.Error(gamblerState.error))
+                                    else -> GamblerState(UiState.Default)
+                                }*/
                             }.launchIn(viewModelScope)
                         } else if (photoState is UiState.Error) {
                             _state.value = GamblerState(UiState.Error(photoState.error))

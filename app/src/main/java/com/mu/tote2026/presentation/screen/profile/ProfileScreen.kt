@@ -45,13 +45,13 @@ import com.mu.tote2026.ui.common.UiState
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileViewModel = hiltViewModel(),
     toMain: () -> Unit,
     toAuth: () -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
+    val viewModel: ProfileViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val result = state.result
 
@@ -66,6 +66,7 @@ fun ProfileScreen(
             is UiState.Success -> {
                 isLoading = false
                 error = ""
+                toLog("viewModel.exit: ${viewModel.exit}")
                 if (viewModel.exit) toMain()
             }
 
