@@ -29,15 +29,15 @@ fun Title(
     color: Color = MaterialTheme.colorScheme.primary
 ) {
     Text(
+        text = title,
+        color = color,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.titleLarge,
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 horizontal = 8.dp,
                 vertical = 4.dp
-            ),
-        text = title,
-        color = color,
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.titleLarge
+            )
     )
 }

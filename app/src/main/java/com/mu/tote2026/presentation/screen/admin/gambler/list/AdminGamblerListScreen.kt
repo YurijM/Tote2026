@@ -72,6 +72,7 @@ fun AdminGamblerListScreen(
         HorizontalDivider(
             thickness = 1.dp,
             color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
         LazyColumn(
