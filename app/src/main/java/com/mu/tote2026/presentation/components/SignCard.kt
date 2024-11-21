@@ -44,13 +44,14 @@ fun SignCard(
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 48.dp)
+                .fillMaxWidth(.85f)
+                //.padding(horizontal = 48.dp)
                 .weight(2f)
                 /*.padding(
                     top = 0.dp,
