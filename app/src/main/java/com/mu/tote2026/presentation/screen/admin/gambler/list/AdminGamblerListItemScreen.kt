@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
@@ -37,6 +38,7 @@ import coil.compose.AsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.ui.theme.Color2
+import java.math.RoundingMode
 
 @Composable
 fun AdminGamblerListItemScreen(
@@ -80,16 +82,25 @@ fun AdminGamblerListItemScreen(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(fontWeight = FontWeight.Bold)
-                    ) {
-                        append("${gambler.rate}")
-                    }
-                    append(" руб.")
-                }
-            )
+            Column(
+                modifier = Modifier.width(80.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(fontWeight = FontWeight.Bold)
+                        ) {
+                            append("${gambler.rate}")
+                        }
+                        append(" руб.")
+                    },
+                    modifier = Modifier.height(20.dp)
+                )
+                Text(
+                    "${gambler.ratePercent.toBigDecimal().setScale(2, RoundingMode.HALF_UP)}%"
+                )
+            }
         }
     }
 }

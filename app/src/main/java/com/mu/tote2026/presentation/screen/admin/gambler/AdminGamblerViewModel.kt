@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +30,8 @@ class AdminGamblerViewModel @Inject constructor(
 
     var gambler by mutableStateOf(GamblerModel())
         private set
+    private var gamblers by mutableStateOf(listOf<GamblerModel>())
+    private var prizeFund = 0
     var rateError by mutableStateOf("")
         private set
     var exit by mutableStateOf(false)
@@ -37,10 +40,18 @@ class AdminGamblerViewModel @Inject constructor(
     init {
         val id = savedStateHandle.get<String>(KEY_ID)
         if (!id.isNullOrBlank()) {
+            gamblerUseCase.getGamblerList().onEach { gamblerListState ->
+                if (gamblerListState is UiState.Success) {
+                    gamblers = gamblerListState.data
+                    prizeFund = gamblerListState.data.sumOf { it.rate }
+                }
+            }.launchIn(viewModelScope)
             gamblerUseCase.getGambler(id).onEach { gamblerState ->
                 _state.value = AdminGamblerState(gamblerState)
                 if (gamblerState is UiState.Success) {
                     gambler = gamblerState.data
+                    prizeFund -= gambler.rate
+                    gamblers = gamblers.filter { it.id != gambler.id }
                 }
             }.launchIn(viewModelScope)
         }
@@ -64,13 +75,27 @@ class AdminGamblerViewModel @Inject constructor(
             }
 
             is AdminGamblerEvent.OnSave -> {
-                gamblerUseCase.saveGambler(gambler).onEach { gamblerSaveState ->
-                    _state.value = AdminGamblerState(gamblerSaveState)
+                val currentRate = gambler.rate
+                prizeFund += gambler.rate
+                gambler = gambler.copy(
+                    ratePercent = (currentRate.toDouble() / prizeFund.toDouble()) * 100.0
+                )
+                val scope = viewModelScope
+                scope.launch {
+                    _state.value = AdminGamblerState(UiState.Loading)
+                    gamblerUseCase.saveGambler(gambler).launchIn(scope)
+                    gamblers.forEach { item ->
+                        val rate = item.rate
+                        val gambler = item.copy(
+                            ratePercent = if (rate > 0) {
+                                (rate.toDouble() / prizeFund.toDouble()) * 100.0
+                            } else 0.0
+                        )
+                        gamblerUseCase.saveGambler(gambler).launchIn(scope)
+                    }
                     exit = true
-                    /*if (gamblerSaveState is UiState.Success) {
-                        toLog("2")
-                    }*/
-                }.launchIn(viewModelScope)
+                    _state.value = AdminGamblerState(UiState.Success(gambler))
+                }
             }
         }
     }

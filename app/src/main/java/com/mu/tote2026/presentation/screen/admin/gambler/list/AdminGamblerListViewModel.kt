@@ -23,14 +23,14 @@ class AdminGamblerListViewModel @Inject constructor(
 
     init {
         gamblerUseCase.getGamblerList().onEach { gamblerListState ->
-            _state.value = AdminGamblerListState(gamblerListState)
-
             if (gamblerListState is UiState.Success) {
                 val gamblers = AdminGamblerListState(
                     UiState.Success(gamblerListState.data.sortedBy { it.nickname })
                 )
                 _state.value = gamblers
                 prizeFund = gamblerListState.data.sumOf { it.rate }
+            } else {
+                _state.value = AdminGamblerListState(gamblerListState)
             }
         }.launchIn(viewModelScope)
     }
