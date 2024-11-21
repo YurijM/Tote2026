@@ -15,7 +15,10 @@ data class GameModel(
     val goal2: String = "",
     val addGoal1: String = "",
     val addGoal2: String = "",
-    @field:JvmField
+    //@field:JvmField
     val byPenalty: String = "",
+    val winCount: Int = 0,
+    val drawCount: Int = 0,
+    val defeatCount: Int = 0,
     val stakes: List<StakeModel> = listOf()
 )

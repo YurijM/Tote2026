@@ -120,6 +120,29 @@ class StakeViewModel @Inject constructor(
                 gameUseCase.saveStake(oldStake, stake).onEach { saveStakeState ->
                     _state.value = when (saveStakeState) {
                         is UiState.Success -> {
+                            var winCount = game.winCount
+                            var drawCount = game.drawCount
+                            var defeatCount = game.defeatCount
+                            if (oldStake.goal1.isNotBlank()) {
+                                when {
+                                    oldStake.goal1.toInt() > oldStake.goal2.toInt() -> winCount--
+                                    oldStake.goal1.toInt() < oldStake.goal2.toInt() -> defeatCount--
+                                    oldStake.goal1.toInt() == oldStake.goal2.toInt() -> drawCount--
+                                }
+                            }
+                            when {
+                                stake.goal1.toInt() > stake.goal2.toInt() -> winCount++
+                                stake.goal1.toInt() < stake.goal2.toInt() -> defeatCount++
+                                stake.goal1.toInt() == stake.goal2.toInt() -> drawCount++
+                            }
+                            game = game.copy(
+                                winCount = winCount,
+                                drawCount = drawCount,
+                                defeatCount = defeatCount
+                            )
+
+                            gameUseCase.saveGame(game).launchIn(viewModelScope)
+
                             exit = true
                             StakeState(UiState.Success(game))
                         }
