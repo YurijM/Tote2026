@@ -135,13 +135,18 @@ class StakeViewModel @Inject constructor(
                                 stake.goal1.toInt() < stake.goal2.toInt() -> defeatCount++
                                 stake.goal1.toInt() == stake.goal2.toInt() -> drawCount++
                             }
-                            game = game.copy(
-                                winCount = winCount,
-                                drawCount = drawCount,
-                                defeatCount = defeatCount
-                            )
 
-                            gameUseCase.saveGame(game).launchIn(viewModelScope)
+                            gameUseCase.getGame(game.id).onEach { gameState ->
+                                if (gameState is UiState.Success) {
+                                    game = gameState.data
+                                    game = game.copy(
+                                        winCount = winCount,
+                                        drawCount = drawCount,
+                                        defeatCount = defeatCount
+                                    )
+                                    gameUseCase.saveGame(game).launchIn(viewModelScope)
+                                }
+                            }.launchIn(viewModelScope)
 
                             exit = true
                             StakeState(UiState.Success(game))
@@ -157,8 +162,6 @@ class StakeViewModel @Inject constructor(
             is StakeEvent.OnGenerateStake -> {
                 generatedStake.value = generateResult()
             }
-
-            else -> {}
         }
     }
 
