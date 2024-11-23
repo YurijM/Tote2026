@@ -17,6 +17,8 @@ data class GameModel(
     val addGoal2: String = "",
     //@field:JvmField
     val byPenalty: String = "",
+    val result: String = "",
+    val addResult: String = "",
     val winCount: Int = 0,
     val drawCount: Int = 0,
     val defeatCount: Int = 0,

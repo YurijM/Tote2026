@@ -7,6 +7,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.mu.tote2026.data.repository.Result.DEFEAT
+import com.mu.tote2026.data.repository.Result.DRAW
+import com.mu.tote2026.data.repository.Result.WIN
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
 import com.mu.tote2026.domain.usecase.team_usecase.TeamUseCase
@@ -101,31 +104,39 @@ class GameViewModel @Inject constructor(
                 startTime = game.start.asTime()
                 errorStart = checkIsFieldEmpty(event.start)
             }
+
             is GameEvent.OnGameIdChange -> {
                 game = game.copy(id = event.id)
                 errorGameId = checkIsFieldEmpty(event.id)
             }
+
             is GameEvent.OnGroupChange -> {
                 game = game.copy(group = event.group)
             }
+
             is GameEvent.OnTeamChange -> {
                 game = if (event.teamNo == 1)
                     game.copy(team1 = event.team)
                 else
                     game.copy(team2 = event.team)
             }
+
             is GameEvent.OnGoalChange -> {
                 checkGoal(
                     event.extraTime,
                     event.teamNo,
                     event.goal
                 )
+                setResult(event.extraTime)
+
                 enabled = checkValues()
             }
+
             is GameEvent.OnByPenaltyChange -> {
                 game = game.copy(byPenalty = event.team)
                 enabled = checkValues()
             }
+
             is GameEvent.OnSave -> {
                 gameUseCase.saveGame(game).onEach { gameSaveState ->
                     _state.value = when (gameSaveState) {
@@ -146,6 +157,35 @@ class GameViewModel @Inject constructor(
             }
 
             else -> {}
+        }
+    }
+
+    private fun setResult(extraTime: Boolean) {
+        var result = ""
+        if (!extraTime) {
+            result = game.result
+            game = game.copy(
+                result = if (game.goal1.isNotBlank() && game.goal2.isNotBlank()) {
+                    when {
+                        game.goal1.toInt() > game.goal2.toInt() -> WIN
+                        game.goal1.toInt() == game.goal2.toInt() -> DRAW
+                        game.goal1.toInt() < game.goal2.toInt() -> DEFEAT
+                        else -> result
+                    }
+                } else result
+            )
+        } else {
+            result = game.addResult
+            game = game.copy(
+                addResult = if (game.addGoal1.isNotBlank() && game.addGoal2.isNotBlank()) {
+                    when {
+                        game.addGoal1.toInt() > game.addGoal2.toInt() -> WIN
+                        game.addGoal1.toInt() == game.addGoal2.toInt() -> DRAW
+                        game.addGoal1.toInt() < game.addGoal2.toInt() -> DEFEAT
+                        else -> result
+                    }
+                } else result
+            )
         }
     }
 

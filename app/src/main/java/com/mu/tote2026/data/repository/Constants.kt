@@ -7,6 +7,12 @@ var GAMBLER = GamblerModel()
 
 const val FOLDER_GAMBLER_PHOTO = "gambler_photo"
 
+object Result {
+    const val WIN = "win"
+    const val DRAW = "draw"
+    const val DEFEAT = "defeat"
+}
+
 object Collections {
     const val EMAILS = "emails"
     const val GROUPS = "groups"
