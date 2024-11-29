@@ -9,6 +9,7 @@ import com.mu.tote2026.domain.usecase.gambler_usecase.GetGambler
 import com.mu.tote2026.domain.usecase.gambler_usecase.GetGamblerList
 import com.mu.tote2026.domain.usecase.gambler_usecase.SaveGambler
 import com.mu.tote2026.domain.usecase.gambler_usecase.SaveGamblerPhoto
+import com.mu.tote2026.domain.usecase.gambler_usecase.SaveGameSum
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,6 +32,7 @@ object GamblerRepositoryModule {
         getGamblerList = GetGamblerList(gamblerRepository),
         getGambler = GetGambler(gamblerRepository),
         saveGambler = SaveGambler(gamblerRepository),
-        saveGamblerPhoto = SaveGamblerPhoto(gamblerRepository)
+        saveGamblerPhoto = SaveGamblerPhoto(gamblerRepository),
+        saveGameSum = SaveGameSum(gamblerRepository)
     )
 }

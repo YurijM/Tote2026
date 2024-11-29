@@ -3,10 +3,13 @@ package com.mu.tote2026.data.repository
 import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.mu.tote2026.data.repository.Collections.COMMON
 import com.mu.tote2026.data.repository.Collections.GAMBLERS
+import com.mu.tote2026.data.repository.Errors.GAME_SUM_SAVE_ERROR
 import com.mu.tote2026.data.repository.Errors.GAMBLER_PHOTO_SAVE_ERROR
 import com.mu.tote2026.data.repository.Errors.GAMBLER_PHOTO_URL_GET_ERROR
 import com.mu.tote2026.data.repository.Errors.GAMBLER_SAVE_ERROR
+import com.mu.tote2026.domain.model.CommonParamsModel
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.repository.GamblerRepository
 import com.mu.tote2026.presentation.utils.toLog
@@ -111,6 +114,28 @@ class GamblerRepositoryImpl(
 
         awaitClose {
             toLog("saveGamblePhoto: awaitClose")
+            close()
+        }
+    }
+
+    override fun saveGameSum(prizeFund: Int): Flow<UiState<CommonParamsModel>>  = callbackFlow {
+        trySend(UiState.Loading)
+
+        val common = CommonParamsModel(
+            groupGameSum = prizeFund.toDouble() / GROUP_GAMES_COUNT.toDouble(),
+            playoffGameSum = prizeFund.toDouble() / PLAYOFF_GAMES_COUNT.toDouble()
+        )
+
+        firestore.collection(COMMON).document(COMMON).set(common)
+            .addOnSuccessListener {
+                trySend(UiState.Success(common))
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error(error.message ?: GAME_SUM_SAVE_ERROR))
+            }
+
+        awaitClose {
+            toLog("saveGameSum: awaitClose")
             close()
         }
     }

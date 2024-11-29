@@ -5,6 +5,9 @@ import com.mu.tote2026.domain.model.GamblerModel
 var CURRENT_ID = ""
 var GAMBLER = GamblerModel()
 
+const val GROUP_GAMES_COUNT = 36
+const val PLAYOFF_GAMES_COUNT = 15
+
 const val FOLDER_GAMBLER_PHOTO = "gambler_photo"
 
 object Result {
@@ -19,6 +22,7 @@ object Collections {
     const val TEAMS = "teams"
     const val GAMES = "games"
     const val GAMBLERS = "gamblers"
+    const val COMMON = "common"
 }
 object Errors {
     const val CREATE_USER_WITH_EMAIL_AND_PASSWORD_FUNCTION_EXECUTING_ERROR = "Ошибка выполнения функции createUserWithEmailAndPassword"
@@ -31,4 +35,6 @@ object Errors {
     const val GAMBLER_PHOTO_URL_GET_ERROR = "Ошибка получения url фото участника после сохранения"
     const val GAMBLER_PHOTO_SAVE_ERROR = "Ошибка сохранения фото участника"
     const val GAMBLER_SAVE_ERROR = "Ошибка сохранения данных участника"
+    const val GAME_SUM_GET_ERROR = "Ошибка чтения общих призовой суммы за игру"
+    const val GAME_SUM_SAVE_ERROR = "Ошибка сохранения призовой суммы за игру"
 }

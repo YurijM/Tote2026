@@ -1,5 +1,6 @@
 package com.mu.tote2026.domain.repository
 
+import com.mu.tote2026.domain.model.CommonParamsModel
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.ui.common.UiState
@@ -14,4 +15,6 @@ interface GameRepository {
     fun getGamblerStakes(gamblerId: String): Flow<UiState<List<GameModel>>>
     fun getGamblerGameStake(gameId: String, gamblerId: String): Flow<UiState<GameModel>>
     fun saveStake(oldStake: StakeModel, newStake: StakeModel): Flow<UiState<Boolean>>
+
+    fun getGameSum(): Flow<UiState<CommonParamsModel>>
 }

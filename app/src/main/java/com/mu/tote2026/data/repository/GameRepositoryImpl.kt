@@ -3,7 +3,10 @@ package com.mu.tote2026.data.repository
 import com.google.firebase.firestore.FieldValue.arrayRemove
 import com.google.firebase.firestore.FieldValue.arrayUnion
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mu.tote2026.data.repository.Collections.COMMON
 import com.mu.tote2026.data.repository.Collections.GAMES
+import com.mu.tote2026.data.repository.Errors.GAME_SUM_GET_ERROR
+import com.mu.tote2026.domain.model.CommonParamsModel
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.domain.repository.GameRepository
@@ -44,7 +47,7 @@ class GameRepositoryImpl(
 
         firestore.collection(GAMES).document(id).get()
             .addOnSuccessListener { task ->
-                var game = task.toObject(GameModel::class.java) ?: GameModel()
+                val game = task.toObject(GameModel::class.java) ?: GameModel()
 
                 trySend(UiState.Success(game))
             }
@@ -195,6 +198,25 @@ class GameRepositoryImpl(
 
         awaitClose {
             toLog("saveStake awaitClose")
+            close()
+        }
+    }
+
+    override fun getGameSum(): Flow<UiState<CommonParamsModel>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        firestore.collection(COMMON).document().get()
+            .addOnSuccessListener { task ->
+                val common = task.toObject(CommonParamsModel::class.java) ?: CommonParamsModel()
+
+                trySend(UiState.Success(common))
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error(error.message ?: GAME_SUM_GET_ERROR))
+            }
+
+        awaitClose {
+            toLog("getGameSum: awaitClose")
             close()
         }
     }
