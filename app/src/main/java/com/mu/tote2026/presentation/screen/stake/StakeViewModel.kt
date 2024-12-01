@@ -7,6 +7,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.mu.tote2026.data.repository.Result.DEFEAT
+import com.mu.tote2026.data.repository.Result.DRAW
+import com.mu.tote2026.data.repository.Result.WIN
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
@@ -123,17 +126,18 @@ class StakeViewModel @Inject constructor(
                             var winCount = game.winCount
                             var drawCount = game.drawCount
                             var defeatCount = game.defeatCount
-                            if (oldStake.goal1.isNotBlank()) {
-                                when {
-                                    oldStake.goal1.toInt() > oldStake.goal2.toInt() -> winCount--
-                                    oldStake.goal1.toInt() < oldStake.goal2.toInt() -> defeatCount--
-                                    oldStake.goal1.toInt() == oldStake.goal2.toInt() -> drawCount--
+
+                            if (oldStake.result != stake.result) {
+                                when (oldStake.result) {
+                                    WIN -> winCount--
+                                    DRAW -> drawCount--
+                                    DEFEAT -> defeatCount--
                                 }
-                            }
-                            when {
-                                stake.goal1.toInt() > stake.goal2.toInt() -> winCount++
-                                stake.goal1.toInt() < stake.goal2.toInt() -> defeatCount++
-                                stake.goal1.toInt() == stake.goal2.toInt() -> drawCount++
+                                when (stake.result) {
+                                    WIN -> winCount++
+                                    DRAW -> drawCount++
+                                    DEFEAT -> defeatCount++
+                                }
                             }
 
                             gameUseCase.getGame(game.id).onEach { gameState ->
@@ -192,6 +196,24 @@ class StakeViewModel @Inject constructor(
                 }
             }
             errorExtraTime = errorAddGoal1.ifBlank { errorAddGoal2 }
+        }
+
+        setResult(stake.goal1, stake.goal2, extraTime)
+    }
+
+    private fun setResult(goal1: String, goal2: String, extraTime: Boolean) {
+        val result = if (goal1.isNotBlank() && goal2.isNotBlank()) {
+            when {
+                goal1.toInt() > goal2.toInt() -> WIN
+                goal1.toInt() == goal2.toInt() -> DRAW
+                else -> DEFEAT
+            }
+        } else ""
+
+        stake = if (!extraTime) {
+            stake.copy(result = result)
+        } else {
+            stake.copy(addResult = "")
         }
     }
 
