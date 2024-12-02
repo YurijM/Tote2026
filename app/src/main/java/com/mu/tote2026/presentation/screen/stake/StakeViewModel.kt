@@ -139,6 +139,7 @@ class StakeViewModel @Inject constructor(
                                     DEFEAT -> defeatCount++
                                 }
                             }
+                            val allCount = winCount + drawCount + defeatCount
 
                             gameUseCase.getGame(game.id).onEach { gameState ->
                                 if (gameState is UiState.Success) {
@@ -146,7 +147,16 @@ class StakeViewModel @Inject constructor(
                                     game = game.copy(
                                         winCount = winCount,
                                         drawCount = drawCount,
-                                        defeatCount = defeatCount
+                                        defeatCount = defeatCount,
+                                        winCoefficient = if (winCount != 0) {
+                                            allCount.toDouble() / winCount.toDouble()
+                                        } else 0.0,
+                                        drawCoefficient = if (drawCount != 0) {
+                                            allCount.toDouble() / drawCount.toDouble()
+                                        } else 0.0,
+                                        defeatCoefficient = if (defeatCount != 0) {
+                                            allCount.toDouble() / defeatCount.toDouble()
+                                        } else 0.0,
                                     )
                                     gameUseCase.saveGame(game).launchIn(viewModelScope)
                                 }

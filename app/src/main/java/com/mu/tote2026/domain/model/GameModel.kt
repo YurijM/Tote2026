@@ -20,7 +20,10 @@ data class GameModel(
     val result: String = "",
     val addResult: String = "",
     val winCount: Int = 0,
+    val winCoefficient: Double = 0.0,
     val drawCount: Int = 0,
+    val drawCoefficient: Double = 0.0,
     val defeatCount: Int = 0,
+    val defeatCoefficient: Double = 0.0,
     val stakes: List<StakeModel> = listOf()
 )
