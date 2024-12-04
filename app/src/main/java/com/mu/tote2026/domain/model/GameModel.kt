@@ -25,5 +25,5 @@ data class GameModel(
     val drawCoefficient: Double = 0.0,
     val defeatCount: Int = 0,
     val defeatCoefficient: Double = 0.0,
-    val stakes: List<StakeModel> = listOf()
+    val stakes: MutableList<StakeModel> = mutableListOf()
 )
