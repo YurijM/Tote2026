@@ -15,7 +15,7 @@ daggerHilt = "2.52"
 daggerCompiler = "2.52"
 hiltNavigation = "1.2.0"
 androidxNavigation = "2.8.4"
-firebaseBom = "33.6.0"
+firebaseBom = "33.7.0"
 coilCompose = "2.5.0"
 
 serialization = "2.0.0"

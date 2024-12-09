@@ -202,24 +202,22 @@ class GameViewModel @Inject constructor(
                             else -> 0.0
                         }
 
-                        points = points +
-                                if (game.goal1 == stake.goal1 && game.goal2 == stake.goal2) {
-                                    (points / 2.0)
-                                } else if (
-                                    game.result != DRAW
-                                    && (game.goal1.toInt() - game.goal2.toInt()) == (stake.goal1.toInt() - stake.goal2.toInt())
-                                ) {
-                                    0.25
-                                } else {
-                                    0.0
-                                }
+                        points += if (game.goal1 == stake.goal1 && game.goal2 == stake.goal2) {
+                            (points / 2.0)
+                        } else if (
+                            game.result != DRAW
+                            && (game.goal1.toInt() - game.goal2.toInt()) == (stake.goal1.toInt() - stake.goal2.toInt())
+                        ) {
+                            0.25
+                        } else {
+                            0.0
+                        }
                     } else {
-                        points = points +
-                                if (game.goal1 == stake.goal1 || game.goal2 == stake.goal2) {
-                                    0.1
-                                } else {
-                                    0.0
-                                }
+                        points += if (game.goal1 == stake.goal1 || game.goal2 == stake.goal2) {
+                            0.1
+                        } else {
+                            0.0
+                        }
                     }
                     game.stakes[idx] = game.stakes[idx].copy(points = points)
                 }

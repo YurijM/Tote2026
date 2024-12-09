@@ -27,7 +27,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
-import com.mu.tote2026.data.repository.GAMBLER
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.ByPenalty
 import com.mu.tote2026.presentation.components.ExtraTime
@@ -161,7 +160,7 @@ fun StakeScreen(
                 }
             }
 
-            if (GAMBLER.isAdmin) {
+            //if () {
                 item {
                     OkAndCancel(
                         titleOk = stringResource(R.string.generate_stake),
@@ -176,7 +175,7 @@ fun StakeScreen(
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
-            }
+            //}
         }
     }
 

@@ -11,6 +11,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -24,9 +25,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
+import com.mu.tote2026.data.repository.GAMBLER
 import com.mu.tote2026.presentation.components.ByPenalty
 import com.mu.tote2026.presentation.components.ExtraTime
 import com.mu.tote2026.presentation.components.GameIdAndGroup
@@ -199,6 +202,23 @@ fun GameScreen(
                         else
                             toGameList()
                         }
+                    )
+                }
+            }
+
+            if (GAMBLER.isAdmin) {
+                item {
+                    OkAndCancel(
+                        titleOk = stringResource(R.string.generate_result),
+                        enabledOk = true,
+                        showCancel = false,
+                        onOK = { viewModel.onEvent(GameEvent.OnGenerateGame) },
+                        onCancel = {}
+                    )
+                    Text(
+                        text = viewModel.generatedGame.value,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
             }
