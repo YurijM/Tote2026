@@ -1,5 +1,7 @@
 package com.mu.tote2026.presentation.screen.stake
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,6 +41,7 @@ import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun StakeScreen(
     toStakeList: () -> Unit
@@ -160,7 +163,17 @@ fun StakeScreen(
                 }
             }
 
-            //if () {
+            /*val stringDate = "14.06.2025 22:00"
+            val formatter = DateTimeFormatter.ofPattern("dd.MM.y HH:mm")
+            val dt = LocalDate.parse(stringDate, formatter)
+
+            toLog("LocalDateTime.now().toLocalDate(): ${LocalDateTime.now().toLocalDate()}")
+            toLog("dt.minusDays(10): ${dt.minusDays(10)}")*/
+
+            //val formatter = SimpleDateFormat("dd.MM.y HH:mm", Locale.getDefault())
+            //val date = LocalDateTime.parse("14.06.2025 22:00", formatter)
+
+            if (viewModel.canGenerated) {
                 item {
                     OkAndCancel(
                         titleOk = stringResource(R.string.generate_stake),
@@ -175,7 +188,7 @@ fun StakeScreen(
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
-            //}
+            }
         }
     }
 
