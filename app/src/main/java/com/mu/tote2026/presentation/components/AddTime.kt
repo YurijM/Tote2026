@@ -18,7 +18,7 @@ import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 
 @Composable
-fun ExtraTime(
+fun AddTime(
     game: GameModel? = null,
     stake: StakeModel? = null,
     error: String,

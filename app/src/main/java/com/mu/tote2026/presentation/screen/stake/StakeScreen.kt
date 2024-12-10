@@ -31,7 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.ByPenalty
-import com.mu.tote2026.presentation.components.ExtraTime
+import com.mu.tote2026.presentation.components.AddTime
 import com.mu.tote2026.presentation.components.GameInfo
 import com.mu.tote2026.presentation.components.GamesPlayed
 import com.mu.tote2026.presentation.components.MainTime
@@ -107,7 +107,7 @@ fun StakeScreen(
                         onGoal2Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(false, 2, goal)) },
                     )
                     if (viewModel.isExtraTime) {
-                        ExtraTime(
+                        AddTime(
                             stake = viewModel.stake,
                             error = viewModel.errorExtraTime,
                             onAddGoal1Change = { goal -> viewModel.onEvent(StakeEvent.OnGoalChange(true, 1, goal)) },

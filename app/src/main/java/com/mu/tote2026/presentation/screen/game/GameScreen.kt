@@ -31,7 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.data.repository.GAMBLER
 import com.mu.tote2026.presentation.components.ByPenalty
-import com.mu.tote2026.presentation.components.ExtraTime
+import com.mu.tote2026.presentation.components.AddTime
 import com.mu.tote2026.presentation.components.GameIdAndGroup
 import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.SetDate
@@ -159,10 +159,10 @@ fun GameScreen(
                         thickness = 1.dp,
                         modifier = Modifier.padding(horizontal = 4.dp)
                     )
-                    if (viewModel.isExtraTime) {
-                        ExtraTime(
+                    if (viewModel.isAddTime) {
+                        AddTime(
                             game = viewModel.game,
-                            error = viewModel.errorExtraTime,
+                            error = viewModel.errorAddTime,
                             onAddGoal1Change = { goal ->
                                 viewModel.onEvent(GameEvent.OnGoalChange(true, 1, goal))
                             },
