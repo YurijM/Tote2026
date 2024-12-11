@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -91,7 +92,9 @@ fun PrognosisScreen() {
                 ) {
                     CardTitle(game)
                     GameResult(game)
+                    HorizontalDivider(thickness = 1.dp)
 
+                    game.stakes.sortBy { it.gamblerNickname }
                     game.stakes.forEach { stake ->
                         GamblerStake(stake)
                     }
@@ -161,11 +164,11 @@ private fun GamblerStake(stake: StakeModel) {
             .padding(
                 start = 8.dp,
                 end = 8.dp,
-                bottom = 4.dp,
+                //bottom = 4.dp,
             )
     ) {
         Text(
-            text = stake.gamblerId,
+            text = stake.gamblerNickname,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
             modifier = Modifier.weight(1f)
@@ -180,14 +183,12 @@ private fun GamblerStake(stake: StakeModel) {
         Text(
             text = result,
             textAlign = TextAlign.Center,
-            maxLines = 3,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(2f)
         )
         Text(
-            text = String.format("%.2f", stake.points),
+            text = String.format("%.2f", stake.points * stake.gamblerRatePercent),
             textAlign = TextAlign.End,
-            maxLines = 1,
-            modifier = Modifier.weight(.25f)
+            modifier = Modifier.weight(1f)
         )
     }
 }
