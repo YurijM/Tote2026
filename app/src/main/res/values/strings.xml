@@ -76,4 +76,7 @@
     <string name="game_id">Игра №</string>
     <string name="team">Команда</string>
     <string name="generate_result">Сгенерировать результат</string>
+
+    <string name="add_time_result">", доп. время %1$s : %2$s"</string>
+    <string name="by_penalty_result">по пенальти - %1$s</string>
 </resources>
