@@ -5,6 +5,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.GroupTeamResultModel
@@ -130,7 +135,7 @@ fun String.asTime(): String {
     }
 }
 
-fun generateResult() : String {
+fun generateResult(): String {
     val goal1 = (0..3).random()
     val goal2 = (0..3).random()
     var result = "$goal1 : $goal2"
@@ -218,10 +223,12 @@ fun getScore(result: GroupTeamResultModel, goal1: Int, goal2: Int): GroupTeamRes
             win++
             points += 3
         }
+
         (goal1 == goal2) -> {
             draw++
             points += 1
         }
+
         else -> defeat++
     }
     return result.copy(
@@ -270,5 +277,48 @@ fun calcTeamPlace(resultTeams: MutableList<GroupTeamResultModel>) {
 
                 resultTeams[index] = result.copy(place = place + 1)
             }
+    }
+}
+
+fun resultToString(
+    goal1: String,
+    goal2: String,
+    addGoal1: String,
+    addGoal2: String,
+    byPenalty: String
+): AnnotatedString {
+    val mainTimeResult = "$goal1 : $goal2"
+    val addTimeResult = if (addGoal1.isNotBlank() &&addGoal2.isNotBlank()) {
+        "$addGoal1 : $addGoal2"
+    } else ""
+
+    return buildAnnotatedString {
+        withStyle(
+            style = SpanStyle(
+                fontWeight = FontWeight.Black
+            )
+        ) {
+            append(mainTimeResult)
+        }
+        if (addTimeResult.isNotBlank()) {
+            append(", доп.время ")
+            withStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.Black
+                )
+            ) {
+                append(addTimeResult)
+            }
+        }
+        if (byPenalty.isNotBlank()) {
+            append("\nпо пенальти - ")
+            withStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.Black
+                )
+            ) {
+                append(byPenalty)
+            }
+        }
     }
 }

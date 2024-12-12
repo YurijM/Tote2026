@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,10 +24,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GameModel
@@ -34,6 +39,7 @@ import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.GROUPS_COUNT
 import com.mu.tote2026.presentation.utils.asDateTime
+import com.mu.tote2026.presentation.utils.resultToString
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
@@ -72,6 +78,7 @@ fun PrognosisScreen() {
         modifier = Modifier.fillMaxSize()
     ) {
         Title(stringResource(R.string.prognosis))
+        HorizontalDivider(thickness = 1.dp)
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -92,7 +99,6 @@ fun PrognosisScreen() {
                 ) {
                     CardTitle(game)
                     GameResult(game)
-                    HorizontalDivider(thickness = 1.dp)
 
                     game.stakes.sortBy { it.gamblerNickname }
                     game.stakes.forEach { stake ->
@@ -103,6 +109,7 @@ fun PrognosisScreen() {
         }
     }
 }
+
 @Composable
 private fun CardTitle(game: GameModel) {
     Row(
@@ -133,38 +140,40 @@ private fun CardTitle(game: GameModel) {
         )
     }
 }
+
 @Composable
 private fun GameResult(game: GameModel) {
     Text(
         text = "${game.team1} - ${game.team2}",
         textAlign = TextAlign.Center,
         fontWeight = FontWeight.Bold,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().height(20.dp)
     )
-    val result = "${game.goal1} : ${game.goal2}" +
-            (if (game.addResult.isNotBlank()) {
-                stringResource(R.string.add_time_result, game.addGoal1, game.addGoal2)
-            } else "") +
-            if (game.byPenalty.isNotBlank()) {
-                "\n${stringResource(R.string.by_penalty_result, game.byPenalty)}"
-            } else ""
     Text(
-        text = result,
+        text = resultToString(
+            game.goal1,
+            game.goal2,
+            game.addGoal1,
+            game.addGoal2,
+            game.byPenalty
+        ),
         textAlign = TextAlign.Center,
+        lineHeight = 1.em,
         modifier = Modifier.fillMaxWidth()
     )
 }
+
 @SuppressLint("DefaultLocale")
 @Composable
 private fun GamblerStake(stake: StakeModel) {
+    HorizontalDivider(thickness = 1.dp)
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                start = 8.dp,
-                end = 8.dp,
-                //bottom = 4.dp,
+                horizontal = 8.dp,
+                vertical = 4.dp
             )
     ) {
         Text(
@@ -173,21 +182,39 @@ private fun GamblerStake(stake: StakeModel) {
             maxLines = 1,
             modifier = Modifier.weight(1f)
         )
-        val result = "${stake.goal1} : ${stake.goal2}" +
-                (if (stake.addResult.isNotBlank()) {
-                    stringResource(R.string.add_time_result, stake.addGoal1, stake.addGoal2)
-                } else "") +
-                if (stake.byPenalty.isNotBlank()) {
-                    "\n${stringResource(R.string.by_penalty_result, stake.byPenalty)}"
-                } else ""
         Text(
-            text = result,
+            text = resultToString(
+                stake.goal1,
+                stake.goal2,
+                stake.addGoal1,
+                stake.addGoal2,
+                stake.byPenalty
+            ),
             textAlign = TextAlign.Center,
+            lineHeight = 1.em,
             modifier = Modifier.weight(2f)
         )
+
+        val points = String.format("%.2f", stake.points) + "\n"
+        val rub = String.format("%.2f", stake.points * stake.gamblerRatePercent)
+        val text = buildAnnotatedString {
+            append("очков ")
+            withStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.Black
+                )
+            ) {
+                //pushStringAnnotation(tag = points, annotation = points)
+                append(points)
+                //pushStringAnnotation(tag = rub, annotation = rub)
+                append(rub)
+            }
+            append(" руб.")
+        }
         Text(
-            text = String.format("%.2f", stake.points * stake.gamblerRatePercent),
+            text = text,
             textAlign = TextAlign.End,
+            lineHeight = 1.25.em,
             modifier = Modifier.weight(1f)
         )
     }
