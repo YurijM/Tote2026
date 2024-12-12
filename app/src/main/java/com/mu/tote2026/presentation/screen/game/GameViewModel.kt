@@ -10,6 +10,7 @@ import androidx.navigation.toRoute
 import com.mu.tote2026.data.repository.Result.DEFEAT
 import com.mu.tote2026.data.repository.Result.DRAW
 import com.mu.tote2026.data.repository.Result.WIN
+import com.mu.tote2026.domain.model.CommonParamsModel
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
@@ -22,6 +23,7 @@ import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.asTime
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
 import com.mu.tote2026.presentation.utils.generateResult
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,12 +31,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
+import kotlin.math.round
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val gameUseCase: GameUseCase,
-    private val teamUseCase: TeamUseCase
+    private val teamUseCase: TeamUseCase,
 ) : ViewModel() {
     private val _state = MutableStateFlow(GameState())
     val state = _state.asStateFlow()
@@ -43,6 +46,7 @@ class GameViewModel @Inject constructor(
     private val isNewGame = args.id == NEW_DOC
 
     var game by mutableStateOf(GameModel())
+    var common by mutableStateOf(CommonParamsModel())
     val teams = mutableListOf<String>()
     var startTime = ""
 
@@ -85,6 +89,11 @@ class GameViewModel @Inject constructor(
                 startTime = game.start.asTime().ifBlank { "00:00" }
                 enabled = checkValues()
 
+                gameUseCase.getGameSum().onEach { gameSumState ->
+                    if (gameSumState is UiState.Success) {
+                        common = gameSumState.data
+                    }
+                }.launchIn(viewModelScope)
                 teamUseCase.getTeamList().onEach { teamListState ->
                     if (teamListState is UiState.Success) {
                         teamListState.data.sortedBy { it.team }.forEach { team ->
@@ -143,6 +152,13 @@ class GameViewModel @Inject constructor(
                 gameUseCase.saveGame(game).onEach { gameSaveState ->
                     _state.value = when (gameSaveState) {
                         is UiState.Success -> {
+                            gameUseCase.getGameList().onEach { gameListState ->
+                                if (gameListState is UiState.Success) {
+                                    val games = gameListState.data
+                                    val cash = games.sumOf { it.stakes.find { stake -> stake.gamblerNickname == "Kit" }?.cashPrize ?: 0 }
+                                    toLog("cash - $cash")
+                                }
+                            }.launchIn(viewModelScope)
                             exit = true
                             GameState(UiState.Success(game))
                         }
@@ -192,8 +208,22 @@ class GameViewModel @Inject constructor(
     private fun setStakePoints(addTime: Boolean) {
         val stakes = game.stakes
         stakes.forEachIndexed { idx, stake ->
-            if (!addTime) game.stakes[idx] = game.stakes[idx].copy(points = calcMainPoints(game, stake))
-            else game.stakes[idx] = game.stakes[idx].copy(addPoints = calcAddPoints(game, stake))
+            val pointsSum = 0.0
+            val addPointsSum = 0.0
+            if (!addTime) {
+                val points = calcMainPoints(game, stake)
+                game.stakes[idx] = game.stakes[idx].copy(points = points)
+            } else {
+                val addPoints = calcAddPoints(game, stake)
+                game.stakes[idx] = game.stakes[idx].copy(addPoints = addPoints)
+            }
+
+            val coefficient = common.groupGameSum / pointsSum
+            val addCoefficient = common.playoffGameSum / addPointsSum
+
+            //val cash = (game.stakes[idx].points * coefficient + game.stakes[idx].addPoints * addCoefficient) * game.stakes[idx].gamblerRatePercent
+            val cash = (game.stakes[idx].points * game.stakes[idx].gamblerRatePercent * coefficient)
+            game.stakes[idx] = game.stakes[idx].copy(cashPrize = round(cash).toInt())
         }
     }
 
@@ -212,8 +242,9 @@ class GameViewModel @Inject constructor(
                 (points / 2.0)
             } else if (game.result != DRAW) {
                 if ((game.goal1.toInt() - game.goal2.toInt()) == (stake.goal1.toInt() - stake.goal2.toInt())) 0.25
-                else if (game.goal1 == stake.goal1 || game.goal2 == stake.goal2) 0.1
                 else 0.0
+            } else if (game.goal1 == stake.goal1 || game.goal2 == stake.goal2) {
+                0.1
             } else 0.0
         }
         return points
