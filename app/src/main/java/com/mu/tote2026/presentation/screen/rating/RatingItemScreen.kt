@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.screen.rating
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -46,6 +47,7 @@ import com.mu.tote2026.ui.theme.ColorFemale
 import com.mu.tote2026.ui.theme.ColorMale
 import com.mu.tote2026.ui.theme.ColorUp
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun RatingItemScreen(
     gambler: GamblerModel,
@@ -149,13 +151,19 @@ fun RatingItemScreen(
                     modifier = Modifier
                         .weight(.1f)
                 )
-                Text(
+                /*Text(
                     text = gambler.points.toString(),
                     textAlign = TextAlign.End,
                     modifier = Modifier
                         .weight(.2f)
-                )
+                )*/
             }
+            Text(
+                text = String.format("%.2f", gambler.points),
+                textAlign = TextAlign.End,
+                modifier = Modifier
+                    .weight(.2f)
+            )
         }
     }
 }

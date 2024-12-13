@@ -11,8 +11,10 @@ import com.mu.tote2026.data.repository.Result.DEFEAT
 import com.mu.tote2026.data.repository.Result.DRAW
 import com.mu.tote2026.data.repository.Result.WIN
 import com.mu.tote2026.domain.model.CommonParamsModel
+import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
+import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
 import com.mu.tote2026.domain.usecase.team_usecase.TeamUseCase
 import com.mu.tote2026.presentation.navigation.Destinations.GameDestination
@@ -37,6 +39,7 @@ class GameViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val gameUseCase: GameUseCase,
     private val teamUseCase: TeamUseCase,
+    private val gamblerUseCase: GamblerUseCase,
 ) : ViewModel() {
     private val _state = MutableStateFlow(GameState())
     val state = _state.asStateFlow()
@@ -46,6 +49,7 @@ class GameViewModel @Inject constructor(
 
     var game by mutableStateOf(GameModel())
     var common by mutableStateOf(CommonParamsModel())
+    private var gamblers by mutableStateOf(listOf<GamblerModel>())
     val teams = mutableListOf<String>()
     var startTime = ""
 
@@ -91,6 +95,11 @@ class GameViewModel @Inject constructor(
                         common = gameSumState.data
                     }
                 }.launchIn(viewModelScope)
+                gamblerUseCase.getGamblerList().onEach { gamblerListState ->
+                    if (gamblerListState is UiState.Success) {
+                        gamblers = gamblerListState.data
+                    }
+                }.launchIn(viewModelScope)
                 teamUseCase.getTeamList().onEach { teamListState ->
                     if (teamListState is UiState.Success) {
                         teamListState.data.sortedBy { it.team }.forEach { team ->
@@ -101,7 +110,6 @@ class GameViewModel @Inject constructor(
                 }.launchIn(viewModelScope)
             }
         }.launchIn(viewModelScope)
-
     }
 
     fun onEvent(event: GameEvent) {
@@ -149,12 +157,21 @@ class GameViewModel @Inject constructor(
                 gameUseCase.saveGame(game).onEach { gameSaveState ->
                     _state.value = when (gameSaveState) {
                         is UiState.Success -> {
-                            /*gameUseCase.getGameList().onEach { gameListState ->
+                            gameUseCase.getGameList().onEach { gameListState ->
                                 if (gameListState is UiState.Success) {
                                     val games = gameListState.data
-                                    val cash = games.sumOf { it.stakes.find { stake -> stake.gamblerNickname == "Kit" }?.cashPrize ?: 0 }
+                                    gamblers.forEach { gambler ->
+                                        val cashPrize = games.sumOf {
+                                            it.stakes.find { stake -> stake.gamblerId == gambler.id }?.cashPrize ?: 0
+                                        }
+                                        val points = games.sumOf {
+                                            it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
+                                        }
+                                        val newGambler = gambler.copy(points = points, cashPrize = cashPrize)
+                                        gamblerUseCase.saveGambler(newGambler).launchIn(viewModelScope)
+                                    }
                                 }
-                            }.launchIn(viewModelScope)*/
+                            }.launchIn(viewModelScope)
                             exit = true
                             GameState(UiState.Success(game))
                         }
