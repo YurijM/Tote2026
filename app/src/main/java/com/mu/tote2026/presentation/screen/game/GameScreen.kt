@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.data.repository.GAMBLER
-import com.mu.tote2026.presentation.components.ByPenalty
 import com.mu.tote2026.presentation.components.AddTime
+import com.mu.tote2026.presentation.components.ByPenalty
 import com.mu.tote2026.presentation.components.GameIdAndGroup
 import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.SetDate

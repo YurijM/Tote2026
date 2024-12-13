@@ -23,7 +23,6 @@ import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.asTime
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
 import com.mu.tote2026.presentation.utils.generateResult
-import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -67,8 +66,6 @@ class GameViewModel @Inject constructor(
     var errorStart = ""
         private set
     var errorGameId = ""
-        private set
-    var errorMainTime = ""
         private set
     var errorAddTime = ""
         private set
@@ -152,13 +149,12 @@ class GameViewModel @Inject constructor(
                 gameUseCase.saveGame(game).onEach { gameSaveState ->
                     _state.value = when (gameSaveState) {
                         is UiState.Success -> {
-                            gameUseCase.getGameList().onEach { gameListState ->
+                            /*gameUseCase.getGameList().onEach { gameListState ->
                                 if (gameListState is UiState.Success) {
                                     val games = gameListState.data
                                     val cash = games.sumOf { it.stakes.find { stake -> stake.gamblerNickname == "Kit" }?.cashPrize ?: 0 }
-                                    toLog("cash - $cash")
                                 }
-                            }.launchIn(viewModelScope)
+                            }.launchIn(viewModelScope)*/
                             exit = true
                             GameState(UiState.Success(game))
                         }
@@ -207,21 +203,24 @@ class GameViewModel @Inject constructor(
 
     private fun setStakePoints(addTime: Boolean) {
         val stakes = game.stakes
+        var pointsSum = 0.0
+        var addPointsSum = 0.0
         stakes.forEachIndexed { idx, stake ->
-            val pointsSum = 0.0
-            val addPointsSum = 0.0
             if (!addTime) {
                 val points = calcMainPoints(game, stake)
+                pointsSum += (points * stake.gamblerRatePercent)
                 game.stakes[idx] = game.stakes[idx].copy(points = points)
             } else {
                 val addPoints = calcAddPoints(game, stake)
+                addPointsSum += (addPoints * stake.gamblerRatePercent)
                 game.stakes[idx] = game.stakes[idx].copy(addPoints = addPoints)
             }
+        }
 
-            val coefficient = common.groupGameSum / pointsSum
-            val addCoefficient = common.playoffGameSum / addPointsSum
+        val coefficient = common.groupGameSum / pointsSum
+        val addCoefficient = common.playoffGameSum / addPointsSum
 
-            //val cash = (game.stakes[idx].points * coefficient + game.stakes[idx].addPoints * addCoefficient) * game.stakes[idx].gamblerRatePercent
+        stakes.forEachIndexed { idx, _ ->
             val cash = (game.stakes[idx].points * game.stakes[idx].gamblerRatePercent * coefficient)
             game.stakes[idx] = game.stakes[idx].copy(cashPrize = round(cash).toInt())
         }
@@ -275,7 +274,6 @@ class GameViewModel @Inject constructor(
                 game = game.copy(goal2 = goal)
                 errorGoal2 = if (isNewGame) "" else checkIsFieldEmpty(goal)
             }
-            errorMainTime = errorGoal1.ifBlank { errorGoal2 }
         } else {
             if (teamNo == 1) {
                 game = game.copy(addGoal1 = goal)

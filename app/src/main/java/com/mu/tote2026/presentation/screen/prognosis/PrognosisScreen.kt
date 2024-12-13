@@ -195,21 +195,27 @@ private fun GamblerStake(stake: StakeModel) {
             modifier = Modifier.weight(2f)
         )
 
-        val points = String.format("%.2f", stake.points) + "\n"
-        val rub = String.format("%.2f", stake.points * stake.gamblerRatePercent)
+        val points = String.format("%.2f", stake.points) //+ "\n"
         val text = buildAnnotatedString {
-            append("очков ")
+            //pushStringAnnotation(tag = "ParagraphLabel", annotation = "paragraph1")
             withStyle(
                 style = SpanStyle(
                     fontWeight = FontWeight.Black
                 )
             ) {
-                //pushStringAnnotation(tag = points, annotation = points)
                 append(points)
-                //pushStringAnnotation(tag = rub, annotation = rub)
-                append(rub)
+            }
+            append(" оч.\n")
+            //pop()
+            withStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.Black
+                )
+            ) {
+                append(stake.cashPrize.toString())
             }
             append(" руб.")
+            //toAnnotatedString()
         }
         Text(
             text = text,

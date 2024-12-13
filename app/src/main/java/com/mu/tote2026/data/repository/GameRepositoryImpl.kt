@@ -205,7 +205,7 @@ class GameRepositoryImpl(
     override fun getGameSum(): Flow<UiState<CommonParamsModel>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(COMMON).document().get()
+        firestore.collection(COMMON).document(COMMON).get()
             .addOnSuccessListener { task ->
                 val common = task.toObject(CommonParamsModel::class.java) ?: CommonParamsModel()
 
