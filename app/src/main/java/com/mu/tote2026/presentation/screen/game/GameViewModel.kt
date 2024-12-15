@@ -159,7 +159,8 @@ class GameViewModel @Inject constructor(
                         is UiState.Success -> {
                             gameUseCase.getGameList().onEach { gameListState ->
                                 if (gameListState is UiState.Success) {
-                                    val games = gameListState.data
+                                    val games = gameListState.data.filter { it.start.toLong() <= System.currentTimeMillis() }
+                                    val gamesPrev = gameListState.data.filter { it.start <= game.start }
                                     gamblers.forEach { gambler ->
                                         val cashPrize = games.sumOf {
                                             it.stakes.find { stake -> stake.gamblerId == gambler.id }?.cashPrize ?: 0
@@ -167,8 +168,41 @@ class GameViewModel @Inject constructor(
                                         val points = games.sumOf {
                                             it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
                                         }
-                                        val newGambler = gambler.copy(points = points, cashPrize = cashPrize)
-                                        gamblerUseCase.saveGambler(newGambler).launchIn(viewModelScope)
+                                        val pointsPrev = gamesPrev.sumOf {
+                                            it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
+                                        }
+
+                                        val newGambler = gambler.copy(
+                                            pointsPrev = pointsPrev,
+                                            points = points,
+                                            cashPrize = cashPrize
+                                        )
+                                        gamblerUseCase.saveGambler(newGambler).onEach { gamblerState ->
+                                            if (gamblerState is UiState.Success) {
+                                                gamblerUseCase.getGamblerList().onEach { gamblerListState ->
+                                                    if (gamblerListState is UiState.Success) {
+                                                        var place = 1
+                                                        var pointsCur = -1.0
+                                                        var step = 0
+                                                        val gamblers = gamblerListState.data
+                                                            .sortedByDescending { it.points }.toMutableList()
+                                                        gamblers.forEachIndexed { idx, gambler ->
+                                                            if (gambler.points > pointsCur) {
+                                                                pointsCur = gambler.points
+                                                                place += step
+                                                                step = 1
+                                                            } else {
+                                                                step++
+                                                            }
+                                                            gamblers[idx] = gamblers[idx].copy(place = place)
+                                                            gamblerUseCase.saveGambler(gamblers[idx])
+                                                        }
+                                                        val gamblersPrev = gamblerListState.data
+                                                            .sortedByDescending { it.pointsPrev }
+                                                    }
+                                                }.launchIn(viewModelScope)
+                                            }
+                                        }.launchIn(viewModelScope)
                                     }
                                 }
                             }.launchIn(viewModelScope)

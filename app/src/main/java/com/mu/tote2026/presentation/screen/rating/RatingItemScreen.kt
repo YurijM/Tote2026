@@ -31,10 +31,12 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -112,7 +114,7 @@ fun RatingItemScreen(
             )
             Column(
                 modifier = Modifier
-                    .weight(.8f)
+                    .weight(1f)
                     .padding(horizontal = 4.dp)
             ) {
                 Row(
@@ -131,8 +133,20 @@ fun RatingItemScreen(
                         modifier = Modifier.height(20.dp)
                     )
                 }
+                val cashPrize = buildAnnotatedString {
+                    append("Выигрыш - ")
+                    withStyle(
+                        style = SpanStyle(
+                            fontWeight = FontWeight.Black
+                        )
+                    ) {
+                        append(gambler.cashPrize.toString())
+                    }
+                    append(" руб.")
+                }
                 Text(
-                    text = stringResource(R.string.cashPrize, gambler.cashPrize),
+                    //text = stringResource(R.string.cashPrize, gambler.cashPrize),
+                    text = cashPrize,
                     fontSize = MaterialTheme.typography.labelLarge.fontSize
                 )
             }
@@ -161,8 +175,9 @@ fun RatingItemScreen(
             Text(
                 text = String.format("%.2f", gambler.points),
                 textAlign = TextAlign.End,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .weight(.2f)
+                    .weight(.25f)
             )
         }
     }

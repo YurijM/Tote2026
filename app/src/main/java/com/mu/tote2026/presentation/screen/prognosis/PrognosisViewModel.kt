@@ -25,7 +25,9 @@ class PrognosisViewModel @Inject constructor(
 
             if (prognosisState is UiState.Success) {
                 _state.value = PrognosisState(
-                    UiState.Success(prognosisState.data.filter { it.id.toInt() <= 2 }.sortedByDescending { it.id.toInt() })
+                    UiState.Success(prognosisState.data.filter {
+                        it.start.toLong() <= System.currentTimeMillis()
+                    }.sortedByDescending { it.id.toInt() })
                 )
             }
         }.launchIn(viewModelScope)
