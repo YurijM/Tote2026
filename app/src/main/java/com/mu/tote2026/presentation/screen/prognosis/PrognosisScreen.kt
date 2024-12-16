@@ -100,8 +100,13 @@ fun PrognosisScreen() {
                     CardTitle(game)
                     GameResult(game)
 
-                    game.stakes.sortBy { it.gamblerNickname }
-                    game.stakes.forEach { stake ->
+                    //game.stakes.sortBy { it.gamblerNickname }
+                    game.stakes.sortedWith(
+                        compareByDescending<StakeModel> { item -> item.points }
+                            .thenByDescending { item -> item.cashPrize }
+                            .thenBy { item -> item.gamblerNickname }
+                    ).forEach { stake ->
+                    //game.stakes.forEach { stake ->
                         GamblerStake(stake)
                     }
                 }

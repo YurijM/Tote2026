@@ -25,12 +25,14 @@ import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.asTime
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
 import com.mu.tote2026.presentation.utils.generateResult
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.round
 
@@ -160,7 +162,7 @@ class GameViewModel @Inject constructor(
                             gameUseCase.getGameList().onEach { gameListState ->
                                 if (gameListState is UiState.Success) {
                                     val games = gameListState.data.filter { it.start.toLong() <= System.currentTimeMillis() }
-                                    val gamesPrev = gameListState.data.filter { it.start <= game.start }
+                                    val gamesPrev = gameListState.data.filter { it.start < game.start }
                                     gamblers.forEach { gambler ->
                                         val cashPrize = games.sumOf {
                                             it.stakes.find { stake -> stake.gamblerId == gambler.id }?.cashPrize ?: 0
@@ -181,24 +183,10 @@ class GameViewModel @Inject constructor(
                                             if (gamblerState is UiState.Success) {
                                                 gamblerUseCase.getGamblerList().onEach { gamblerListState ->
                                                     if (gamblerListState is UiState.Success) {
-                                                        var place = 1
-                                                        var pointsCur = -1.0
-                                                        var step = 0
-                                                        val gamblers = gamblerListState.data
-                                                            .sortedByDescending { it.points }.toMutableList()
-                                                        gamblers.forEachIndexed { idx, gambler ->
-                                                            if (gambler.points > pointsCur) {
-                                                                pointsCur = gambler.points
-                                                                place += step
-                                                                step = 1
-                                                            } else {
-                                                                step++
-                                                            }
-                                                            gamblers[idx] = gamblers[idx].copy(place = place)
-                                                            gamblerUseCase.saveGambler(gamblers[idx])
-                                                        }
-                                                        val gamblersPrev = gamblerListState.data
-                                                            .sortedByDescending { it.pointsPrev }
+                                                        setPlaceOrPlacePrev(gamblerListState.data
+                                                            .sortedByDescending { it.points })
+                                                        /*setPlaceOrPlacePrev(gamblerListState.data
+                                                            .sortedByDescending { it.pointsPrev }, true)*/
                                                     }
                                                 }.launchIn(viewModelScope)
                                             }
@@ -206,7 +194,7 @@ class GameViewModel @Inject constructor(
                                     }
                                 }
                             }.launchIn(viewModelScope)
-                            exit = true
+                            //exit = true
                             GameState(UiState.Success(game))
                         }
 
@@ -219,6 +207,27 @@ class GameViewModel @Inject constructor(
 
             is GameEvent.OnGenerateGame -> {
                 generatedGame.value = generateResult()
+            }
+        }
+    }
+
+    private fun setPlaceOrPlacePrev(gamblers: List<GamblerModel>, prev: Boolean = false) {
+        var place = 1
+        var pointsCur = -1.0
+        var step = 0
+        val scope = viewModelScope
+        scope.launch {
+            gamblers.forEach { gambler ->
+                if (gambler.points > pointsCur) {
+                    pointsCur = (if (!prev) gambler.points else gambler.pointsPrev)
+                    place += step
+                    step = 1
+                } else {
+                    step++
+                }
+                toLog("gambler.place: ${gambler.nickname} - ${gambler.place}")
+                gamblerUseCase.saveGambler(if (!prev) gambler.copy(place = place) else gambler.copy(placePrev = place))
+                    .launchIn(scope)
             }
         }
     }
