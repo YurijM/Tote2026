@@ -32,7 +32,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.round
 
@@ -105,7 +104,7 @@ class GameViewModel @Inject constructor(
                 }.launchIn(viewModelScope)
                 gamblerUseCase.getGamblerList().onEach { gamblerListState ->
                     if (gamblerListState is UiState.Success) {
-                        gamblers = gamblerListState.data.toMutableList()
+                        gamblers = gamblerListState.data.filter { it.rate > 0 }.toMutableList()
                     }
                 }.launchIn(viewModelScope)
                 teamUseCase.getTeamList().onEach { teamListState ->
@@ -178,63 +177,18 @@ class GameViewModel @Inject constructor(
                                 val pointsPrev = gamesPrev.sumOf {
                                     it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
                                 }
-                                /*gamblers[idx] = gambler.copy(
+                                gamblers[idx] = gambler.copy(
                                     pointsPrev = pointsPrev,
                                     points = points,
                                     cashPrize = cashPrize
-                                )*/
-                                //toLog("gambler before save: ${gamblers.find { it.id == gambler.id }?.points}")
-                                gamblerUseCase.saveGambler(gambler.copy(
-                                    pointsPrev = pointsPrev,
-                                    points = points,
-                                    cashPrize = cashPrize)
-                                ).onEach { gamblerState ->
-                                    if (gamblerState is UiState.Success) {
-                                        val cur = gamblers.find { it.id == gambler.id }
-                                        toLog("gambler after save: ${cur?.nickname} - ${cur?.points}")
-                                    }
-                                }.launchIn(viewModelScope)
+                                )
                             }
+                            setPlaceOrPlacePrev()
+                            if (gamblers.maxOf { it.pointsPrev > 0.0 }) setPlaceOrPlacePrev(true)
 
-
-
-
-                                /*gameUseCase.getGameList().onEach { gameListState ->
-                                    if (gameListState is UiState.Success) {
-                                        val games = gameListState.data.filter { it.start.toLong() <= System.currentTimeMillis() }
-                                        val gamesPrev = gameListState.data.filter { it.start < game.start }
-                                        gamblers.forEach { gambler ->
-                                            val cashPrize = games.sumOf {
-                                                it.stakes.find { stake -> stake.gamblerId == gambler.id }?.cashPrize ?: 0
-                                            }
-                                            val points = games.sumOf {
-                                                it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
-                                            }
-                                            val pointsPrev = gamesPrev.sumOf {
-                                                it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
-                                            }
-
-                                            val newGambler = gambler.copy(
-                                                pointsPrev = pointsPrev,
-                                                points = points,
-                                                cashPrize = cashPrize
-                                            )
-                                            gamblerUseCase.saveGambler(newGambler).onEach { gamblerState ->
-                                                if (gamblerState is UiState.Success) {
-                                                    gamblerUseCase.getGamblerList().onEach { gamblerListState ->
-                                                        if (gamblerListState is UiState.Success) {
-                                                            gamblers
-                                                            setPlaceOrPlacePrev(gamblerListState.data
-                                                                .sortedByDescending { it.points })
-                                                            setPlaceOrPlacePrev(gamblerListState.data
-                                                                .sortedByDescending { it.pointsPrev }, true)
-                                                        }
-                                                    }.launchIn(viewModelScope)
-                                                }
-                                            }.launchIn(viewModelScope)
-                                        }
-                                    }
-                                }.launchIn(viewModelScope)*/
+                            gamblers.forEach { gambler ->
+                                gamblerUseCase.saveGambler(gambler).launchIn(viewModelScope)
+                            }
                             //exit = true
                             GameState(UiState.Success(game))
                         }
@@ -252,25 +206,25 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    private fun setPlaceOrPlacePrev(gamblers: List<GamblerModel>, prev: Boolean = false) {
+    private fun setPlaceOrPlacePrev(prev: Boolean = false) {
         var place = 1
         var pointsCur = Double.MAX_VALUE
         var step = 0
-        val scope = viewModelScope
-        scope.launch {
-            gamblers.forEach { gambler ->
-                if (gambler.points < pointsCur) {
+        gamblers
+            .sortedByDescending { if (!prev) it.points else it.pointsPrev }
+            .forEachIndexed { idx, gambler ->
+                if ((if (!prev) gambler.points else gambler.pointsPrev) < pointsCur) {
                     pointsCur = (if (!prev) gambler.points else gambler.pointsPrev)
                     place += step
                     step = 1
                 } else {
                     step++
                 }
-                toLog("gambler & points & place: ${gambler.nickname} - $pointsCur, $place")
-                gamblerUseCase.saveGambler(if (!prev) gambler.copy(place = place) else gambler.copy(placePrev = place))
-                    .launchIn(scope)
+                toLog("prev - $prev: gambler & points & place: ${gambler.nickname} - $pointsCur, $place")
+                gamblers[idx] = if (!prev) gambler.copy(place = place) else gambler.copy(placePrev = place)
+                /*gamblerUseCase.saveGambler(if (!prev) gambler.copy(place = place) else gambler.copy(placePrev = place))
+                    .launchIn(scope)*/
             }
-        }
     }
 
     private fun setResult(addTime: Boolean) {

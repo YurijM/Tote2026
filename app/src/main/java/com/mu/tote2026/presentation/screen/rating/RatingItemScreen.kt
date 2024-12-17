@@ -146,7 +146,7 @@ fun RatingItemScreen(
                 }
                 Text(
                     //text = stringResource(R.string.cashPrize, gambler.cashPrize),
-                    text = cashPrize,
+                    text = "$cashPrize (${gambler.place})",
                     fontSize = MaterialTheme.typography.labelLarge.fontSize
                 )
             }
