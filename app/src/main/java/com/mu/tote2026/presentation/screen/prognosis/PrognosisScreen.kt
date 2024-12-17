@@ -95,7 +95,10 @@ fun PrognosisScreen() {
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(4.dp)
+                        .padding(
+                            horizontal = 4.dp,
+                            vertical = 8.dp
+                        )
                 ) {
                     CardTitle(game)
                     GameResult(game)
