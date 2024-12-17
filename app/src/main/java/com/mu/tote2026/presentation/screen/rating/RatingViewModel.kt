@@ -35,6 +35,7 @@ class RatingViewModel @Inject constructor(
                             .filter { it.rate > 0 }
                             .sortedWith(
                                 compareByDescending<GamblerModel> { it.points }
+                                    .thenByDescending { it.cashPrize }
                                     .thenBy { it.nickname }
                             )
                     )
