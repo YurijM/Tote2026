@@ -189,7 +189,8 @@ class GameViewModel @Inject constructor(
                             gamblers.forEach { gambler ->
                                 gamblerUseCase.saveGambler(gambler).launchIn(viewModelScope)
                             }
-                            //exit = true
+
+                            exit = true
                             GameState(UiState.Success(game))
                         }
 
