@@ -1,6 +1,7 @@
 package com.mu.tote2026.presentation.screen.prognosis
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -109,7 +110,7 @@ fun PrognosisScreen() {
                             .thenByDescending { item -> item.cashPrize }
                             .thenBy { item -> item.gamblerNickname }
                     ).forEach { stake ->
-                    //game.stakes.forEach { stake ->
+                        //game.stakes.forEach { stake ->
                         GamblerStake(stake)
                     }
                 }
@@ -123,6 +124,7 @@ private fun CardTitle(game: GameModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .background(color = MaterialTheme.colorScheme.primaryContainer)
             .padding(
                 top = 4.dp,
                 start = 8.dp,
@@ -151,24 +153,32 @@ private fun CardTitle(game: GameModel) {
 
 @Composable
 private fun GameResult(game: GameModel) {
-    Text(
-        text = "${game.team1} - ${game.team2}",
-        textAlign = TextAlign.Center,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier.fillMaxWidth().height(20.dp)
-    )
-    Text(
-        text = resultToString(
-            game.goal1,
-            game.goal2,
-            game.addGoal1,
-            game.addGoal2,
-            game.byPenalty
-        ),
-        textAlign = TextAlign.Center,
-        lineHeight = 1.em,
-        modifier = Modifier.fillMaxWidth()
-    )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = MaterialTheme.colorScheme.primaryContainer)
+    ) {
+        Text(
+            text = "${game.team1} - ${game.team2}",
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(20.dp)
+        )
+        Text(
+            text = resultToString(
+                game.goal1,
+                game.goal2,
+                game.addGoal1,
+                game.addGoal2,
+                game.byPenalty
+            ),
+            textAlign = TextAlign.Center,
+            lineHeight = 1.em,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @SuppressLint("DefaultLocale")
