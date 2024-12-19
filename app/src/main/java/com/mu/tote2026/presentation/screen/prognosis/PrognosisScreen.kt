@@ -2,6 +2,7 @@ package com.mu.tote2026.presentation.screen.prognosis
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,6 +44,8 @@ import com.mu.tote2026.presentation.utils.asDateTime
 import com.mu.tote2026.presentation.utils.resultToString
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
+import com.mu.tote2026.ui.theme.ColorDown
+import com.mu.tote2026.ui.theme.ColorUp
 
 @Composable
 fun PrognosisScreen() {
@@ -151,6 +154,7 @@ private fun CardTitle(game: GameModel) {
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 private fun GameResult(game: GameModel) {
     Column(
@@ -175,8 +179,48 @@ private fun GameResult(game: GameModel) {
                 game.byPenalty
             ),
             textAlign = TextAlign.Center,
-            lineHeight = 1.em,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                //.height(20.dp)
+        )
+
+        val winCoefficient = "на выигрыш - " + String.format("%.2f", game.winCoefficient)
+        val drawCoefficient = "на ничью - " + String.format("%.2f", game.drawCoefficient)
+        val defeatCoefficient = "на проигрыш - " + String.format("%.2f", game.defeatCoefficient)
+        val coefficients = buildAnnotatedString {
+            append("коффициенты:\n")
+            withStyle(
+                style = SpanStyle(
+                    color = ColorUp
+                )
+            ) {
+                append(winCoefficient)
+            }
+            append(", ")
+            withStyle(
+                style = SpanStyle(
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            ) {
+                append(drawCoefficient)
+            }
+            append(", ")
+            withStyle(
+                style = SpanStyle(
+                    color = ColorDown
+                )
+            ) {
+                append(defeatCoefficient)
+            }
+        }
+        Text(
+            text = coefficients,
+            textAlign = TextAlign.Center,
+            fontSize = MaterialTheme.typography.labelMedium.fontSize,
+            lineHeight = 1.25.em,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
         )
     }
 }
@@ -194,12 +238,22 @@ private fun GamblerStake(stake: StakeModel) {
                 vertical = 4.dp
             )
     ) {
-        Text(
-            text = stake.gamblerNickname,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
+        Column(
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier.weight(1f)
-        )
+        ) {
+            Text(
+                text = stake.gamblerNickname,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                lineHeight = 0.85.em
+            )
+            Text(
+                text = "(коэф. - " + String.format("%.2f", stake.gamblerRatePercent) + ")",
+                fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                lineHeight = 0.85.em
+            )
+        }
         Text(
             text = resultToString(
                 stake.goal1,
@@ -209,7 +263,7 @@ private fun GamblerStake(stake: StakeModel) {
                 stake.byPenalty
             ),
             textAlign = TextAlign.Center,
-            lineHeight = 1.em,
+            lineHeight = 1.5.em,
             modifier = Modifier.weight(2f)
         )
 
