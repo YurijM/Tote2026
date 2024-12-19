@@ -14,6 +14,7 @@ interface GameRepository {
 
     fun getGamblerStakes(gamblerId: String): Flow<UiState<List<GameModel>>>
     fun getGamblerGameStake(gameId: String, gamblerId: String): Flow<UiState<GameModel>>
+    fun deleteStakes(gameId: String): Flow<UiState<Boolean>>
     fun saveStake(oldStake: StakeModel, newStake: StakeModel): Flow<UiState<Boolean>>
 
     fun getGameSum(): Flow<UiState<CommonParamsModel>>

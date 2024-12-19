@@ -21,6 +21,7 @@ object Collections {
     const val GROUPS = "groups"
     const val TEAMS = "teams"
     const val GAMES = "games"
+    const val STAKES = "stakes"
     const val GAMBLERS = "gamblers"
     const val COMMON = "common"
 }

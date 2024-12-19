@@ -1,10 +1,12 @@
 package com.mu.tote2026.data.repository
 
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FieldValue.arrayRemove
 import com.google.firebase.firestore.FieldValue.arrayUnion
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.Collections.COMMON
 import com.mu.tote2026.data.repository.Collections.GAMES
+import com.mu.tote2026.data.repository.Collections.STAKES
 import com.mu.tote2026.data.repository.Errors.GAME_SUM_GET_ERROR
 import com.mu.tote2026.domain.model.CommonParamsModel
 import com.mu.tote2026.domain.model.GameModel
@@ -91,6 +93,28 @@ class GameRepositoryImpl(
 
         awaitClose {
             toLog("deleteGame awaitClose")
+            close()
+        }
+    }
+
+    override fun deleteStakes(gameId: String): Flow<UiState<Boolean>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        val game = firestore.collection(GAMES).document(gameId)
+        val deleteStakes = hashMapOf<String, Any>(
+            STAKES to FieldValue.delete()
+        )
+
+        game.update(deleteStakes)
+            .addOnSuccessListener {
+                        trySend(UiState.Success(true))
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error(error.message ?: "deleteStakes: error is not defined"))
+            }
+
+        awaitClose {
+            toLog("deleteStakes awaitClose")
             close()
         }
     }
@@ -182,9 +206,9 @@ class GameRepositoryImpl(
 
         val game = firestore.collection(GAMES).document(oldStake.gameId)
 
-        game.update("stakes", arrayRemove(oldStake))
+        game.update(STAKES, arrayRemove(oldStake))
             .addOnSuccessListener {
-                game.update("stakes", arrayUnion(newStake))
+                game.update(STAKES, arrayUnion(newStake))
                     .addOnSuccessListener {
                         trySend(UiState.Success(true))
                     }

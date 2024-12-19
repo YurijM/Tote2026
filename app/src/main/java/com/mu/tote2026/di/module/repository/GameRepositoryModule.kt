@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.GameRepositoryImpl
 import com.mu.tote2026.domain.repository.GameRepository
 import com.mu.tote2026.domain.usecase.game_usecase.DeleteGame
+import com.mu.tote2026.domain.usecase.game_usecase.DeleteStakes
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
 import com.mu.tote2026.domain.usecase.game_usecase.GetGamblerGameStake
 import com.mu.tote2026.domain.usecase.game_usecase.GetGamblerStakes
@@ -37,6 +38,7 @@ object GameRepositoryModule {
 
         getGamblerStakes = GetGamblerStakes(gameRepository),
         getGamblerGameStake = GetGamblerGameStake(gameRepository),
+        deleteStakes = DeleteStakes(gameRepository),
         saveStake = SaveStake(gameRepository),
 
         getGameSum = GetGameSum(gameRepository)
