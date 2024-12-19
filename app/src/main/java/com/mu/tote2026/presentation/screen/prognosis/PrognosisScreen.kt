@@ -249,7 +249,7 @@ private fun GamblerStake(stake: StakeModel) {
                 lineHeight = 0.85.em
             )
             Text(
-                text = "(коэф. - " + String.format("%.2f", stake.gamblerRatePercent) + ")",
+                text = "(коэф. " + String.format("%.2f", stake.gamblerRatePercent) + ")",
                 fontSize = MaterialTheme.typography.labelMedium.fontSize,
                 lineHeight = 0.85.em
             )

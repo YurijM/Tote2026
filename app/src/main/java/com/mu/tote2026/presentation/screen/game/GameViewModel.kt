@@ -25,7 +25,6 @@ import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.asTime
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
 import com.mu.tote2026.presentation.utils.generateResult
-import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -221,7 +220,6 @@ class GameViewModel @Inject constructor(
                 } else {
                     step++
                 }
-                toLog("prev - $prev: gambler & points & place: ${gambler.nickname} - $pointsCur, $place")
                 gamblers[idx] = if (!prev) gambler.copy(place = place) else gambler.copy(placePrev = place)
                 /*gamblerUseCase.saveGambler(if (!prev) gambler.copy(place = place) else gambler.copy(placePrev = place))
                     .launchIn(scope)*/
@@ -296,11 +294,16 @@ class GameViewModel @Inject constructor(
             points += if (game.goal1 == stake.goal1 && game.goal2 == stake.goal2) {
                 (points / 2.0)
             } else if (game.result != DRAW) {
-                if ((game.goal1.toInt() - game.goal2.toInt()) == (stake.goal1.toInt() - stake.goal2.toInt())) 0.25
-                else 0.0
-            } else if (game.goal1 == stake.goal1 || game.goal2 == stake.goal2) {
-                0.1
-            } else 0.0
+                if ((game.goal1.toInt() - game.goal2.toInt()) == (stake.goal1.toInt() - stake.goal2.toInt())) {
+                    0.25
+                } else if (game.goal1 == stake.goal1 || game.goal2 == stake.goal2) {
+                    0.1
+                } else {
+                    0.0
+                }
+            } else {
+                0.0
+            }
         }
         return points
     }
