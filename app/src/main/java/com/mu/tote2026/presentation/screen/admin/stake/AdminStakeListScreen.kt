@@ -2,6 +2,7 @@ package com.mu.tote2026.presentation.screen.admin.stake
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
@@ -29,6 +32,7 @@ import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.errorTranslate
+import com.mu.tote2026.presentation.utils.resultToString
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
@@ -87,6 +91,32 @@ fun AdminStakeListScreen() {
         ) {
             items(games) { game ->
                 Text(game.id)
+                game.stakes.forEach { stake ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = stake.gamblerNickname,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = resultToString(
+                                goal1 = stake.goal1,
+                                goal2 = stake.goal2,
+                                addGoal1 = stake.addGoal1,
+                                addGoal2 = stake.addGoal2,
+                                byPenalty = stake.byPenalty
+                            ),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.weight(1.5f)
+                        )
+                    }
+                }
             }
         }
     }

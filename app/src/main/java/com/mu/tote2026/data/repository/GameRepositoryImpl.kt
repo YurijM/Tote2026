@@ -206,9 +206,9 @@ class GameRepositoryImpl(
 
         val game = firestore.collection(GAMES).document(oldStake.gameId)
 
-        game.update(STAKES, arrayRemove(oldStake))
+        game.update("stakes", arrayRemove(oldStake))
             .addOnSuccessListener {
-                game.update(STAKES, arrayUnion(newStake))
+                game.update("stakes", arrayUnion(newStake))
                     .addOnSuccessListener {
                         trySend(UiState.Success(true))
                     }

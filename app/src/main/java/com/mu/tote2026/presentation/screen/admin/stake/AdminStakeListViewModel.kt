@@ -61,7 +61,7 @@ class AdminStakeListViewModel @Inject constructor(
                     gameUseCase.deleteStakes(game.id).launchIn(viewModelScope)
                     gamblers.forEach { gambler ->
                         val stake = randomStake(game, gambler)
-                        gameUseCase.saveStake(StakeModel(), stake).launchIn(viewModelScope)
+                        gameUseCase.saveStake(StakeModel(gameId = game.id), stake).launchIn(viewModelScope)
                     }
                 }
             }
