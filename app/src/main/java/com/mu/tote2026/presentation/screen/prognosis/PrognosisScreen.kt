@@ -1,6 +1,7 @@
 package com.mu.tote2026.presentation.screen.prognosis
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -38,9 +40,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
+import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.GROUPS_COUNT
 import com.mu.tote2026.presentation.utils.asDateTime
+import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.resultToString
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
@@ -119,6 +123,15 @@ fun PrognosisScreen() {
                 }
             }
         }
+    }
+
+    if (isLoading) {
+        AppProgressBar()
+    }
+
+    if (error.isNotBlank()) {
+        val context = LocalContext.current
+        Toast.makeText(context, errorTranslate(error), Toast.LENGTH_LONG).show()
     }
 }
 
