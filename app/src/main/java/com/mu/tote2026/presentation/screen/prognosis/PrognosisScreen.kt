@@ -87,38 +87,50 @@ fun PrognosisScreen() {
     ) {
         Title(stringResource(R.string.prognosis))
         HorizontalDivider(thickness = 1.dp)
-        LazyColumn(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(4.dp)
-        ) {
-            items(games) { game ->
-                Card(
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 8.dp
-                    ),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            horizontal = 4.dp,
-                            vertical = 8.dp
-                        )
-                ) {
-                    CardTitle(game)
-                    GameResult(game)
 
-                    //game.stakes.sortBy { it.gamblerNickname }
-                    game.stakes.sortedWith(
-                        compareByDescending<StakeModel> { item -> item.points }
-                            .thenByDescending { item -> item.cashPrize }
-                            .thenBy { item -> item.gamblerNickname }
-                    ).forEach { stake ->
-                        //game.stakes.forEach { stake ->
-                        GamblerStake(stake)
+        if (games.isEmpty()) {
+            Text(
+                text = stringResource(R.string.tournament_is_not_started),
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            )
+        } else {
+            LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            ) {
+                items(games) { game ->
+                    Card(
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 8.dp
+                        ),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                horizontal = 4.dp,
+                                vertical = 8.dp
+                            )
+                    ) {
+                        CardTitle(game)
+                        GameResult(game)
+
+                        //game.stakes.sortBy { it.gamblerNickname }
+                        game.stakes.sortedWith(
+                            compareByDescending<StakeModel> { item -> item.points }
+                                .thenByDescending { item -> item.cashPrize }
+                                .thenBy { item -> item.gamblerNickname }
+                        ).forEach { stake ->
+                            //game.stakes.forEach { stake ->
+                            GamblerStake(stake)
+                        }
                     }
                 }
             }

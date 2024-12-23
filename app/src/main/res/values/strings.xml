@@ -71,6 +71,8 @@
     <string name="group_games">Игры в группе</string>
     <string name="games_played_yet">Прошедшие игры с участием данных команд:</string>
 
+    <string name="tournament_is_not_started">Турнир ещё не начался</string>
+
     <string name="game">Игра</string>
     <string name="game_start">начало матча</string>
     <string name="game_id">Игра №</string>
