@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
 import com.mu.tote2026.presentation.utils.convertDateTimeToTimestamp
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,11 +36,22 @@ class AdminGameListViewModel @Inject constructor(
     fun onEvent(event: AdminGameListEvent) {
         when (event) {
             is AdminGameListEvent.OnLoad -> {
-                games.forEach { game ->
+                /*games.forEach { game ->
                     gameUseCase.deleteGame(game.id).launchIn(viewModelScope)
                 }
                 games.forEach { game ->
                     gameUseCase.saveGame(game).launchIn(viewModelScope)
+                }*/
+                games.forEach { game ->
+                    toLog("game: ${game.id}")
+                    gameUseCase.deleteGame(game.id).onEach { deleteGameState ->
+                        toLog("deleteGame: ${game.id}")
+                        if (deleteGameState is UiState.Success) {
+                            gameUseCase.saveGame(game).onEach() {
+                                toLog("saveGame: ${game.id}")
+                            }.launchIn(viewModelScope)
+                        }
+                    }.launchIn(viewModelScope)
                 }
             }
         }
@@ -554,7 +566,7 @@ class AdminGameListViewModel @Inject constructor(
             flag2 = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Ftur" +
                     ".png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7",
         ),
-        GameModel(
+        /*GameModel(
             id = "37",
             start = convertDateTimeToTimestamp("28.06.2026 19:00"),
             group = "1/8 финала",
@@ -595,6 +607,6 @@ class AdminGameListViewModel @Inject constructor(
             team2ItemNo = "",
             flag2 = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fbel" +
                     ".png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
-        ),
+        ),*/
     )
 }

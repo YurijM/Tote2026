@@ -83,13 +83,37 @@ class GameRepositoryImpl(
     override fun deleteGame(id: String): Flow<UiState<Boolean>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(GAMES).document(id).delete()
+        val game = firestore.collection(GAMES).document(id)
+        game.get()
+            .addOnSuccessListener { task ->
+                val document = task.toObject(GameModel::class.java)
+                if (document != null) {
+                    game.delete()
+                        .addOnSuccessListener {
+                            toLog("1")
+                            trySend(UiState.Success(true))
+                        }
+                        .addOnFailureListener { error ->
+                            toLog("2")
+                            trySend(UiState.Error(error.message ?: "deleteGame: error is not defined"))
+                        }
+                } else {
+                    toLog("3")
+                    trySend(UiState.Success(true))
+                }
+            }
+            .addOnFailureListener { error ->
+                toLog("4")
+                trySend(UiState.Success(true))
+            }
+
+        /*firestore.collection(GAMES).document(id).delete()
             .addOnSuccessListener {
                 trySend(UiState.Success(true))
             }
             .addOnFailureListener { error ->
                 trySend(UiState.Error(error.message ?: "deleteGame: error is not defined"))
-            }
+            }*/
 
         awaitClose {
             toLog("deleteGame awaitClose")
@@ -107,7 +131,7 @@ class GameRepositoryImpl(
 
         game.update(deleteStakes)
             .addOnSuccessListener {
-                        trySend(UiState.Success(true))
+                trySend(UiState.Success(true))
             }
             .addOnFailureListener { error ->
                 trySend(UiState.Error(error.message ?: "deleteStakes: error is not defined"))
@@ -205,6 +229,10 @@ class GameRepositoryImpl(
         trySend(UiState.Loading)
 
         val game = firestore.collection(GAMES).document(oldStake.gameId)
+
+        /*game.update("stakes", arrayUnion(oldStake))
+        game.update("stakes", arrayRemove(oldStake))
+        game.update("stakes", arrayUnion(newStake))*/
 
         game.update("stakes", arrayRemove(oldStake))
             .addOnSuccessListener {

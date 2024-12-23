@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -35,7 +36,6 @@ import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.presentation.components.AppProgressBar
-import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.asDateTime
 import com.mu.tote2026.presentation.utils.errorTranslate
@@ -78,13 +78,6 @@ fun AdminStakeListScreen() {
         modifier = Modifier.fillMaxSize()
     ) {
         Title(stringResource(R.string.admin_stake_list))
-        OkAndCancel(
-            titleOk = stringResource(R.string.load),
-            enabledOk = true,
-            showCancel = false,
-            onOK = { viewModel.onEvent(AdminStakeListEvent.OnLoad) },
-            onCancel = {}
-        )
         HorizontalDivider(
             thickness = 1.dp,
             color = MaterialTheme.colorScheme.primary,
@@ -116,8 +109,19 @@ fun AdminStakeListScreen() {
                             .fillMaxWidth()
                             .padding(bottom = 4.dp)
                     ) {
-                        game.stakes.sortedBy { it.gamblerNickname }.forEach { stake ->
-                            StakeItem(stake)
+                        if (game.stakes.isNotEmpty()) {
+                            game.stakes.sortedBy { it.gamblerNickname }.forEach { stake ->
+                                StakeItem(stake)
+                            }
+                        } else {
+                            Text(
+                                text = stringResource(R.string.stakes_is_absent),
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp)
+                            )
                         }
                     }
                 }

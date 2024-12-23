@@ -2,15 +2,10 @@ package com.mu.tote2026.presentation.screen.admin.stake
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mu.tote2026.data.repository.Result.DEFEAT
-import com.mu.tote2026.data.repository.Result.DRAW
-import com.mu.tote2026.data.repository.Result.WIN
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.model.GameModel
-import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
-import com.mu.tote2026.presentation.utils.GROUPS_COUNT
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AdminStakeListViewModel @Inject constructor(
-    private val gameUseCase: GameUseCase,
+    gameUseCase: GameUseCase,
     private val gamblerUseCase: GamblerUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(AdminStakeListState())
@@ -54,7 +49,7 @@ class AdminStakeListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun onEvent(event: AdminStakeListEvent) {
+    /*fun onEvent(event: AdminStakeListEvent) {
         when (event) {
             is AdminStakeListEvent.OnLoad -> {
                 games.forEach { game ->
@@ -66,9 +61,9 @@ class AdminStakeListViewModel @Inject constructor(
                 }
             }
         }
-    }
+    }*/
 
-    private fun randomStake(game: GameModel, gambler: GamblerModel): StakeModel {
+    /*private fun randomStake(game: GameModel, gambler: GamblerModel): StakeModel {
         val goal1 = (0..3).random()
         val goal2 = (0..3).random()
         val result = when {
@@ -110,7 +105,7 @@ class AdminStakeListViewModel @Inject constructor(
             addResult = addResult,
             byPenalty = byPenalty
         )
-    }
+    }*/
 
     data class AdminStakeListState(
         val result: UiState<List<GameModel>> = UiState.Default
