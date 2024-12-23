@@ -118,7 +118,7 @@ class StakeViewModel @Inject constructor(
                                 teamGames = gameListState.data
                                     .filter {
                                         (it.team1 in listOf(game.team1, game.team2) || it.team2 in listOf(game.team1, game.team2))
-                                                //&& it.start.toLong() < System.currentTimeMillis()
+                                                && it.start.toLong() < System.currentTimeMillis()
                                                 && it.id != game.id
                                     }
                                     .sortedWith(
