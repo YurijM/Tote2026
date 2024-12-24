@@ -310,6 +310,20 @@ class GameViewModel @Inject constructor(
         var addPoints = 0.0
         if (game.addGoal1.isNotBlank() && game.addGoal2.isNotBlank()) {
             addPoints += if (game.addResult == stake.addResult) {
+                1.0 + if (game.addGoal1 == stake.addGoal1 && game.addGoal2 == stake.addGoal2) 0.5
+                else 0.0
+            } else 0.0
+
+            addPoints += if (game.addResult != DRAW
+                && ((game.addGoal1.toInt() - game.addGoal2.toInt()) == (stake.addGoal1.toInt() - stake.addGoal2.toInt()))
+            ) {
+                0.25
+            } else if (game.addGoal1 == stake.addGoal1 || game.addGoal2 == stake.addGoal2) 0.01
+            else 0.0
+
+            addPoints += if (game.byPenalty.isNotBlank() && game.byPenalty == stake.byPenalty) 1.0 else 0.0
+
+            /*addPoints += if (game.addResult == stake.addResult) {
                 (1.0 + if (game.addGoal1 == stake.addGoal1 && game.addGoal2 == stake.addGoal2) 0.5
                 else 0.0)
             } else if (game.addResult != DRAW) {
@@ -317,7 +331,7 @@ class GameViewModel @Inject constructor(
                 else if (game.addGoal1 == stake.addGoal1 || game.addGoal2 == stake.addGoal2) 0.01
                 else 0.0
             } else if (game.byPenalty.isNotBlank() && game.byPenalty == stake.byPenalty) 1.0
-            else 0.0
+            else 0.0*/
         }
         return addPoints
     }
