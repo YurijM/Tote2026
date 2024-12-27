@@ -47,12 +47,14 @@ fun ApplicationDialog(
             tonalElevation = AlertDialogDefaults.TonalElevation
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = title,
-                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                if (title.isNotBlank()) {
+                    Text(
+                        text = title,
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
                 Text(
                     text = text,
                 )

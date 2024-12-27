@@ -44,6 +44,8 @@ fun ApplicationBar(
     onAdminClick: () -> Unit,
     onSignOut: () -> Unit
 ) {
+    var openDialog by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -101,7 +103,8 @@ fun ApplicationBar(
                 }
                 IconButton(
                     onClick = {
-                        onSignOut()
+                        //onSignOut()
+                        openDialog = true
                     }
                 ) {
                     Icon(
@@ -110,6 +113,21 @@ fun ApplicationBar(
                     )
                 }
             }
+        )
+    }
+
+    if (openDialog) {
+        ApplicationDialog(
+            text = stringResource(R.string.confirm_exit),
+            titleOK = stringResource(R.string.yes),
+            titleCancel = stringResource(R.string.no),
+            showCancel = true,
+            onDismiss = { openDialog = false },
+            onOK = {
+                openDialog = false
+                onSignOut()
+            },
+            onCancel = { openDialog = false }
         )
     }
 }
