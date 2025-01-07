@@ -44,6 +44,7 @@ object Errors {
     const val INCORRECT_EMAIL = "Некорректное значение email"
     const val ERROR_PROFILE_IS_EMPTY = "Профиль не заполнен"
     const val ADD_GOAL_INCORRECT = "Количество мячей не может быть меньше, чем в основное время"
+    const val PROGNOSIS_IS_ABSENT = "Прогноз\nотсутствует"
 }
 
 sealed class BottomNavItem(

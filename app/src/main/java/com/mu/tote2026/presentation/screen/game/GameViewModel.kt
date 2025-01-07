@@ -160,6 +160,18 @@ class GameViewModel @Inject constructor(
             }
 
             is GameEvent.OnSave -> {
+                gamblers.forEach { gambler ->
+                    if (game.stakes.find { it.gamblerId == gambler.id } == null) {
+                        game.stakes.add(
+                            StakeModel(
+                                gameId = game.id,
+                                gamblerId = gambler.id,
+                                gamblerNickname = gambler.nickname,
+                                gamblerRatePercent = gambler.ratePercent
+                            )
+                        )
+                    }
+                }
                 gameUseCase.saveGame(game).onEach { gameSaveState ->
                     _state.value = when (gameSaveState) {
                         is UiState.Success -> {
@@ -275,12 +287,17 @@ class GameViewModel @Inject constructor(
         val addCoefficient = common.playoffGameSum / addPointsSum
 
         stakes.forEachIndexed { idx, _ ->
-            val cash = (game.stakes[idx].points * game.stakes[idx].gamblerRatePercent * coefficient)
+            val cash = if (game.stakes[idx].result.isNotBlank()) {
+                game.stakes[idx].points * game.stakes[idx].gamblerRatePercent * coefficient
+            } else 0.0
+            //val cash = (game.stakes[idx].points * game.stakes[idx].gamblerRatePercent * coefficient)
             game.stakes[idx] = game.stakes[idx].copy(cashPrize = round(cash).toInt())
         }
     }
 
     private fun calcMainPoints(game: GameModel, stake: StakeModel): Double {
+        if (stake.result.isBlank()) return stake.points
+
         var points = 0.0
         if (game.goal1.isNotBlank() && game.goal2.isNotBlank()) {
             if (game.result == stake.result) {

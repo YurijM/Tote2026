@@ -12,7 +12,7 @@ data class StakeModel(
     val result: String = "",
     val addResult: String = "",
     val byPenalty: String = "",
-    val points: Double = 0.0,
+    val points: Double = -1.0,
     val addPoints: Double = 0.0,
     val cashPrize: Int = 0,
 )

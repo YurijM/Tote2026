@@ -17,6 +17,7 @@ import com.mu.tote2026.presentation.utils.Errors.FIELD_CAN_NOT_BE_EMPTY
 import com.mu.tote2026.presentation.utils.Errors.FIELD_CONTAINS_LESS_THAN_N_CHARS
 import com.mu.tote2026.presentation.utils.Errors.INCORRECT_EMAIL
 import com.mu.tote2026.presentation.utils.Errors.PASSWORDS_DO_NOT_MATCH
+import com.mu.tote2026.presentation.utils.Errors.PROGNOSIS_IS_ABSENT
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -287,7 +288,10 @@ fun resultToString(
     addGoal2: String,
     byPenalty: String
 ): AnnotatedString {
-    val mainTimeResult = "$goal1 : $goal2"
+    val mainTimeResult = if (goal1.isNotBlank() && goal2.isNotBlank()) {
+        "$goal1 : $goal2"
+    } else PROGNOSIS_IS_ABSENT
+
     val addTimeResult = if (addGoal1.isNotBlank() &&addGoal2.isNotBlank()) {
         "$addGoal1 : $addGoal2"
     } else ""

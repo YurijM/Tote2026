@@ -171,7 +171,7 @@ private fun CardTitle(game: GameModel) {
             modifier = Modifier.weight(1f),
         )
         Text(
-            text = (if (game.groupId.toInt() < GROUPS_COUNT) "группа " else "") + game.group,
+            text = (if (game.groupId.toInt() <= GROUPS_COUNT) "группа " else "") + game.group,
             textAlign = TextAlign.End,
             style = MaterialTheme.typography.labelMedium,
             modifier = Modifier.weight(1f),

@@ -262,7 +262,7 @@ class StakeViewModel @Inject constructor(
             && stake.goal2.isNotBlank()
         ) {
             isExtraTime = (game.groupId.isNotBlank()
-                    && game.groupId.toInt() >= GROUPS_COUNT
+                    && game.groupId.toInt() > GROUPS_COUNT
                     && stake.goal1 == stake.goal2)
             if (!isExtraTime) {
                 stake = stake.copy(
