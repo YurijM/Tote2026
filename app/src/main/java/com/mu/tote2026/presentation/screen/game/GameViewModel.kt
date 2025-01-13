@@ -124,15 +124,19 @@ class GameViewModel @Inject constructor(
                 game = game.copy(start = event.start)
                 startTime = game.start.asTime()
                 errorStart = checkIsFieldEmpty(event.start)
+                enabled = checkValues()
             }
 
             is GameEvent.OnGameIdChange -> {
                 game = game.copy(id = event.id)
                 errorGameId = checkIsFieldEmpty(event.id)
+                enabled = checkValues()
             }
 
             is GameEvent.OnGroupChange -> {
-                game = game.copy(group = event.group)
+                val groupId = GROUPS.indexOf(event.group) + 1
+                game = game.copy(group = event.group, groupId = groupId.toString())
+                enabled = checkValues()
             }
 
             is GameEvent.OnTeamChange -> {
@@ -140,6 +144,7 @@ class GameViewModel @Inject constructor(
                     game.copy(team1 = event.team)
                 else
                     game.copy(team2 = event.team)
+                enabled = checkValues()
             }
 
             is GameEvent.OnGoalChange -> {
@@ -392,9 +397,7 @@ class GameViewModel @Inject constructor(
             if (isNewGame) {
                 true
             } else {
-                if (game.goal1.isNotBlank()
-                    && game.goal2.isNotBlank()
-                ) {
+                if (game.goal1.isNotBlank() && game.goal2.isNotBlank()) {
                     isAddTime = (GROUPS.indexOf(game.group) >= GROUPS_COUNT
                             && game.goal1 == game.goal2)
                     if (!isAddTime) {
@@ -406,7 +409,7 @@ class GameViewModel @Inject constructor(
                     }
                     true
                 } else {
-                    true //false
+                    false
                 }
             }
         } else {
