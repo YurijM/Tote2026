@@ -140,7 +140,7 @@ fun GameScreen(
                         }
                     )
                     TeamResult(
-                        teams = viewModel.teams,
+                        teams = viewModel.teamList,
                         team = viewModel.game.team1,
                         goal = viewModel.game.goal1,
                         error = viewModel.errorGoal1,
@@ -148,7 +148,7 @@ fun GameScreen(
                         onGoalSet = { goal -> viewModel.onEvent(GameEvent.OnGoalChange(false, 1, goal)) }
                     )
                     TeamResult(
-                        teams = viewModel.teams,
+                        teams = viewModel.teamList,
                         team = viewModel.game.team2,
                         goal = viewModel.game.goal2,
                         error = viewModel.errorGoal2,

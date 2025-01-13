@@ -14,6 +14,7 @@ import com.mu.tote2026.domain.model.CommonParamsModel
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
+import com.mu.tote2026.domain.model.TeamModel
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
 import com.mu.tote2026.domain.usecase.team_usecase.TeamUseCase
@@ -31,6 +32,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.lang.System.currentTimeMillis
 import javax.inject.Inject
 import kotlin.math.round
 
@@ -51,7 +53,8 @@ class GameViewModel @Inject constructor(
     var common by mutableStateOf(CommonParamsModel())
     private var gamblers = mutableListOf<GamblerModel>()
     private var games = mutableListOf<GameModel>()
-    val teams = mutableListOf<String>()
+    private var teams = listOf<TeamModel>()
+    val teamList = mutableListOf<String>()
     var startTime = ""
 
     var exit by mutableStateOf(false)
@@ -108,8 +111,9 @@ class GameViewModel @Inject constructor(
                 }.launchIn(viewModelScope)
                 teamUseCase.getTeamList().onEach { teamListState ->
                     if (teamListState is UiState.Success) {
-                        teamListState.data.sortedBy { it.team }.forEach { team ->
-                            teams.add(team.team)
+                        teams = teamListState.data
+                        teams.sortedBy { it.team }.forEach { team ->
+                            teamList.add(team.team)
                         }
 
                     }
@@ -141,9 +145,9 @@ class GameViewModel @Inject constructor(
 
             is GameEvent.OnTeamChange -> {
                 game = if (event.teamNo == 1)
-                    game.copy(team1 = event.team)
+                    game.copy(team1 = event.team, flag1 = teams.first { it.team == event.team }.flag)
                 else
-                    game.copy(team2 = event.team)
+                    game.copy(team2 = event.team, flag2 = teams.first { it.team == event.team }.flag)
                 enabled = checkValues()
             }
 
@@ -180,7 +184,7 @@ class GameViewModel @Inject constructor(
                 gameUseCase.saveGame(game).onEach { gameSaveState ->
                     _state.value = when (gameSaveState) {
                         is UiState.Success -> {
-                            val gamesCur = games.filter { it.start.toLong() <= System.currentTimeMillis() }
+                            val gamesCur = games.filter { it.start.toLong() <= currentTimeMillis() }
                             val gamesPrev = gamesCur.filter { it.start < game.start }
 
                             gamblers.forEachIndexed { idx, gambler ->
@@ -394,7 +398,9 @@ class GameViewModel @Inject constructor(
             && game.team1.isNotBlank()
             && game.team2.isNotBlank()
         ) {
-            if (isNewGame) {
+            /*if (isNewGame) {
+                true*/
+            if (game.start.toLong() > currentTimeMillis()) {
                 true
             } else {
                 if (game.goal1.isNotBlank() && game.goal2.isNotBlank()) {
