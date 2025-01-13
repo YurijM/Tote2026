@@ -98,7 +98,7 @@ fun GameListScreen(
     ) {
         LazyColumn {
             GROUPS.takeLast(GROUPS.size - GROUPS_COUNT).reversed().forEach { group ->
-                if (games.filter { it.group == group }.isNotEmpty()) {
+                if (games.any { it.group == group }) {
                     item {
                         Text(
                             text = group,
@@ -108,7 +108,8 @@ fun GameListScreen(
                         )
                     }
                 }
-                items(games.filter { it.group == group }.sortedByDescending { it.id.toInt() }) { game ->
+                //items(games.filter { it.group == group }.sortedByDescending { it.id.toInt() }) { game ->
+                items(games.filter { it.group == group }.sortedBy { it.id.toInt() }) { game ->
                     GameItem(game) { toGameEdit(GameDestination(game.id)) }
                 }
             }
