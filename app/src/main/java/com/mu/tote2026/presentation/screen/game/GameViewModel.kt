@@ -169,45 +169,49 @@ class GameViewModel @Inject constructor(
             }
 
             is GameEvent.OnSave -> {
-                gamblers.forEach { gambler ->
-                    if (game.stakes.find { it.gamblerId == gambler.id } == null) {
-                        game.stakes.add(
-                            StakeModel(
-                                gameId = game.id,
-                                gamblerId = gambler.id,
-                                gamblerNickname = gambler.nickname,
-                                gamblerRatePercent = gambler.ratePercent
+                if (game.start.toLong() <= currentTimeMillis()) {
+                    gamblers.forEach { gambler ->
+                        if (game.stakes.find { it.gamblerId == gambler.id } == null) {
+                            game.stakes.add(
+                                StakeModel(
+                                    gameId = game.id,
+                                    gamblerId = gambler.id,
+                                    gamblerNickname = gambler.nickname,
+                                    gamblerRatePercent = gambler.ratePercent
+                                )
                             )
-                        )
+                        }
                     }
                 }
                 gameUseCase.saveGame(game).onEach { gameSaveState ->
                     _state.value = when (gameSaveState) {
                         is UiState.Success -> {
-                            val gamesCur = games.filter { it.start.toLong() <= currentTimeMillis() }
-                            val gamesPrev = gamesCur.filter { it.start < game.start }
+                            if (game.start.toLong() <= currentTimeMillis()) {
+                                val gamesCur = games.filter { it.start.toLong() <= currentTimeMillis() }
+                                val gamesPrev = gamesCur.filter { it.start < game.start }
 
-                            gamblers.forEachIndexed { idx, gambler ->
-                                val cashPrize = gamesCur.sumOf {
-                                    it.stakes.find { stake -> stake.gamblerId == gambler.id }?.cashPrize ?: 0
+                                gamblers.forEachIndexed { idx, gambler ->
+                                    val cashPrize = gamesCur.sumOf {
+                                        it.stakes.find { stake -> stake.gamblerId == gambler.id }?.cashPrize ?: 0
+                                    }
+                                    val points = gamesCur.sumOf {
+                                        it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
+                                    }
+                                    val pointsPrev = gamesPrev.sumOf {
+                                        it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
+                                    }
+                                    gamblers[idx] = gambler.copy(
+                                        pointsPrev = pointsPrev,
+                                        points = points,
+                                        cashPrize = cashPrize
+                                    )
                                 }
-                                val points = gamesCur.sumOf {
-                                    it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
-                                }
-                                val pointsPrev = gamesPrev.sumOf {
-                                    it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
-                                }
-                                gamblers[idx] = gambler.copy(
-                                    pointsPrev = pointsPrev,
-                                    points = points,
-                                    cashPrize = cashPrize
-                                )
-                            }
-                            setPlaceOrPlacePrev()
-                            if (gamblers.maxOf { it.pointsPrev > 0.0 }) setPlaceOrPlacePrev(true)
+                                setPlaceOrPlacePrev()
+                                if (gamblers.maxOf { it.pointsPrev > 0.0 }) setPlaceOrPlacePrev(true)
 
-                            gamblers.forEach { gambler ->
-                                gamblerUseCase.saveGambler(gambler).launchIn(viewModelScope)
+                                gamblers.forEach { gambler ->
+                                    gamblerUseCase.saveGambler(gambler).launchIn(viewModelScope)
+                                }
                             }
 
                             exit = true
