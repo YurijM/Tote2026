@@ -117,7 +117,8 @@ class StakeViewModel @Inject constructor(
                             if (gameListState is UiState.Success) {
                                 teamGames = gameListState.data
                                     .filter {
-                                        (it.team1 in listOf(game.team1, game.team2) || it.team2 in listOf(game.team1, game.team2))
+                                        (it.team1 in listOf(game.team1, game.team2)
+                                                || it.team2 in listOf(game.team1, game.team2))
                                                 && it.start.toLong() < System.currentTimeMillis()
                                                 && it.id != game.id
                                     }
@@ -219,6 +220,8 @@ class StakeViewModel @Inject constructor(
                 errorGoal2 = checkIsFieldEmpty(goal)
             }
             errorMainTime = errorGoal1.ifBlank { errorGoal2 }
+
+            setResult(stake.goal1, stake.goal2, false)
         } else {
             if (teamNo == 1) {
                 stake = stake.copy(addGoal1 = goal)
@@ -236,9 +239,9 @@ class StakeViewModel @Inject constructor(
                 }
             }
             errorExtraTime = errorAddGoal1.ifBlank { errorAddGoal2 }
-        }
 
-        setResult(stake.goal1, stake.goal2, extraTime)
+            setResult(stake.addGoal1, stake.addGoal2, true)
+        }
     }
 
     private fun setResult(goal1: String, goal2: String, extraTime: Boolean) {
@@ -253,7 +256,7 @@ class StakeViewModel @Inject constructor(
         stake = if (!extraTime) {
             stake.copy(result = result)
         } else {
-            stake.copy(addResult = "")
+            stake.copy(addResult = result)
         }
     }
 

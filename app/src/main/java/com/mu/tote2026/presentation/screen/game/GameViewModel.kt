@@ -153,12 +153,12 @@ class GameViewModel @Inject constructor(
 
             is GameEvent.OnGoalChange -> {
                 checkGoal(
-                    event.addTime,
+                    event.isAddTime,
                     event.teamNo,
                     event.goal
                 )
-                setResult(event.addTime)
-                setStakePoints(event.addTime)
+                setResult(event.isAddTime)
+                setStakePoints(event.isAddTime)
 
                 enabled = checkValues()
             }
@@ -251,9 +251,9 @@ class GameViewModel @Inject constructor(
             }
     }
 
-    private fun setResult(addTime: Boolean) {
+    private fun setResult(isAddTime: Boolean) {
         val result: String
-        if (!addTime) {
+        if (!isAddTime) {
             result = game.result
             game = game.copy(
                 result = if (game.goal1.isNotBlank() && game.goal2.isNotBlank()) {
@@ -280,12 +280,12 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    private fun setStakePoints(addTime: Boolean) {
+    private fun setStakePoints(isAddTime: Boolean) {
         val stakes = game.stakes
         var pointsSum = 0.0
         var addPointsSum = 0.0
         stakes.forEachIndexed { idx, stake ->
-            if (!addTime) {
+            if (!isAddTime) {
                 val points = calcMainPoints(game, stake)
                 pointsSum += (points * stake.gamblerRatePercent)
                 game.stakes[idx] = game.stakes[idx].copy(points = points)
@@ -296,13 +296,16 @@ class GameViewModel @Inject constructor(
             }
         }
 
-        val coefficient = common.groupGameSum / pointsSum
-        val addCoefficient = common.playoffGameSum / addPointsSum
+        val coefficient = if (game.groupId.toInt() <= GROUPS_COUNT)
+            common.groupGameSum / pointsSum
+        else
+            common.playoffGameSum / addPointsSum
 
         stakes.forEachIndexed { idx, _ ->
-            val cash = if (game.stakes[idx].result.isNotBlank()) {
-                game.stakes[idx].points * game.stakes[idx].gamblerRatePercent * coefficient
-            } else 0.0
+            val cash = if (game.stakes[idx].result.isNotBlank())
+                (game.stakes[idx].points + game.stakes[idx].addPoints) * game.stakes[idx].gamblerRatePercent * coefficient
+            else 0.0
+
             //val cash = (game.stakes[idx].points * game.stakes[idx].gamblerRatePercent * coefficient)
             game.stakes[idx] = game.stakes[idx].copy(cashPrize = round(cash).toInt())
         }
@@ -337,6 +340,8 @@ class GameViewModel @Inject constructor(
     }
 
     private fun calcAddPoints(game: GameModel, stake: StakeModel): Double {
+        if (stake.addResult.isBlank()) return stake.addPoints
+
         var addPoints = 0.0
         if (game.addGoal1.isNotBlank() && game.addGoal2.isNotBlank()) {
             addPoints += if (game.addResult == stake.addResult) {
