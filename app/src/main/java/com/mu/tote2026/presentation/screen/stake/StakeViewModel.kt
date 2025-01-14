@@ -272,6 +272,7 @@ class StakeViewModel @Inject constructor(
                     addGoal1 = "",
                     addGoal2 = "",
                     byPenalty = "",
+                    addResult = "",
                 )
             }
             true
