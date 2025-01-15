@@ -56,6 +56,7 @@ class GameViewModel @Inject constructor(
     private var teams = listOf<TeamModel>()
     val teamList = mutableListOf<String>()
     var startTime = ""
+    var startGame = false
 
     var exit by mutableStateOf(false)
         private set
@@ -91,6 +92,14 @@ class GameViewModel @Inject constructor(
 
             if (gameState is UiState.Success) {
                 game = gameState.data
+
+                if (game.start.toLong() < currentTimeMillis()
+                    && game.goal1.isBlank() && game.goal2.isBlank()
+                ) {
+                    startGame = true
+                    game = game.copy(goal1 = "0", goal2 = "0")
+                }
+
                 startTime = game.start.asTime().ifBlank { "00:00" }
                 enabled = checkValues()
 
@@ -128,19 +137,19 @@ class GameViewModel @Inject constructor(
                 game = game.copy(start = event.start)
                 startTime = game.start.asTime()
                 errorStart = checkIsFieldEmpty(event.start)
-                enabled = checkValues()
+                //enabled = checkValues()
             }
 
             is GameEvent.OnGameIdChange -> {
                 game = game.copy(id = event.id)
                 errorGameId = checkIsFieldEmpty(event.id)
-                enabled = checkValues()
+                //enabled = checkValues()
             }
 
             is GameEvent.OnGroupChange -> {
                 val groupId = GROUPS.indexOf(event.group) + 1
                 game = game.copy(group = event.group, groupId = groupId.toString())
-                enabled = checkValues()
+                //enabled = checkValues()
             }
 
             is GameEvent.OnTeamChange -> {
@@ -148,7 +157,7 @@ class GameViewModel @Inject constructor(
                     game.copy(team1 = event.team, flag1 = teams.first { it.team == event.team }.flag)
                 else
                     game.copy(team2 = event.team, flag2 = teams.first { it.team == event.team }.flag)
-                enabled = checkValues()
+                //enabled = checkValues()
             }
 
             is GameEvent.OnGoalChange -> {
@@ -157,6 +166,7 @@ class GameViewModel @Inject constructor(
                     event.teamNo,
                     event.goal
                 )
+
                 setResult(event.isAddTime)
                 setStakePoints(event.isAddTime)
 
@@ -410,6 +420,10 @@ class GameViewModel @Inject constructor(
             /*if (isNewGame) {
                 true*/
             if (game.start.toLong() > currentTimeMillis()) {
+                true
+            }else if (startGame) {
+                setResult(false)
+                setStakePoints(false)
                 true
             } else {
                 if (game.goal1.isNotBlank() && game.goal2.isNotBlank()) {
