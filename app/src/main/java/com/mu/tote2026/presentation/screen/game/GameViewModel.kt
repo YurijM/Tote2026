@@ -57,7 +57,6 @@ class GameViewModel @Inject constructor(
     private var teams = listOf<TeamModel>()
     val teamList = mutableListOf<String>()
     var startTime = ""
-    //var startGame = false
 
     var exit by mutableStateOf(false)
         private set
@@ -102,15 +101,14 @@ class GameViewModel @Inject constructor(
                         common = gameSumState.data
                         toLog("common: $common")
 
-                        if (game.start.toLong() < currentTimeMillis()
+                        /*if (game.start.toLong() < currentTimeMillis()
                             && game.goal1.isBlank() && game.goal2.isBlank()
                         ) {
-                            //startGame = true
                             game = game.copy(goal1 = "0", goal2 = "0")
                             setResult(false)
                             setStakePoints(false)
                             enabled = true
-                        }
+                        }*/
                     }
                 }.launchIn(viewModelScope)
                 gameUseCase.getGameList().onEach { gameListState ->
@@ -141,19 +139,19 @@ class GameViewModel @Inject constructor(
                 game = game.copy(start = event.start)
                 startTime = game.start.asTime()
                 errorStart = checkIsFieldEmpty(event.start)
-                //enabled = checkValues()
+                enabled = checkValues()
             }
 
             is GameEvent.OnGameIdChange -> {
                 game = game.copy(id = event.id)
                 errorGameId = checkIsFieldEmpty(event.id)
-                //enabled = checkValues()
+                enabled = checkValues()
             }
 
             is GameEvent.OnGroupChange -> {
                 val groupId = GROUPS.indexOf(event.group) + 1
                 game = game.copy(group = event.group, groupId = groupId.toString())
-                //enabled = checkValues()
+                enabled = checkValues()
             }
 
             is GameEvent.OnTeamChange -> {
@@ -161,7 +159,7 @@ class GameViewModel @Inject constructor(
                     game.copy(team1 = event.team, flag1 = teams.first { it.team == event.team }.flag)
                 else
                     game.copy(team2 = event.team, flag2 = teams.first { it.team == event.team }.flag)
-                //enabled = checkValues()
+                enabled = checkValues()
             }
 
             is GameEvent.OnGoalChange -> {
@@ -260,8 +258,6 @@ class GameViewModel @Inject constructor(
                     step++
                 }
                 gamblers[idx] = if (!prev) gambler.copy(place = place) else gambler.copy(placePrev = place)
-                /*gamblerUseCase.saveGambler(if (!prev) gambler.copy(place = place) else gambler.copy(placePrev = place))
-                    .launchIn(scope)*/
             }
     }
 
@@ -294,46 +290,15 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    /*private fun setStakePoints(isAddTime: Boolean) {
-        val stakes = game.stakes
-        var pointsSum = 0.0
-        var addPointsSum = 0.0
-        stakes.forEachIndexed { idx, stake ->
-            if (!isAddTime) {
-                val points = calcMainPoints(game, stake)
-                pointsSum += (points * stake.gamblerRatePercent)
-                game.stakes[idx] = game.stakes[idx].copy(points = points)
-            } else {
-                val addPoints = calcAddPoints(game, stake)
-                addPointsSum += (addPoints * stake.gamblerRatePercent)
-                game.stakes[idx] = game.stakes[idx].copy(addPoints = addPoints)
-            }
-        }
-
-        val coefficient = if (game.groupId.toInt() <= GROUPS_COUNT)
-            common.groupGameSum / pointsSum + addPointsSum
-        else
-            common.playoffGameSum / pointsSum + addPointsSum
-
-        stakes.forEachIndexed { idx, _ ->
-            val cash = if (game.stakes[idx].result.isNotBlank())
-                (game.stakes[idx].points + game.stakes[idx].addPoints) * game.stakes[idx].gamblerRatePercent * coefficient
-            else 0.0
-
-            //val cash = (game.stakes[idx].points * game.stakes[idx].gamblerRatePercent * coefficient)
-            game.stakes[idx] = game.stakes[idx].copy(cashPrize = round(cash).toInt())
-        }
-    }*/
-
     private fun setStakePoints(isAddTime: Boolean) {
         val stakes = game.stakes
         var pointsSum = 0.0
+
         stakes.forEachIndexed { idx, stake ->
             if (!isAddTime) {
                 val points = calcMainPoints(game, stake)
                 game.stakes[idx] = stake.copy(points = points)
 
-                //pointsSum += (points * stake.gamblerRatePercent)
                 pointsSum += ((points + stake.addPoints) * stake.gamblerRatePercent)
             } else {
                 val addPoints = calcAddPoints(game, stake)
@@ -405,16 +370,6 @@ class GameViewModel @Inject constructor(
             else 0.0
 
             addPoints += if (game.byPenalty.isNotBlank() && game.byPenalty == stake.byPenalty) 1.0 else 0.0
-
-            /*addPoints += if (game.addResult == stake.addResult) {
-                (1.0 + if (game.addGoal1 == stake.addGoal1 && game.addGoal2 == stake.addGoal2) 0.5
-                else 0.0)
-            } else if (game.addResult != DRAW) {
-                if ((game.addGoal1.toInt() - game.addGoal2.toInt()) == (stake.addGoal1.toInt() - stake.addGoal2.toInt())) 0.25
-                else if (game.addGoal1 == stake.addGoal1 || game.addGoal2 == stake.addGoal2) 0.01
-                else 0.0
-            } else if (game.byPenalty.isNotBlank() && game.byPenalty == stake.byPenalty) 1.0
-            else 0.0*/
         }
         return addPoints
     }
@@ -455,22 +410,17 @@ class GameViewModel @Inject constructor(
             && game.team1.isNotBlank()
             && game.team2.isNotBlank()
         ) {
-            /*if (isNewGame) {
-                true*/
             if (game.start.toLong() > currentTimeMillis()) {
                 true
-            /*} else if (startGame) {
-                setResult(false)
-                setStakePoints(false)
-                true*/
             } else {
                 if (game.goal1.isNotBlank() && game.goal2.isNotBlank()) {
-                    isAddTime = (GROUPS.indexOf(game.group) >= GROUPS_COUNT
+                    isAddTime = (game.groupId.toInt() > GROUPS_COUNT
                             && game.goal1 == game.goal2)
                     if (!isAddTime) {
                         game = game.copy(
                             addGoal1 = "",
                             addGoal2 = "",
+                            addResult = "",
                             byPenalty = "",
                         )
                     }
@@ -483,8 +433,7 @@ class GameViewModel @Inject constructor(
             false
         }
 
-
-    private fun checkAddTime(): Boolean {
+    /*private fun checkAddTime(): Boolean {
         var result = (game.addGoal1.isNotBlank() && (game.addGoal1 >= game.goal1))
         result = (result && (game.addGoal2.isNotBlank()) && (game.addGoal2 >= game.goal2))
 
@@ -497,7 +446,7 @@ class GameViewModel @Inject constructor(
         }
 
         return result
-    }
+    }*/
 
     private fun checkValues(): Boolean {
         isAddTime = false
@@ -505,9 +454,9 @@ class GameViewModel @Inject constructor(
 
         var result = checkMainTime()
 
-        if (isAddTime) {
+        /*if (isAddTime) {
             result = result && checkAddTime()
-        }
+        }*/
 
         return result
     }
