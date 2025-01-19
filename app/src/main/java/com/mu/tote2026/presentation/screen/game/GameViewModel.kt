@@ -26,7 +26,6 @@ import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.asTime
 import com.mu.tote2026.presentation.utils.checkIsFieldEmpty
 import com.mu.tote2026.presentation.utils.generateResult
-import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -99,7 +98,6 @@ class GameViewModel @Inject constructor(
                 gameUseCase.getGameSum().onEach { gameSumState ->
                     if (gameSumState is UiState.Success) {
                         common = gameSumState.data
-                        toLog("common: $common")
 
                         /*if (game.start.toLong() < currentTimeMillis()
                             && game.goal1.isBlank() && game.goal2.isBlank()
@@ -170,7 +168,8 @@ class GameViewModel @Inject constructor(
                 )
 
                 setResult(event.isAddTime)
-                setStakePoints(event.isAddTime)
+                //setStakePoints(event.isAddTime)
+                setStakePoints()
 
                 enabled = checkValues()
             }
@@ -209,8 +208,16 @@ class GameViewModel @Inject constructor(
                                     val points = gamesCur.sumOf {
                                         it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
                                     }
+                                    +
+                                    gamesCur.sumOf {
+                                        it.stakes.find { stake -> stake.gamblerId == gambler.id }?.addPoints ?: 0.0
+                                    }
                                     val pointsPrev = gamesPrev.sumOf {
                                         it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
+                                    }
+                                    +
+                                    gamesPrev.sumOf {
+                                        it.stakes.find { stake -> stake.gamblerId == gambler.id }?.addPoints ?: 0.0
                                     }
                                     gamblers[idx] = gambler.copy(
                                         pointsPrev = pointsPrev,
@@ -290,34 +297,31 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    private fun setStakePoints(isAddTime: Boolean) {
-        val stakes = game.stakes
+    private fun setStakePoints() {
+        //val stakes = game.stakes
         var pointsSum = 0.0
 
-        stakes.forEachIndexed { idx, stake ->
-            if (!isAddTime) {
-                val points = calcMainPoints(game, stake)
-                game.stakes[idx] = stake.copy(points = points)
+        game.stakes.forEachIndexed { idx, stake ->
+            var points = calcMainPoints(game, stake)
+            game.stakes[idx] = stake.copy(points = points)
 
-                pointsSum += ((points + stake.addPoints) * stake.gamblerRatePercent)
-            } else {
-                val addPoints = calcAddPoints(game, stake)
-                game.stakes[idx] = stake.copy(addPoints = addPoints)
+            pointsSum += (points * stake.gamblerRatePercent)
 
-                pointsSum += ((addPoints + stake.points) * stake.gamblerRatePercent)
-            }
+            points = calcAddPoints(game, stake)
+            game.stakes[idx] = game.stakes[idx].copy(addPoints = points)
+
+            pointsSum += (points * stake.gamblerRatePercent)
         }
 
-        val coefficient = if (game.groupId.toInt() <= GROUPS_COUNT)
-            common.groupGameSum / pointsSum
-        else
-            common.playoffGameSum / pointsSum
+        val coefficient = if (game.groupId.toInt() <= GROUPS_COUNT) {
+            if (pointsSum > 0) common.groupGameSum / pointsSum else 0.0
+        } else {
+            if (pointsSum > 0) common.playoffGameSum / pointsSum else 0.0
+        }
 
-        toLog("coefficient * pointsSum = $coefficient * $pointsSum = ${coefficient * pointsSum})")
-
-        stakes.forEachIndexed { idx, stake ->
+        game.stakes.forEachIndexed { idx, stake ->
             val cash = if (stake.result.isNotBlank())
-                (stake.points + stake.addPoints) * stake.gamblerRatePercent * coefficient
+                (stake.points + stake.addPoints) * coefficient * stake.gamblerRatePercent
             else 0.0
 
             game.stakes[idx] = stake.copy(cashPrize = round(cash).toInt())

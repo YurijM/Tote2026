@@ -124,7 +124,7 @@ fun PrognosisScreen() {
 
                         //game.stakes.sortBy { it.gamblerNickname }
                         game.stakes.sortedWith(
-                            compareByDescending<StakeModel> { item -> item.points }
+                            compareByDescending<StakeModel> { item -> (item.points + item.addPoints) }
                                 .thenByDescending { item -> item.cashPrize }
                                 .thenBy { item -> item.gamblerNickname }
                         ).forEach { stake ->
@@ -288,11 +288,11 @@ private fun GamblerStake(stake: StakeModel) {
                 stake.byPenalty
             ),
             textAlign = TextAlign.Center,
-            lineHeight = 1.5.em,
+            lineHeight = 1.em,
             modifier = Modifier.weight(2f)
         )
 
-        val points = String.format("%.2f", stake.points) //+ "\n"
+        val points = String.format("%.2f", (stake.points + stake.addPoints)) //+ "\n"
         val text = buildAnnotatedString {
             //pushStringAnnotation(tag = "ParagraphLabel", annotation = "paragraph1")
             withStyle(
