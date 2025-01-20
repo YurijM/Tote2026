@@ -207,16 +207,12 @@ class GameViewModel @Inject constructor(
                                     }
                                     val points = gamesCur.sumOf {
                                         it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
-                                    }
-                                    +
-                                    gamesCur.sumOf {
+                                    } + gamesCur.sumOf {
                                         it.stakes.find { stake -> stake.gamblerId == gambler.id }?.addPoints ?: 0.0
                                     }
                                     val pointsPrev = gamesPrev.sumOf {
                                         it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
-                                    }
-                                    +
-                                    gamesPrev.sumOf {
+                                    } + gamesPrev.sumOf {
                                         it.stakes.find { stake -> stake.gamblerId == gambler.id }?.addPoints ?: 0.0
                                     }
                                     gamblers[idx] = gambler.copy(
@@ -314,9 +310,9 @@ class GameViewModel @Inject constructor(
         }
 
         val coefficient = if (game.groupId.toInt() <= GROUPS_COUNT) {
-            if (pointsSum > 0) common.groupGameSum / pointsSum else 0.0
+            if (pointsSum > 0) common.groupPrizeFund / pointsSum else 0.0
         } else {
-            if (pointsSum > 0) common.playoffGameSum / pointsSum else 0.0
+            if (pointsSum > 0) common.playoffPrizeFund / pointsSum else 0.0
         }
 
         game.stakes.forEachIndexed { idx, stake ->
@@ -456,13 +452,15 @@ class GameViewModel @Inject constructor(
         isAddTime = false
         isByPenalty = false
 
-        var result = checkMainTime()
+        /*var result = checkMainTime()
 
-        /*if (isAddTime) {
+        if (isAddTime) {
             result = result && checkAddTime()
-        }*/
+        }
 
-        return result
+        return result*/
+
+        return checkMainTime()
     }
 
     data class GameState(
