@@ -32,6 +32,7 @@ object Route {
     const val ADMIN_TEAM_LIST_SCREEN = "admin_team_list_screen"
     const val ADMIN_GAME_LIST_SCREEN = "admin_game_list_screen"
     const val ADMIN_STAKE_LIST_SCREEN = "admin_stake_list_screen"
+    const val ADMIN_COMMON_PARAMS_SCREEN = "admin_common_params_screen"
     const val ADMIN_FINISH_SCREEN = "admin_finish_screen"
     const val TEST_SCREEN = "test_screen"
 }
@@ -109,6 +110,11 @@ sealed class AdminNavItem(
     data object AdminStakeItem : AdminNavItem(
         titleId = R.string.admin_stake_list,
         route = Route.ADMIN_STAKE_LIST_SCREEN
+    )
+
+    data object AdminCommonParamsItem : AdminNavItem(
+        titleId = R.string.admin_common_params,
+        route = Route.ADMIN_COMMON_PARAMS_SCREEN
     )
 
     data object AdminFinishItem : AdminNavItem(

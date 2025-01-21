@@ -6,31 +6,31 @@ sealed class Destinations {
     @Serializable
     data object SplashDestination: Destinations()
     @Serializable
-    object MainDestination: Destinations()
+    data object MainDestination: Destinations()
     @Serializable
-    object AuthDestination: Destinations()
+    data object AuthDestination: Destinations()
     @Serializable
-    object SignInDestination: Destinations()
+    data object SignInDestination: Destinations()
     @Serializable
-    object SignUpDestination: Destinations()
+    data object SignUpDestination: Destinations()
 
     @Serializable
-    object RatingDestination: Destinations()
+    data object RatingDestination: Destinations()
     @Serializable
     data class GamblerPhotoDestination(
         val photoUrl: String = ""
     ): Destinations()
     @Serializable
-    object StakesDestination: Destinations()
+    data object StakesDestination: Destinations()
     @Serializable
     data class StakeDestination(
         val gameId: String = "",
         val gamblerId: String = "",
     ): Destinations()
     @Serializable
-    object PrognosisDestination: Destinations()
+    data object PrognosisDestination: Destinations()
     @Serializable
-    object GamesDestination: Destinations()
+    data object GamesDestination: Destinations()
     @Serializable
     data class GroupGamesDestination(
         val group: String = ""
