@@ -310,9 +310,9 @@ class GameViewModel @Inject constructor(
         }
 
         val coefficient = if (game.groupId.toInt() <= GROUPS_COUNT) {
-            if (pointsSum > 0) common.groupPrizeFund / pointsSum else 0.0
+            if (pointsSum > 0) common.groupPrizeFund.toDouble() / pointsSum else 0.0
         } else {
-            if (pointsSum > 0) common.playoffPrizeFund / pointsSum else 0.0
+            if (pointsSum > 0) common.playoffPrizeFund.toDouble() / pointsSum else 0.0
         }
 
         game.stakes.forEachIndexed { idx, stake ->

@@ -122,8 +122,8 @@ class GamblerRepositoryImpl(
         trySend(UiState.Loading)
 
         val common = CommonParamsModel(
-            groupPrizeFund = prizeFund.toDouble() / 2.0 / GROUP_GAMES_COUNT.toDouble(),
-            playoffPrizeFund = prizeFund.toDouble() / 2.0 / PLAYOFF_GAMES_COUNT.toDouble()
+            groupPrizeFund = (prizeFund.toDouble() / 2.0 / GROUP_GAMES_COUNT.toDouble()).toString(),
+            playoffPrizeFund = (prizeFund.toDouble() / 2.0 / PLAYOFF_GAMES_COUNT.toDouble()).toString()
         )
 
         firestore.collection(COMMON).document(COMMON).set(common)
