@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.model.CommonParamsModel
 import com.mu.tote2026.domain.usecase.common_params_usecase.CommonParamsUseCase
+import com.mu.tote2026.presentation.utils.Errors.INCORRECT_FIELD_VALUE
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,13 +19,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AdminCommonParamsViewModel @Inject constructor(
-    commonParamsUseCase: CommonParamsUseCase
+    private val commonParamsUseCase: CommonParamsUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(AdminCommonParamsState())
     var state = _state.asStateFlow()
 
     var commonParams by mutableStateOf(CommonParamsModel())
+        private set
+    var prizeFundError by mutableStateOf("")
+        private set
     var exit by mutableStateOf(false)
+        private set
 
     init {
         commonParamsUseCase.getCommonParams().onEach { commonParamsState ->
@@ -35,7 +41,42 @@ class AdminCommonParamsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    fun onEvent(event: AdminCommonParamsEvent) {
+        when (event) {
+            is AdminCommonParamsEvent.OnPrizeFundChange -> {
+                toLog("prizeFund = ${event.prizeFund}")
+                prizeFundError = checkParam(event.prizeFund)
+                toLog("prizeFundError = $prizeFundError")
+                if (prizeFundError.isBlank()) {
+                    commonParams = commonParams.copy(
+                        prizeFund = event.prizeFund
+                    )
+                }
+            }
+
+            is AdminCommonParamsEvent.OnSave -> {
+                commonParamsUseCase.saveCommonParams(commonParams).onEach { commonParamsState ->
+                    _state.value = AdminCommonParamsState(commonParamsState)
+
+                    if (commonParamsState is UiState.Success) exit = true
+                }.launchIn(viewModelScope)
+            }
+        }
+    }
+
+    private fun checkParam(param: String): String =
+        if (param.toDoubleOrNull() == null) {
+            INCORRECT_FIELD_VALUE
+        } else ""
+
     data class AdminCommonParamsState(
         val result: UiState<CommonParamsModel> = UiState.Default
+    )
+
+    data class Errors(
+        var prizeFundError: String = "",
+        val groupPrizeFundError: String = "",
+        val enabled: Boolean = prizeFundError.isNotBlank()
+                || groupPrizeFundError.isNotBlank()
     )
 }

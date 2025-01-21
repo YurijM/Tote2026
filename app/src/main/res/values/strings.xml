@@ -50,6 +50,7 @@
     <string name="admin_common_params">Общие параметры</string>
     <string name="admin_finish">Окончание турнира</string>
     <string name="prize_fund">(общий призовой фонд %1$s руб.)</string>
+    <string name="common_params">Общие параметры</string>
 
     <string name="email_delete">Удаление email</string>
     <string name="want_delete_email">Вы действительно хотите удалить email \"%1$s\"?</string>
