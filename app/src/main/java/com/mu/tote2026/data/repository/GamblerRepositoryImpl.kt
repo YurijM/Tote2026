@@ -1,14 +1,15 @@
 package com.mu.tote2026.data.repository
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.mu.tote2026.data.repository.Collections.COMMON
 import com.mu.tote2026.data.repository.Collections.GAMBLERS
-import com.mu.tote2026.data.repository.Errors.GAME_SUM_SAVE_ERROR
 import com.mu.tote2026.data.repository.Errors.GAMBLER_PHOTO_SAVE_ERROR
 import com.mu.tote2026.data.repository.Errors.GAMBLER_PHOTO_URL_GET_ERROR
 import com.mu.tote2026.data.repository.Errors.GAMBLER_SAVE_ERROR
+import com.mu.tote2026.data.repository.Errors.GAME_SUM_SAVE_ERROR
 import com.mu.tote2026.domain.model.CommonParamsModel
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.repository.GamblerRepository
@@ -118,6 +119,7 @@ class GamblerRepositoryImpl(
         }
     }
 
+    @SuppressLint("DefaultLocale")
     override fun saveGameSum(prizeFund: Int): Flow<UiState<CommonParamsModel>>  = callbackFlow {
         trySend(UiState.Loading)
 
@@ -126,13 +128,13 @@ class GamblerRepositoryImpl(
             prizeFund = prizeFund.toString(),
             /*groupPrizeFund = (prizeFund.toDouble() / 2.0).toString(),
             playoffPrizeFund = (prizeFund.toDouble() / 2.0).toString()*/
-            groupPrizeFund = (prizeFund.toDouble() / 3.0).toString(),
-            playoffPrizeFund = (prizeFund.toDouble() / 3.0).toString(),
-            winnersPrizeFund = winnersPrizeFund.toString(),
-            place1PrizeFund = (winnersPrizeFund / 2.0).toString(),
-            place2PrizeFund = (winnersPrizeFund / 3.0).toString(),
-            place3PrizeFund = (winnersPrizeFund / 6.0).toString(),
-            winnersPrizeFundByStake = (prizeFund.toDouble() / 9.0).toString(),
+            groupPrizeFund = String.format("%.4f", (prizeFund.toDouble() / 3.0)),
+            playoffPrizeFund = String.format("%.4f", (prizeFund.toDouble() / 3.0)),
+            winnersPrizeFund = String.format("%.4f", winnersPrizeFund),
+            place1PrizeFund = String.format("%.4f", (winnersPrizeFund / 2.0)),
+            place2PrizeFund = String.format("%.4f", (winnersPrizeFund / 3.0)),
+            place3PrizeFund = String.format("%.4f", (winnersPrizeFund / 6.0)),
+            winnersPrizeFundByStake = String.format("%.4f", (prizeFund.toDouble() / 9.0)),
         )
 
         firestore.collection(COMMON).document(COMMON).set(common)
