@@ -121,9 +121,18 @@ class GamblerRepositoryImpl(
     override fun saveGameSum(prizeFund: Int): Flow<UiState<CommonParamsModel>>  = callbackFlow {
         trySend(UiState.Loading)
 
+        val winnersPrizeFund = (prizeFund.toDouble() * 2.0 / 9.0)
         val common = CommonParamsModel(
-            groupPrizeFund = (prizeFund.toDouble() / 2.0 / GROUP_GAMES_COUNT.toDouble()).toString(),
-            playoffPrizeFund = (prizeFund.toDouble() / 2.0 / PLAYOFF_GAMES_COUNT.toDouble()).toString()
+            prizeFund = prizeFund.toString(),
+            /*groupPrizeFund = (prizeFund.toDouble() / 2.0).toString(),
+            playoffPrizeFund = (prizeFund.toDouble() / 2.0).toString()*/
+            groupPrizeFund = (prizeFund.toDouble() / 3.0).toString(),
+            playoffPrizeFund = (prizeFund.toDouble() / 3.0).toString(),
+            winnersPrizeFund = winnersPrizeFund.toString(),
+            place1PrizeFund = (winnersPrizeFund / 2.0).toString(),
+            place2PrizeFund = (winnersPrizeFund / 3.0).toString(),
+            place3PrizeFund = (winnersPrizeFund / 6.0).toString(),
+            winnersPrizeFundByStake = (prizeFund.toDouble() / 9.0).toString(),
         )
 
         firestore.collection(COMMON).document(COMMON).set(common)
