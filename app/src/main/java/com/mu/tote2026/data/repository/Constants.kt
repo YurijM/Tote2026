@@ -37,5 +37,5 @@ object Errors {
     const val GAMBLER_PHOTO_SAVE_ERROR = "Ошибка сохранения фото участника"
     const val GAMBLER_SAVE_ERROR = "Ошибка сохранения данных участника"
     const val GAME_SUM_GET_ERROR = "Ошибка чтения общих призовой суммы за игру"
-    const val GAME_SUM_SAVE_ERROR = "Ошибка сохранения призовой суммы за игру"
+    const val COMMON_PARAMS_SAVE_ERROR = "Ошибка сохранения общих параметров"
 }

@@ -12,5 +12,6 @@ interface GamblerRepository {
     fun saveGambler(gambler: GamblerModel): Flow<UiState<GamblerModel>>
     fun saveGamblerPhoto(id: String, uri: Uri): Flow<UiState<String>>
     //fun saveGamblerPhoto(id: String, uri: ByteArray): Flow<UiState<String>>
-    fun saveGameSum(prizeFund: Int): Flow<UiState<CommonParamsModel>>
+    fun getCommonParams(): Flow<UiState<CommonParamsModel>>
+    fun saveCommonParams(prizeFund: Int): Flow<UiState<CommonParamsModel>>
 }

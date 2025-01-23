@@ -84,7 +84,7 @@ class AdminGamblerViewModel @Inject constructor(
                 scope.launch {
                     _state.value = AdminGamblerState(UiState.Loading)
                     gamblerUseCase.saveGambler(gambler).launchIn(scope)
-                    gamblerUseCase.saveGameSum(prizeFund).launchIn(scope)
+                    gamblerUseCase.saveCommonParams(prizeFund).launchIn(scope)
                     gamblers.forEach { item ->
                         val rate = item.rate
                         val gambler = item.copy(

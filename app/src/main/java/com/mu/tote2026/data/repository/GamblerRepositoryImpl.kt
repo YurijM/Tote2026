@@ -9,7 +9,7 @@ import com.mu.tote2026.data.repository.Collections.GAMBLERS
 import com.mu.tote2026.data.repository.Errors.GAMBLER_PHOTO_SAVE_ERROR
 import com.mu.tote2026.data.repository.Errors.GAMBLER_PHOTO_URL_GET_ERROR
 import com.mu.tote2026.data.repository.Errors.GAMBLER_SAVE_ERROR
-import com.mu.tote2026.data.repository.Errors.GAME_SUM_SAVE_ERROR
+import com.mu.tote2026.data.repository.Errors.COMMON_PARAMS_SAVE_ERROR
 import com.mu.tote2026.domain.model.CommonParamsModel
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.repository.GamblerRepository
@@ -119,22 +119,40 @@ class GamblerRepositoryImpl(
         }
     }
 
+    override fun getCommonParams(): Flow<UiState<CommonParamsModel>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        firestore.collection(COMMON).document(COMMON).get()
+            .addOnSuccessListener { task ->
+                val commonParams = task.toObject(CommonParamsModel::class.java) ?: CommonParamsModel()
+                trySend(UiState.Success(commonParams))
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error("getCommonParams: ${error.message ?: "error is not defined"}"))
+            }
+
+        awaitClose {
+            toLog("getCommonParams: awaitClose")
+            close()
+        }
+    }
+
     @SuppressLint("DefaultLocale")
-    override fun saveGameSum(prizeFund: Int): Flow<UiState<CommonParamsModel>>  = callbackFlow {
+    override fun saveCommonParams(prizeFund: Int): Flow<UiState<CommonParamsModel>>  = callbackFlow {
         trySend(UiState.Loading)
 
         val winnersPrizeFund = (prizeFund.toDouble() * 2.0 / 9.0)
         val common = CommonParamsModel(
-            prizeFund = prizeFund.toString(),
+            prizeFund = prizeFund,
             /*groupPrizeFund = (prizeFund.toDouble() / 2.0).toString(),
             playoffPrizeFund = (prizeFund.toDouble() / 2.0).toString()*/
-            groupPrizeFund = String.format("%.4f", (prizeFund.toDouble() / 3.0)),
-            playoffPrizeFund = String.format("%.4f", (prizeFund.toDouble() / 3.0)),
-            winnersPrizeFund = String.format("%.4f", winnersPrizeFund),
-            place1PrizeFund = String.format("%.4f", (winnersPrizeFund / 2.0)),
-            place2PrizeFund = String.format("%.4f", (winnersPrizeFund / 3.0)),
-            place3PrizeFund = String.format("%.4f", (winnersPrizeFund / 6.0)),
-            winnersPrizeFundByStake = String.format("%.4f", (prizeFund.toDouble() / 9.0)),
+            groupPrizeFund = prizeFund.toDouble() / 3.0,
+            playoffPrizeFund = prizeFund.toDouble() / 3.0,
+            winnersPrizeFund = winnersPrizeFund,
+            place1PrizeFund = winnersPrizeFund / 2.0,
+            place2PrizeFund = winnersPrizeFund / 3.0,
+            place3PrizeFund = winnersPrizeFund / 6.0,
+            winnersPrizeFundByStake = prizeFund.toDouble() / 9.0,
         )
 
         firestore.collection(COMMON).document(COMMON).set(common)
@@ -142,11 +160,11 @@ class GamblerRepositoryImpl(
                 trySend(UiState.Success(common))
             }
             .addOnFailureListener { error ->
-                trySend(UiState.Error(error.message ?: GAME_SUM_SAVE_ERROR))
+                trySend(UiState.Error( "getCommonParams: ${error.message ?: COMMON_PARAMS_SAVE_ERROR}"))
             }
 
         awaitClose {
-            toLog("saveGameSum: awaitClose")
+            toLog("saveCommonParams: awaitClose")
             close()
         }
     }
