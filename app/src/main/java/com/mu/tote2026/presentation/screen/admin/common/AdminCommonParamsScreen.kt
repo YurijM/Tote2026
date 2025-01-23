@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -86,45 +89,51 @@ fun AdminCommonParamsScreen() {
                         .fillMaxWidth(.85f)
                         .padding(vertical = 8.dp)
                 ) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
                     ParamItem(
                         param = "Общий призовой фонд",
-                        value = viewModel.commonParams.prizeFund.toString(),
+                        value = viewModel.commonParams.prizeFund.toString() + " руб.",
                     )
-
                     ParamItem(
-                        param = "Призовой фонд группового этапа",
-                        value = String.format("%.4f", viewModel.commonParams.groupPrizeFund),
+                        param = "Призовой фонд группового этапа\n" +
+                                "(1/3 общего призового фонда)",
+                        value = String.format("%.4f", viewModel.commonParams.groupPrizeFund) + " руб.",
                     )
-
                     ParamItem(
-                        param = "Призовой фонд игр плэйофф",
-                        value = String.format("%.4f", viewModel.commonParams.playoffPrizeFund),
+                        param = "Призовой фонд игр плэйофф\n" +
+                                "(1/3 общего призового фонда)",
+                        value = String.format("%.4f", viewModel.commonParams.playoffPrizeFund) + " руб.",
                     )
-
                     ParamItem(
-                        param = "Призовой фонд победителей",
-                        value = String.format("%.4f", viewModel.commonParams.winnersPrizeFund),
+                        param = "Призовой фонд победителей\n" +
+                                "(2/9 общего призового фонда)",
+                                value = String . format ("%.4f", viewModel.commonParams.winnersPrizeFund) + " руб.",
                     )
-
                     ParamItem(
-                        param = "Призовой фонд за 1 место",
-                        value = String.format("%.4f", viewModel.commonParams.place1PrizeFund),
+                        param = "Призовой фонд за 1 место\n" +
+                                "(1/2 призового фонда победителей)",
+                        value = String.format("%.4f", viewModel.commonParams.place1PrizeFund) + " руб.",
                     )
-
                     ParamItem(
-                        param = "Призовой фонд за 2 место",
-                        value = String.format("%.4f", viewModel.commonParams.place2PrizeFund),
+                        param = "Призовой фонд за 2 место\n" +
+                                "(1/3 призового фонда победителей)",
+                        value = String.format("%.4f", viewModel.commonParams.place2PrizeFund) + " руб.",
                     )
-
                     ParamItem(
-                        param = "Призовой фонд за 3 место",
-                        value = String.format("%.4f", viewModel.commonParams.place3PrizeFund),
+                        param = "Призовой фонд за 3 место\n" +
+                                "(1/6 призового фонда победителей)",
+                        value = String.format("%.4f", viewModel.commonParams.place3PrizeFund) + " руб.",
                     )
-
                     ParamItem(
-                        param = "Призовой фонд победителей в зависимости от взноса",
-                        value = String.format("%.4f", viewModel.commonParams.winnersPrizeFundByStake),
+                        param = "Призовой фонд победителей в зависимости от взноса (1/9 общего призового фонда)",
+                        value = String.format("%.4f", viewModel.commonParams.winnersPrizeFundByStake) + " руб.",
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }
@@ -144,18 +153,28 @@ private fun ParamItem(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(
+                start = 4.dp,
+                end = 4.dp,
+                bottom = 8.dp)
     ) {
         Text(
             text = param,
             style = TextStyle(fontSize = MaterialTheme.typography.titleSmall.fontSize),
             textAlign = TextAlign.End,
             lineHeight = 1.25.em,
-            modifier = Modifier.weight(1.75f)
+            modifier = Modifier
+                .weight(2.5f)
+                .padding(end = 8.dp)
         )
         Text(
             text = value,
             modifier = Modifier.weight(1f)
         )
     }
+    HorizontalDivider(
+        thickness = 1.dp,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(bottom = 4.dp)
+    )
 }
