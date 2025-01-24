@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -86,13 +87,18 @@ fun AdminCommonParamsScreen() {
                         containerColor = MaterialTheme.colorScheme.surface
                     ),
                     modifier = Modifier
-                        .fillMaxWidth(.85f)
-                        .padding(vertical = 8.dp)
+                        .fillMaxWidth()
+                        .padding(
+                            start = 12.dp,
+                            end = 12.dp,
+                            top = 4.dp,
+                            bottom = 8.dp
+                        )
                 ) {
                     Spacer(modifier = Modifier.height(12.dp))
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.surfaceVariant,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     ParamItem(
@@ -169,12 +175,14 @@ private fun ParamItem(
         )
         Text(
             text = value,
+            style = TextStyle(fontSize = MaterialTheme.typography.titleSmall.fontSize),
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(1f)
         )
     }
     HorizontalDivider(
         thickness = 1.dp,
-        color = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.surfaceVariant,
         modifier = Modifier.padding(bottom = 4.dp)
     )
 }
