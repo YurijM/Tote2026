@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.screen.rating
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +38,8 @@ import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.navigation.Destinations.GamblerPhotoDestination
+import com.mu.tote2026.presentation.utils.FEMALE
+import com.mu.tote2026.presentation.utils.MALE
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
@@ -89,9 +92,11 @@ fun RatingScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             item {
-                Gender(
-                    femalePoints = 123.45,
-                    malePoints = 119.87
+                GenderDuel(
+                    femalePoints = gamblers.filter { it.gender == FEMALE }.sumOf { it.points }
+                            / gamblers.filter { it.gender == FEMALE }.size.toDouble(),
+                    malePoints = gamblers.filter { it.gender == MALE }.sumOf { it.points }
+                            / gamblers.filter { it.gender == MALE }.size.toDouble()
                 )
             }
             items(gamblers) { gambler ->
@@ -113,8 +118,9 @@ fun RatingScreen(
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
-fun Gender(
+fun GenderDuel(
     femalePoints: Double,
     malePoints: Double
 ) {
@@ -133,10 +139,9 @@ fun Gender(
                 colors = AssistChipDefaults.assistChipColors(
                     containerColor = ColorFemale
                 ),
-
                 label = {
                     Text(
-                        text = femalePoints.toString(),
+                        text = String.format("%.2f", femalePoints),
                         fontWeight = FontWeight.Bold,
                         color = ColorUp
                     )
@@ -148,7 +153,7 @@ fun Gender(
                         tint = ColorUp
                     )
                 },
-                onClick = {}
+                onClick = {},
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
@@ -161,10 +166,9 @@ fun Gender(
                 colors = AssistChipDefaults.assistChipColors(
                     containerColor = ColorMale
                 ),
-
                 label = {
                     Text(
-                        text = malePoints.toString(),
+                        text = String.format("%.2f", malePoints),
                         fontWeight = FontWeight.Bold,
                         color = ColorDown
                     )
