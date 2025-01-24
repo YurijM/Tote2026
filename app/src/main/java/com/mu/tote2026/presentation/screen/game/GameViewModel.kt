@@ -17,6 +17,7 @@ import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.domain.model.TeamModel
+import com.mu.tote2026.domain.model.WinnerModel
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
 import com.mu.tote2026.domain.usecase.team_usecase.TeamUseCase
@@ -52,7 +53,7 @@ class GameViewModel @Inject constructor(
     private val isNewGame = args.id == NEW_DOC
 
     var game by mutableStateOf(GameModel())
-    var common by mutableStateOf(CommonParamsModel())
+    private var commonParams by mutableStateOf(CommonParamsModel())
     private var gamblers = mutableListOf<GamblerModel>()
     private var games = mutableListOf<GameModel>()
     private var teams = listOf<TeamModel>()
@@ -99,7 +100,7 @@ class GameViewModel @Inject constructor(
 
                 gameUseCase.getGameSum().onEach { gameSumState ->
                     if (gameSumState is UiState.Success) {
-                        common = gameSumState.data
+                        commonParams = gameSumState.data
 
                         /*if (game.start.toLong() < currentTimeMillis()
                             && game.goal1.isBlank() && game.goal2.isBlank()
@@ -226,6 +227,24 @@ class GameViewModel @Inject constructor(
                                 setPlaceOrPlacePrev()
                                 if (gamblers.maxOf { it.pointsPrev > 0.0 }) setPlaceOrPlacePrev(true)
 
+                                val winners = gamblers.filter { it.place <= 3 }
+                                val percentSum = winners.sumOf { it.ratePercent }
+
+                                val winners1 = winners.filter { it.place == 1 }
+                                if (winners1.isNotEmpty()) {
+                                    setWinnerCashPrize(winners1, percentSum, commonParams.place1PrizeFund)
+                                }
+
+                                val winners2 = winners.filter { it.place == 2 }
+                                if (winners2.isNotEmpty()) {
+                                    setWinnerCashPrize(winners2, percentSum, commonParams.place2PrizeFund)
+                                }
+
+                                val winners3 = winners.filter { it.place == 3 }
+                                if (winners3.isNotEmpty()) {
+                                    setWinnerCashPrize(winners3, percentSum, commonParams.place3PrizeFund)
+                                }
+
                                 gamblers.forEach { gambler ->
                                     gamblerUseCase.saveGambler(gambler).launchIn(viewModelScope)
                                 }
@@ -312,9 +331,9 @@ class GameViewModel @Inject constructor(
         }
 
         val coefficient = if (game.groupId.toInt() <= GROUPS_COUNT) {
-            if (pointsSum > 0) common.groupPrizeFund.toDouble() / GROUP_GAMES_COUNT.toDouble() / pointsSum else 0.0
+            if (pointsSum > 0) commonParams.groupPrizeFund / GROUP_GAMES_COUNT.toDouble() / pointsSum else 0.0
         } else {
-            if (pointsSum > 0) common.playoffPrizeFund.toDouble() / PLAYOFF_GAMES_COUNT.toDouble() / pointsSum else 0.0
+            if (pointsSum > 0) commonParams.playoffPrizeFund / PLAYOFF_GAMES_COUNT.toDouble() / pointsSum else 0.0
         }
 
         game.stakes.forEachIndexed { idx, stake ->
@@ -454,15 +473,26 @@ class GameViewModel @Inject constructor(
         isAddTime = false
         isByPenalty = false
 
-        /*var result = checkMainTime()
-
-        if (isAddTime) {
-            result = result && checkAddTime()
-        }
-
-        return result*/
-
         return checkMainTime()
+    }
+
+    private fun setWinnerCashPrize(
+        winners: List<GamblerModel>,
+        percentSum: Double,
+        placePrizeFund: Double
+    ) {
+        val winnerCount = winners.size.toDouble()
+        winners.forEach { gambler ->
+            val cashPrizeByStake = (commonParams.winnersPrizeFundByStake * gambler.ratePercent) / percentSum
+            val winner = WinnerModel(
+                gamblerId = gambler.id,
+                gamblerNickname = gambler.nickname,
+                cashPrize = placePrizeFund / winnerCount,
+                cashPrizeByStake = cashPrizeByStake
+            )
+
+            gamblerUseCase.saveWinner(winner).launchIn(viewModelScope)
+        }
     }
 
     data class GameState(
