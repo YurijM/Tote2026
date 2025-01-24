@@ -6,12 +6,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.mu.tote2026.data.repository.Collections.COMMON
 import com.mu.tote2026.data.repository.Collections.GAMBLERS
+import com.mu.tote2026.data.repository.Collections.WINNERS
+import com.mu.tote2026.data.repository.Errors.COMMON_PARAMS_SAVE_ERROR
 import com.mu.tote2026.data.repository.Errors.GAMBLER_PHOTO_SAVE_ERROR
 import com.mu.tote2026.data.repository.Errors.GAMBLER_PHOTO_URL_GET_ERROR
 import com.mu.tote2026.data.repository.Errors.GAMBLER_SAVE_ERROR
-import com.mu.tote2026.data.repository.Errors.COMMON_PARAMS_SAVE_ERROR
+import com.mu.tote2026.data.repository.Errors.WINNER_SAVE_ERROR
 import com.mu.tote2026.domain.model.CommonParamsModel
 import com.mu.tote2026.domain.model.GamblerModel
+import com.mu.tote2026.domain.model.WinnerModel
 import com.mu.tote2026.domain.repository.GamblerRepository
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
@@ -144,8 +147,6 @@ class GamblerRepositoryImpl(
         val winnersPrizeFund = (prizeFund.toDouble() * 2.0 / 9.0)
         val common = CommonParamsModel(
             prizeFund = prizeFund,
-            /*groupPrizeFund = (prizeFund.toDouble() / 2.0).toString(),
-            playoffPrizeFund = (prizeFund.toDouble() / 2.0).toString()*/
             groupPrizeFund = prizeFund.toDouble() / 3.0,
             playoffPrizeFund = prizeFund.toDouble() / 3.0,
             winnersPrizeFund = winnersPrizeFund,
@@ -160,11 +161,46 @@ class GamblerRepositoryImpl(
                 trySend(UiState.Success(common))
             }
             .addOnFailureListener { error ->
-                trySend(UiState.Error( "getCommonParams: ${error.message ?: COMMON_PARAMS_SAVE_ERROR}"))
+                trySend(UiState.Error( "saveCommonParams: ${error.message ?: COMMON_PARAMS_SAVE_ERROR}"))
             }
 
         awaitClose {
             toLog("saveCommonParams: awaitClose")
+            close()
+        }
+    }
+
+    override fun getWinners(): Flow<UiState<List<WinnerModel>>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        firestore.collection(WINNERS).get()
+            .addOnSuccessListener { task ->
+                val winners = task.toObjects(WinnerModel::class.java)
+                trySend(UiState.Success(winners))
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error("getWinners: ${error.message ?: "error is not defined"}"))
+            }
+
+        awaitClose {
+            toLog("getWinners: awaitClose")
+            close()
+        }
+    }
+
+    override fun saveWinner(winner: WinnerModel): Flow<UiState<WinnerModel>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        firestore.collection(WINNERS).document(winner.gamblerId).set(winner)
+            .addOnSuccessListener {
+                trySend(UiState.Success(winner))
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error( "saveWinner: ${error.message ?: WINNER_SAVE_ERROR}"))
+            }
+
+        awaitClose {
+            toLog("saveWinner: awaitClose")
             close()
         }
     }

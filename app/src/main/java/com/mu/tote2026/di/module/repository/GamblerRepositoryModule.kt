@@ -8,9 +8,11 @@ import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.domain.usecase.gambler_usecase.GetCommonParams
 import com.mu.tote2026.domain.usecase.gambler_usecase.GetGambler
 import com.mu.tote2026.domain.usecase.gambler_usecase.GetGamblerList
+import com.mu.tote2026.domain.usecase.gambler_usecase.GetWinners
 import com.mu.tote2026.domain.usecase.gambler_usecase.SaveGambler
 import com.mu.tote2026.domain.usecase.gambler_usecase.SaveGamblerPhoto
 import com.mu.tote2026.domain.usecase.gambler_usecase.SaveCommonParams
+import com.mu.tote2026.domain.usecase.gambler_usecase.SaveWinner
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,7 +36,11 @@ object GamblerRepositoryModule {
         getGambler = GetGambler(gamblerRepository),
         saveGambler = SaveGambler(gamblerRepository),
         saveGamblerPhoto = SaveGamblerPhoto(gamblerRepository),
+
         getCommonParams = GetCommonParams(gamblerRepository),
-        saveCommonParams = SaveCommonParams(gamblerRepository)
+        saveCommonParams = SaveCommonParams(gamblerRepository),
+
+        getWinners = GetWinners(gamblerRepository),
+        saveWinner = SaveWinner(gamblerRepository),
     )
 }

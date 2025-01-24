@@ -24,6 +24,7 @@ object Collections {
     const val STAKES = "stakes"
     const val GAMBLERS = "gamblers"
     const val COMMON = "common"
+    const val WINNERS = "winners"
 }
 object Errors {
     const val CREATE_USER_WITH_EMAIL_AND_PASSWORD_FUNCTION_EXECUTING_ERROR = "Ошибка выполнения функции createUserWithEmailAndPassword"
@@ -38,4 +39,5 @@ object Errors {
     const val GAMBLER_SAVE_ERROR = "Ошибка сохранения данных участника"
     const val GAME_SUM_GET_ERROR = "Ошибка чтения общих призовой суммы за игру"
     const val COMMON_PARAMS_SAVE_ERROR = "Ошибка сохранения общих параметров"
+    const val WINNER_SAVE_ERROR = "Ошибка сохранения выигрыша победителя"
 }
