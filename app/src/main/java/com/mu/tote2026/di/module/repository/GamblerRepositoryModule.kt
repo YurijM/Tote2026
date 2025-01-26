@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.mu.tote2026.data.repository.GamblerRepositoryImpl
 import com.mu.tote2026.domain.repository.GamblerRepository
+import com.mu.tote2026.domain.usecase.gambler_usecase.DeleteWinners
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.domain.usecase.gambler_usecase.GetCommonParams
 import com.mu.tote2026.domain.usecase.gambler_usecase.GetGambler
@@ -42,5 +43,6 @@ object GamblerRepositoryModule {
 
         getWinners = GetWinners(gamblerRepository),
         saveWinner = SaveWinner(gamblerRepository),
+        deleteWinners = DeleteWinners(gamblerRepository),
     )
 }

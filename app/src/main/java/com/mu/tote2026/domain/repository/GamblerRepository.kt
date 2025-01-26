@@ -19,4 +19,5 @@ interface GamblerRepository {
 
     fun getWinners(): Flow<UiState<List<WinnerModel>>>
     fun saveWinner(winner: WinnerModel): Flow<UiState<WinnerModel>>
+    fun deleteWinners(): Flow<UiState<Boolean>>
 }

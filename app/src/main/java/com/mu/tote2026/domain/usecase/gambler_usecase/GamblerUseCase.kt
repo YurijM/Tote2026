@@ -10,5 +10,6 @@ data class GamblerUseCase(
     val saveCommonParams: SaveCommonParams,
 
     val getWinners: GetWinners,
-    val saveWinner: SaveWinner
+    val saveWinner: SaveWinner,
+    val deleteWinners: DeleteWinners,
 )

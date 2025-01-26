@@ -1,6 +1,5 @@
 package com.mu.tote2026.data.repository
 
-import android.annotation.SuppressLint
 import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -140,7 +139,6 @@ class GamblerRepositoryImpl(
         }
     }
 
-    @SuppressLint("DefaultLocale")
     override fun saveCommonParams(prizeFund: Int): Flow<UiState<CommonParamsModel>>  = callbackFlow {
         trySend(UiState.Loading)
 
@@ -201,6 +199,23 @@ class GamblerRepositoryImpl(
 
         awaitClose {
             toLog("saveWinner: awaitClose")
+            close()
+        }
+    }
+
+    override fun deleteWinners(): Flow<UiState<Boolean>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        firestore.collection(WINNERS).get()
+            .addOnCompleteListener {
+                for (document in it.result.documents) {
+                    document.reference.delete()
+                }
+                trySend(UiState.Success(true))
+            }
+
+        awaitClose {
+            toLog("deleteWinners: awaitClose")
             close()
         }
     }

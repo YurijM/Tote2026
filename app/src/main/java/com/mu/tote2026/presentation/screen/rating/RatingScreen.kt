@@ -146,7 +146,7 @@ fun GenderDuel(
                         color = ColorUp
                     )
                 },
-                leadingIcon = {
+                trailingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_female),
                         contentDescription = null,
@@ -173,7 +173,7 @@ fun GenderDuel(
                         color = ColorDown
                     )
                 },
-                trailingIcon = {
+                leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_male),
                         contentDescription = null,

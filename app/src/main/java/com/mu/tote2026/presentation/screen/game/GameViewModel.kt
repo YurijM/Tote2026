@@ -55,6 +55,7 @@ class GameViewModel @Inject constructor(
     var game by mutableStateOf(GameModel())
     private var commonParams by mutableStateOf(CommonParamsModel())
     private var gamblers = mutableListOf<GamblerModel>()
+    private var prevWinners = listOf<WinnerModel>()
     private var games = mutableListOf<GameModel>()
     private var teams = listOf<TeamModel>()
     val teamList = mutableListOf<String>()
@@ -120,6 +121,11 @@ class GameViewModel @Inject constructor(
                 gamblerUseCase.getGamblerList().onEach { gamblerListState ->
                     if (gamblerListState is UiState.Success) {
                         gamblers = gamblerListState.data.filter { it.rate > 0 }.toMutableList()
+                    }
+                }.launchIn(viewModelScope)
+                gamblerUseCase.getWinners().onEach { winnersState ->
+                    if (winnersState is UiState.Success) {
+                        prevWinners = winnersState.data
                     }
                 }.launchIn(viewModelScope)
                 teamUseCase.getTeamList().onEach { teamListState ->
@@ -204,6 +210,9 @@ class GameViewModel @Inject constructor(
                                 val gamesCur = games.filter { it.start.toLong() <= currentTimeMillis() }
                                 val gamesPrev = gamesCur.filter { it.start < game.start }
 
+                                // Удаление сумм дополнительных выигрышей у предыдущих победителей
+                                deletingCashPrizePrevWinners()
+
                                 gamblers.forEachIndexed { idx, gambler ->
                                     val cashPrize = gamesCur.sumOf {
                                         it.stakes.find { stake -> stake.gamblerId == gambler.id }?.cashPrize ?: 0
@@ -227,27 +236,31 @@ class GameViewModel @Inject constructor(
                                 setPlaceOrPlacePrev()
                                 if (gamblers.maxOf { it.pointsPrev > 0.0 }) setPlaceOrPlacePrev(true)
 
-                                val winners = gamblers.filter { it.place <= 3 }
-                                val percentSum = winners.sumOf { it.ratePercent }
+                                gamblerUseCase.deleteWinners().onEach { deleteWinnersState ->
+                                    if (deleteWinnersState is UiState.Success) {
+                                        val winners = gamblers.filter { it.place <= 3 }
+                                        val percentSum = winners.sumOf { it.ratePercent }
 
-                                val winners1 = winners.filter { it.place == 1 }
-                                if (winners1.isNotEmpty()) {
-                                    setWinnerCashPrize(winners1, percentSum, commonParams.place1PrizeFund)
-                                }
+                                        val winners1 = winners.filter { it.place == 1 }
+                                        if (winners1.isNotEmpty()) {
+                                            setWinnerCashPrize(winners1, percentSum, commonParams.place1PrizeFund)
+                                        }
 
-                                val winners2 = winners.filter { it.place == 2 }
-                                if (winners2.isNotEmpty()) {
-                                    setWinnerCashPrize(winners2, percentSum, commonParams.place2PrizeFund)
-                                }
+                                        val winners2 = winners.filter { it.place == 2 }
+                                        if (winners2.isNotEmpty()) {
+                                            setWinnerCashPrize(winners2, percentSum, commonParams.place2PrizeFund)
+                                        }
 
-                                val winners3 = winners.filter { it.place == 3 }
-                                if (winners3.isNotEmpty()) {
-                                    setWinnerCashPrize(winners3, percentSum, commonParams.place3PrizeFund)
-                                }
+                                        val winners3 = winners.filter { it.place == 3 }
+                                        if (winners3.isNotEmpty()) {
+                                            setWinnerCashPrize(winners3, percentSum, commonParams.place3PrizeFund)
+                                        }
 
-                                gamblers.forEach { gambler ->
-                                    gamblerUseCase.saveGambler(gambler).launchIn(viewModelScope)
-                                }
+                                        gamblers.forEach { gambler ->
+                                            gamblerUseCase.saveGambler(gambler).launchIn(viewModelScope)
+                                        }
+                                    }
+                                }.launchIn(viewModelScope)
                             }
 
                             exit = true
@@ -424,7 +437,7 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    private fun checkMainTime(): Boolean =
+    /*private fun checkMainTime(): Boolean =
         if (game.id.isNotBlank()
             && game.start.isNotBlank()
             && game.group.isNotBlank()
@@ -452,7 +465,7 @@ class GameViewModel @Inject constructor(
             }
         } else {
             false
-        }
+        }*/
 
     /*private fun checkAddTime(): Boolean {
         var result = (game.addGoal1.isNotBlank() && (game.addGoal1 >= game.goal1))
@@ -473,7 +486,43 @@ class GameViewModel @Inject constructor(
         isAddTime = false
         isByPenalty = false
 
-        return checkMainTime()
+        //return checkMainTime()
+
+        var check = false
+
+        if (game.id.isNotBlank()
+            && game.start.isNotBlank()
+            && game.group.isNotBlank()
+            && game.team1.isNotBlank()
+            && game.team2.isNotBlank()
+        ) {
+            if (game.start.toLong() > currentTimeMillis()) {
+                check = true
+            } else {
+                if (game.goal1.isNotBlank() && game.goal2.isNotBlank()) {
+                    isAddTime = (game.groupId.toInt() > GROUPS_COUNT
+                            && game.goal1 == game.goal2)
+                    if (!isAddTime) {
+                        game = game.copy(
+                            addGoal1 = "",
+                            addGoal2 = "",
+                            addResult = "",
+                            byPenalty = "",
+                        )
+                    } else {
+                        if (game.addGoal1 == game.addGoal2)
+                            isByPenalty = true
+                    }
+                    check = true
+                } else {
+                    check = false
+                }
+            }
+        } else {
+            check = false
+        }
+
+        return check
     }
 
     private fun setWinnerCashPrize(
@@ -491,7 +540,21 @@ class GameViewModel @Inject constructor(
                 cashPrizeByStake = cashPrizeByStake
             )
 
+            val idx = gamblers.indexOf(gambler)
+            gamblers[idx] = gamblers[idx].copy(cashPrize = round(gambler.cashPrize + placePrizeFund + cashPrizeByStake).toInt())
+
             gamblerUseCase.saveWinner(winner).launchIn(viewModelScope)
+        }
+    }
+
+    private fun deletingCashPrizePrevWinners() {
+        prevWinners.forEach { winner ->
+            val gambler = gamblers.find { it.id == winner.gamblerId }
+            if (gambler != null) {
+                val cashPrize = gambler.cashPrize - winner.cashPrize - winner.cashPrizeByStake
+                val idx = gamblers.indexOf(gambler)
+                gamblers[idx] = gamblers[idx].copy(cashPrize = round(cashPrize).toInt())
+            }
         }
     }
 
