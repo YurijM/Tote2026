@@ -400,10 +400,14 @@ class GameViewModel @Inject constructor(
                 && ((game.addGoal1.toInt() - game.addGoal2.toInt()) == (stake.addGoal1.toInt() - stake.addGoal2.toInt()))
             ) {
                 0.25
-            } else if (game.addGoal1 == stake.addGoal1 || game.addGoal2 == stake.addGoal2) 0.01
+            } else if (game.addGoal1 == stake.addGoal1 || game.addGoal2 == stake.addGoal2) 0.1
             else 0.0
 
-            addPoints += if (game.byPenalty.isNotBlank() && game.byPenalty == stake.byPenalty) 1.0 else 0.0
+            addPoints += if (game.byPenalty.isNotBlank() && game.byPenalty == stake.byPenalty) {
+                1.0
+            } else {
+                0.0
+            }
         }
         return addPoints
     }
@@ -510,16 +514,16 @@ class GameViewModel @Inject constructor(
                             byPenalty = "",
                         )
                     } else {
-                        if (game.addGoal1 == game.addGoal2)
+                        if (game.goal1.isNotBlank() && game.goal2.isNotBlank()
+                            && game.addGoal1 == game.addGoal2
+                        )
                             isByPenalty = true
+                        else
+                            game = game.copy(byPenalty = "")
                     }
                     check = true
-                } else {
-                    check = false
                 }
             }
-        } else {
-            check = false
         }
 
         return check
@@ -541,7 +545,8 @@ class GameViewModel @Inject constructor(
             )
 
             val idx = gamblers.indexOf(gambler)
-            gamblers[idx] = gamblers[idx].copy(cashPrize = round(gambler.cashPrize + placePrizeFund + cashPrizeByStake).toInt())
+            gamblers[idx] =
+                gamblers[idx].copy(cashPrize = round(gambler.cashPrize + placePrizeFund + cashPrizeByStake).toInt())
 
             gamblerUseCase.saveWinner(winner).launchIn(viewModelScope)
         }

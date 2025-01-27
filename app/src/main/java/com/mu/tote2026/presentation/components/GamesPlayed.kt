@@ -60,13 +60,12 @@ fun GamesPlayed(
             }
             if (game.addGoal1.isNotBlank()) {
                 Text(
-                    text = "${game.goal1}:${game.goal2}" +
-                            if (game.addGoal1.isNotBlank())
-                                ", ${stringResource(id = R.string.add_time_score)} ${game.addGoal1}:${game.addGoal2}" +
-                                        if (game.byPenalty.isNotBlank())
-                                            ", ${stringResource(id = R.string.by_penalty)} ${game.byPenalty}"
-                                        else ""
-                            else ""
+                    text = if (game.addGoal1.isNotBlank())
+                        stringResource(id = R.string.add_time_score, game.addGoal1, game.addGoal2) +
+                                if (game.byPenalty.isNotBlank())
+                                    ", ${stringResource(id = R.string.by_penalty)} ${game.byPenalty}"
+                                else ""
+                    else ""
                 )
             }
         }
