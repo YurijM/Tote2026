@@ -133,7 +133,7 @@ fun AdminGamblerScreen(
                 HorizontalDivider(thickness = 1.dp)
                 OkAndCancel(
                     titleOk = stringResource(R.string.save),
-                    enabledOk = viewModel.rateError.isBlank(),
+                    enabledOk = viewModel.enabled,
                     onOK = { viewModel.onEvent(AdminGamblerEvent.OnSave) },
                     onCancel = { toAdminGamblerList() }
                 )

@@ -32,7 +32,11 @@ class AdminGamblerViewModel @Inject constructor(
         private set
     private var gamblers by mutableStateOf(listOf<GamblerModel>())
     private var prizeFund = 0
+    private var rate = 0
+    private var isAdmin = false
     var rateError by mutableStateOf("")
+        private set
+    var enabled by mutableStateOf(false)
         private set
     var exit by mutableStateOf(false)
         private set
@@ -50,6 +54,8 @@ class AdminGamblerViewModel @Inject constructor(
                 _state.value = AdminGamblerState(gamblerState)
                 if (gamblerState is UiState.Success) {
                     gambler = gamblerState.data
+                    rate = gambler.rate
+                    isAdmin = gambler.isAdmin
                     prizeFund -= gambler.rate
                     gamblers = gamblers.filter { it.id != gambler.id }
                 }
@@ -61,6 +67,11 @@ class AdminGamblerViewModel @Inject constructor(
         when (event) {
             is AdminGamblerEvent.OnRateChange -> {
                 rateError = checkRate(event.rate)
+                enabled = checkEnabled(
+                    newRate = event.rate.toIntOrNull() ?: 0,
+                    newIsAdmin = gambler.isAdmin
+                )
+
                 gambler = if (rateError.isBlank()) {
                     gambler.copy(rate = event.rate.toInt())
                 } else {
@@ -69,6 +80,11 @@ class AdminGamblerViewModel @Inject constructor(
             }
 
             is AdminGamblerEvent.OnIsAdminChange -> {
+                enabled = checkEnabled(
+                    newRate = gambler.rate,
+                    newIsAdmin = event.isAdmin
+                )
+
                 gambler = gambler.copy(
                     isAdmin = event.isAdmin
                 )
@@ -78,7 +94,9 @@ class AdminGamblerViewModel @Inject constructor(
                 val currentRate = gambler.rate
                 prizeFund += gambler.rate
                 gambler = gambler.copy(
-                    ratePercent = (currentRate.toDouble() / prizeFund.toDouble()) * 100.0
+                    ratePercent = if (prizeFund > 0) {
+                        (currentRate.toDouble() / prizeFund.toDouble()) * 100.0
+                    } else 0.0
                 )
                 val scope = viewModelScope
                 scope.launch {
@@ -100,6 +118,9 @@ class AdminGamblerViewModel @Inject constructor(
             }
         }
     }
+
+    private fun checkEnabled(newRate: Int, newIsAdmin: Boolean): Boolean =
+        rateError.isBlank() && (rate != newRate || isAdmin != newIsAdmin)
 
     private fun checkRate(rate: String): String {
         return when {
