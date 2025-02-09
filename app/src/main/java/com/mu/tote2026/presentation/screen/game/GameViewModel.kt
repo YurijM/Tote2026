@@ -240,20 +240,33 @@ class GameViewModel @Inject constructor(
                                     if (deleteWinnersState is UiState.Success) {
                                         val winners = gamblers.filter { it.place <= 3 }
                                         val percentSum = winners.sumOf { it.ratePercent }
+                                        var placePrizeFund = 0.0
 
                                         val winners1 = winners.filter { it.place == 1 }
                                         if (winners1.isNotEmpty()) {
-                                            setWinnerCashPrize(winners1, percentSum, commonParams.place1PrizeFund)
+                                            placePrizeFund = if (winners1.count() >= 3) {
+                                                commonParams.winnersPrizeFund
+                                            } else {
+                                                commonParams.place1PrizeFund
+                                            } / winners1.count().toDouble()
+
+                                            setWinnerCashPrize(winners1, percentSum, placePrizeFund)
                                         }
 
                                         val winners2 = winners.filter { it.place == 2 }
                                         if (winners2.isNotEmpty()) {
-                                            setWinnerCashPrize(winners2, percentSum, commonParams.place2PrizeFund)
+                                            placePrizeFund = if (winners2.count() >= 2) {
+                                                (commonParams.place2PrizeFund + commonParams.place3PrizeFund)
+                                            } else {
+                                                commonParams.place2PrizeFund
+                                            } / winners2.count().toDouble()
+
+                                            setWinnerCashPrize(winners2, percentSum, placePrizeFund)
                                         }
 
                                         val winners3 = winners.filter { it.place == 3 }
                                         if (winners3.isNotEmpty()) {
-                                            setWinnerCashPrize(winners3, percentSum, commonParams.place3PrizeFund)
+                                            setWinnerCashPrize(winners3, percentSum, commonParams.place3PrizeFund / winners3.count())
                                         }
 
                                         gamblers.forEach { gambler ->
@@ -534,13 +547,12 @@ class GameViewModel @Inject constructor(
         percentSum: Double,
         placePrizeFund: Double
     ) {
-        val winnerCount = winners.size.toDouble()
         winners.forEach { gambler ->
             val cashPrizeByStake = (commonParams.winnersPrizeFundByStake * gambler.ratePercent) / percentSum
             val winner = WinnerModel(
                 gamblerId = gambler.id,
                 gamblerNickname = gambler.nickname,
-                cashPrize = placePrizeFund / winnerCount,
+                cashPrize = placePrizeFund,
                 cashPrizeByStake = cashPrizeByStake
             )
 
