@@ -49,7 +49,9 @@
     <string name="admin_stake_list">Список ставок</string>
     <string name="admin_common_params">Общие параметры</string>
     <string name="admin_finish">Окончание турнира</string>
-    <string name="prize_fund">(общий призовой фонд %1$s руб.)</string>
+    <string name="prize_fund">общий призовой фонд</string>
+    <string name="winner_played">разыгранная сумма</string>
+    <string name="rested_prize_fund">оставшаяся сумма</string>
     <string name="common_params">Общие параметры</string>
 
     <string name="email_delete">Удаление email</string>
