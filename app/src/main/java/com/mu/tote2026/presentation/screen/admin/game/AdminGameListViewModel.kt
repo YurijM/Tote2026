@@ -269,7 +269,7 @@ class AdminGameListViewModel @Inject constructor(
                     ".png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7",
             team2 = "Швейцария",
             team2ItemNo = "4",
-            flag2 = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fger" +
+            flag2 = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fsui" +
                     ".png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7",
         ),
         GameModel(

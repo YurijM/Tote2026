@@ -2,6 +2,7 @@ package com.mu.tote2026.presentation.screen.admin.gambler.list
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,6 +32,8 @@ class AdminGamblerListViewModel @Inject constructor(
     var prizeFund = 0
     var winnerPlayed by mutableDoubleStateOf(0.0)
         private set
+    var cashInHand by mutableIntStateOf(0)
+        private set
     var restedPrizeFund by mutableDoubleStateOf(0.0)
         private set
     private var matchesPlayed = 0
@@ -46,6 +49,7 @@ class AdminGamblerListViewModel @Inject constructor(
                 )
                 _state.value = gamblers
                 prizeFund = gamblerListState.data.sumOf { it.rate }
+                cashInHand = gamblerListState.data.sumOf { it.cashPrize }
                 calc()
             } else {
                 _state.value = AdminGamblerListState(gamblerListState)

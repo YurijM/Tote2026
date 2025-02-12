@@ -124,6 +124,30 @@ fun AdminGamblerListScreen(
             )
         }
         Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.cash_in_hand) + ":",
+                textAlign = TextAlign.End,
+                lineHeight = 0.85.em,
+                modifier = Modifier
+                    .padding(end = 4.dp)
+                    .weight(1.35f)
+            )
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(fontWeight = FontWeight.Bold)
+                    ) {
+                        append(viewModel.cashInHand.toString())
+                    }
+                    append(" руб.")
+                },
+                lineHeight = 0.85.em,
+                modifier = Modifier.weight(1f)
+            )
+        }
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 4.dp)
