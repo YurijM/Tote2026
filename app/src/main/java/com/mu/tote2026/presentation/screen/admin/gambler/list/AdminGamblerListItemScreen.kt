@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import coil.compose.AsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
@@ -73,11 +75,36 @@ fun AdminGamblerListItemScreen(
                     text = gambler.nickname,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.height(20.dp)
+                    //modifier = Modifier.height(20.dp
+                    lineHeight = .85.em
                 )
+                val cash = gambler.cashPrize - gambler.rate
+                Text(
+                    text = buildAnnotatedString {
+                        append("${gambler.cashPrize} руб.")
+                        withStyle(
+                            style = SpanStyle(
+                                color = if (cash > 0) Color.Red else Color.Unspecified,
+                            )
+                        ) {
+                            append("($cash)")
+                        }
+                    },
+                    fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                    fontWeight = FontWeight.Bold,
+                    lineHeight = .85.em
+                )
+                /*Text(
+                    text = "${gambler.cashPrize} руб. ($cash)",
+                    color = if (cash > 0) Color.Red else Color.Unspecified,
+                    fontSize = MaterialTheme.typography.labelMedium.fontSize,
+                    fontWeight = FontWeight.Bold,
+                    lineHeight = .75.em
+                )*/
                 Text(
                     text = gambler.email,
                     fontSize = MaterialTheme.typography.labelLarge.fontSize,
+                    lineHeight = .75.em,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
