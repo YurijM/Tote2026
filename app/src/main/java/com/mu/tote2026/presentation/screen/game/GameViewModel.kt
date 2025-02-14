@@ -238,11 +238,13 @@ class GameViewModel @Inject constructor(
 
                                 gamblerUseCase.deleteWinners().onEach { deleteWinnersState ->
                                     if (deleteWinnersState is UiState.Success) {
-                                        val winners = gamblers.filter { it.place <= 3 }
-                                        val percentSum = winners.sumOf { it.ratePercent }
-                                        var placePrizeFund = 0.0
+                                        setWinnerCashPrize()
 
-                                        val winners1 = winners.filter { it.place == 1 }
+                                        //val winners = gamblers.filter { it.place <= 3 }.sortedBy { it.place }
+                                        //val percentSum = winners.sumOf { it.ratePercent }
+                                        //var placePrizeFund = 0.0
+
+                                        /*val winners1 = winners.filter { it.place == 1 }
                                         if (winners1.isNotEmpty()) {
                                             placePrizeFund = if (winners1.count() >= 3) {
                                                 commonParams.winnersPrizeFund
@@ -266,8 +268,12 @@ class GameViewModel @Inject constructor(
 
                                         val winners3 = winners.filter { it.place == 3 }
                                         if (winners3.isNotEmpty()) {
-                                            setWinnerCashPrize(winners3, percentSum, commonParams.place3PrizeFund / winners3.count())
-                                        }
+                                            setWinnerCashPrize(
+                                                winners3,
+                                                percentSum,
+                                                commonParams.place3PrizeFund / winners3.count()
+                                            )
+                                        }*/
 
                                         gamblers.forEach { gambler ->
                                             gamblerUseCase.saveGambler(gambler).launchIn(viewModelScope)
@@ -542,13 +548,65 @@ class GameViewModel @Inject constructor(
         return check
     }
 
-    private fun setWinnerCashPrize(
+    /*private fun setWinnerCashPrize(
         winners: List<GamblerModel>,
         percentSum: Double,
         placePrizeFund: Double
     ) {
         winners.forEach { gambler ->
             val cashPrizeByStake = (commonParams.winnersPrizeFundByStake * gambler.ratePercent) / percentSum
+            val winner = WinnerModel(
+                gamblerId = gambler.id,
+                gamblerNickname = gambler.nickname,
+                cashPrize = placePrizeFund,
+                cashPrizeByStake = cashPrizeByStake
+            )
+
+            val idx = gamblers.indexOf(gambler)
+            gamblers[idx] =
+                gamblers[idx].copy(cashPrize = round(gambler.cashPrize + placePrizeFund + cashPrizeByStake).toInt())
+
+            gamblerUseCase.saveWinner(winner).launchIn(viewModelScope)
+        }
+    }*/
+
+    private fun setWinnerCashPrize() {
+        val winners = gamblers.filter { it.place <= 3 }.sortedBy { it.place }
+        val percentSum = winners.sumOf { it.ratePercent }
+        val winnerFirst = winners.first()
+        val winnerLast = winners.last()
+
+        val coefficientWinner1: Double
+        var coefficientWinner2 = 0.0
+        var coefficientWinner3 = 0.0
+
+        when (winnerLast.place) {
+            3 -> {
+                coefficientWinner3 = 1.0
+                coefficientWinner1 = winnerFirst.points - winnerLast.points + 1.0
+                coefficientWinner2 = winners.first { it.place == 2 }.points - winnerLast.points + 1.0
+            }
+            2 -> {
+                coefficientWinner2 = 1.0
+                coefficientWinner1 = winnerFirst.points - winnerLast.points + 1.0
+            }
+            else -> coefficientWinner1 = 1.0
+        }
+
+        val coefficientSum = coefficientWinner1 * winners.filter { it.place == 1 }.size +
+                coefficientWinner2 * winners.filter { it.place == 2 }.size +
+                coefficientWinner3 * winners.filter { it.place == 3 }.size
+
+        winners.forEach { gambler ->
+            val placePrizeFund = commonParams.winnersPrizeFund / coefficientSum *
+                    when (gambler.place) {
+                        1 -> coefficientWinner1
+                        2 -> coefficientWinner2
+                        else -> coefficientWinner3
+                    }
+
+            val cashPrizeByStake = (commonParams.winnersPrizeFundByStake * gambler.ratePercent) / percentSum
+
             val winner = WinnerModel(
                 gamblerId = gambler.id,
                 gamblerNickname = gambler.nickname,
