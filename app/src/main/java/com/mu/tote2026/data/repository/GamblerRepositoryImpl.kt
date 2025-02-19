@@ -142,16 +142,19 @@ class GamblerRepositoryImpl(
     override fun saveCommonParams(prizeFund: Int): Flow<UiState<CommonParamsModel>>  = callbackFlow {
         trySend(UiState.Loading)
 
-        val winnersPrizeFund = (prizeFund.toDouble() * 2.0 / 9.0)
+        //val winnersPrizeFund = (prizeFund.toDouble() * 2.0 / 9.0)
+        val winnersPrizeFund = (prizeFund.toDouble() / 6.0)
         val common = CommonParamsModel(
             prizeFund = prizeFund,
             groupPrizeFund = prizeFund.toDouble() / 3.0,
             playoffPrizeFund = prizeFund.toDouble() / 3.0,
             winnersPrizeFund = winnersPrizeFund,
-            place1PrizeFund = winnersPrizeFund / 2.0,
-            place2PrizeFund = winnersPrizeFund / 3.0,
-            place3PrizeFund = winnersPrizeFund / 6.0,
-            winnersPrizeFundByStake = prizeFund.toDouble() / 9.0,
+            winnersPrizeFundByStake = winnersPrizeFund,
+            //winnersPrizeFund = winnersPrizeFund,
+            //place1PrizeFund = winnersPrizeFund / 2.0,
+            //place2PrizeFund = winnersPrizeFund / 3.0,
+            //place3PrizeFund = winnersPrizeFund / 6.0,
+            //winnersPrizeFundByStake = prizeFund.toDouble() / 9.0,
         )
 
         firestore.collection(COMMON).document(COMMON).set(common)
