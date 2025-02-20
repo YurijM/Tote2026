@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.lang.System.currentTimeMillis
 import javax.inject.Inject
+import kotlin.math.round
 
 @HiltViewModel
 class AdminGamblerListViewModel @Inject constructor(
@@ -49,7 +50,7 @@ class AdminGamblerListViewModel @Inject constructor(
                 )
                 _state.value = gamblers
                 prizeFund = gamblerListState.data.sumOf { it.rate }
-                cashInHand = gamblerListState.data.sumOf { it.cashPrize }
+                cashInHand = round(gamblerListState.data.sumOf { it.cashPrize }).toInt()
                 calc()
             } else {
                 _state.value = AdminGamblerListState(gamblerListState)

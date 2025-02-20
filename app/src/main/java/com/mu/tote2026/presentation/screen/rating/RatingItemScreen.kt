@@ -48,6 +48,7 @@ import com.mu.tote2026.ui.theme.ColorDown
 import com.mu.tote2026.ui.theme.ColorFemale
 import com.mu.tote2026.ui.theme.ColorMale
 import com.mu.tote2026.ui.theme.ColorUp
+import kotlin.math.round
 
 @SuppressLint("DefaultLocale")
 @Composable
@@ -140,12 +141,11 @@ fun RatingItemScreen(
                             fontWeight = FontWeight.Black
                         )
                     ) {
-                        append(gambler.cashPrize.toString())
+                        append(round(gambler.cashPrize).toInt().toString())
                     }
                     append(" руб.")
                 }
                 Text(
-                    //text = stringResource(R.string.cashPrize, gambler.cashPrize),
                     text = cashPrize,
                     fontSize = MaterialTheme.typography.labelLarge.fontSize
                 )

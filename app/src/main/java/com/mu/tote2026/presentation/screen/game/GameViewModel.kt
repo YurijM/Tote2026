@@ -37,7 +37,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.lang.System.currentTimeMillis
 import javax.inject.Inject
-import kotlin.math.round
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
@@ -215,7 +214,7 @@ class GameViewModel @Inject constructor(
 
                                 gamblers.forEachIndexed { idx, gambler ->
                                     val cashPrize = gamesCur.sumOf {
-                                        it.stakes.find { stake -> stake.gamblerId == gambler.id }?.cashPrize ?: 0
+                                        it.stakes.find { stake -> stake.gamblerId == gambler.id }?.cashPrize ?: 0.0
                                     }
                                     val points = gamesCur.sumOf {
                                         it.stakes.find { stake -> stake.gamblerId == gambler.id }?.points ?: 0.0
@@ -373,7 +372,8 @@ class GameViewModel @Inject constructor(
                 (stake.points + stake.addPoints) * coefficient * stake.gamblerRatePercent
             else 0.0
 
-            game.stakes[idx] = stake.copy(cashPrize = round(cash).toInt())
+            //game.stakes[idx] = stake.copy(cashPrize = round(cash).toInt())
+            game.stakes[idx] = stake.copy(cashPrize = cash)
         }
     }
 
@@ -616,7 +616,8 @@ class GameViewModel @Inject constructor(
 
             val idx = gamblers.indexOf(gambler)
             gamblers[idx] =
-                gamblers[idx].copy(cashPrize = round(gambler.cashPrize + placePrizeFund + cashPrizeByStake).toInt())
+                //gamblers[idx].copy(cashPrize = round(gambler.cashPrize + placePrizeFund + cashPrizeByStake).toInt())
+                gamblers[idx].copy(cashPrize = gambler.cashPrize + placePrizeFund + cashPrizeByStake)
 
             gamblerUseCase.saveWinner(winner).launchIn(viewModelScope)
         }
@@ -628,7 +629,8 @@ class GameViewModel @Inject constructor(
             if (gambler != null) {
                 val cashPrize = gambler.cashPrize - winner.cashPrize - winner.cashPrizeByStake
                 val idx = gamblers.indexOf(gambler)
-                gamblers[idx] = gamblers[idx].copy(cashPrize = round(cashPrize).toInt())
+                //gamblers[idx] = gamblers[idx].copy(cashPrize = round(cashPrize).toInt())
+                gamblers[idx] = gamblers[idx].copy(cashPrize = cashPrize)
             }
         }
     }

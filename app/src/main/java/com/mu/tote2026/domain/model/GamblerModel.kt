@@ -9,10 +9,10 @@ data class GamblerModel(
     @field:JvmField
     val isAdmin: Boolean = false,
     val rate: Int = 0,
-    val ratePercent: Double = 0.00,
-    val pointsPrev: Double = 0.00,
-    val points: Double = 0.00,
+    val ratePercent: Double = 0.0,
+    val pointsPrev: Double = 0.0,
+    val points: Double = 0.0,
     val placePrev: Int = 0,
     val place: Int = 0,
-    val cashPrize: Int = 0
+    val cashPrize: Double = 0.0
 )

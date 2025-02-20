@@ -41,6 +41,7 @@ import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.ui.theme.Color2
 import java.math.RoundingMode
+import kotlin.math.round
 
 @Composable
 fun AdminGamblerListItemScreen(
@@ -78,10 +79,10 @@ fun AdminGamblerListItemScreen(
                     //modifier = Modifier.height(20.dp
                     lineHeight = .85.em
                 )
-                val cash = gambler.cashPrize - gambler.rate
+                val cash = round(gambler.cashPrize - gambler.rate).toInt()
                 Text(
                     text = buildAnnotatedString {
-                        append("${gambler.cashPrize} руб.")
+                        append("${round(gambler.cashPrize).toInt()} руб.")
                         withStyle(
                             style = SpanStyle(
                                 color = if (cash > 0) Color.Red else Color.Unspecified,
@@ -94,13 +95,6 @@ fun AdminGamblerListItemScreen(
                     fontWeight = FontWeight.Bold,
                     lineHeight = .85.em
                 )
-                /*Text(
-                    text = "${gambler.cashPrize} руб. ($cash)",
-                    color = if (cash > 0) Color.Red else Color.Unspecified,
-                    fontSize = MaterialTheme.typography.labelMedium.fontSize,
-                    fontWeight = FontWeight.Bold,
-                    lineHeight = .75.em
-                )*/
                 Text(
                     text = gambler.email,
                     fontSize = MaterialTheme.typography.labelLarge.fontSize,
