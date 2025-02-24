@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -87,18 +88,30 @@ fun RatingScreen(
         if (viewModel.rateIsAbsent)
             RateIsAbsent()
 
+        GenderDuel(
+            femalePoints = gamblers.filter { it.gender == FEMALE }.sumOf { it.points }
+                    / gamblers.filter { it.gender == FEMALE }.size.toDouble(),
+            malePoints = gamblers.filter { it.gender == MALE }.sumOf { it.points }
+                    / gamblers.filter { it.gender == MALE }.size.toDouble()
+        )
+
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.primary
+        )
+
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
         ) {
-            item {
+            /*item {
                 GenderDuel(
                     femalePoints = gamblers.filter { it.gender == FEMALE }.sumOf { it.points }
                             / gamblers.filter { it.gender == FEMALE }.size.toDouble(),
                     malePoints = gamblers.filter { it.gender == MALE }.sumOf { it.points }
                             / gamblers.filter { it.gender == MALE }.size.toDouble()
                 )
-            }
+            }*/
             items(gamblers) { gambler ->
                 RatingItemScreen(
                     gambler,
@@ -127,7 +140,7 @@ fun GenderDuel(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp)
+            //.padding(top = 8.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.End,
