@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.em
 import coil.compose.AsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
+import com.mu.tote2026.domain.model.WinnerModel
 import com.mu.tote2026.ui.theme.Color2
 import java.math.RoundingMode
 import kotlin.math.round
@@ -46,6 +47,7 @@ import kotlin.math.round
 @Composable
 fun AdminGamblerListItemScreen(
     gambler: GamblerModel,
+    winner: WinnerModel?,
     onEdit: () -> Unit
 ) {
     Card(
@@ -56,7 +58,7 @@ fun AdminGamblerListItemScreen(
             containerColor = if (gambler.isAdmin) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface
         ),
         modifier = Modifier
-            .fillMaxWidth(.75f)
+            .fillMaxWidth(.85f)
             .padding(vertical = 8.dp)
             .clickable { onEdit() }
     ) {
@@ -79,10 +81,18 @@ fun AdminGamblerListItemScreen(
                     //modifier = Modifier.height(20.dp
                     lineHeight = .85.em
                 )
+                var strCashPrize = "${round(gambler.cashPrize).toInt()} руб."
+                if (winner != null) {
+                    val cashPrize = gambler.cashPrize - winner.cashPrize - winner.cashPrizeByStake
+                    strCashPrize = "(${round(cashPrize).toInt()}" +
+                            "+${round(winner.cashPrize).toInt()}" +
+                            "+${round(winner.cashPrizeByStake).toInt()})" +
+                            "=${round(gambler.cashPrize).toInt()} руб."
+                }
                 val cash = round(gambler.cashPrize - gambler.rate).toInt()
                 Text(
                     text = buildAnnotatedString {
-                        append("${round(gambler.cashPrize).toInt()} руб.")
+                        append(strCashPrize)
                         withStyle(
                             style = SpanStyle(
                                 color = if (cash > 0) Color.Red else Color.Unspecified,

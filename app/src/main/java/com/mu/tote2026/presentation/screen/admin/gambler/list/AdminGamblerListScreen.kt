@@ -188,6 +188,7 @@ fun AdminGamblerListScreen(
             items(gamblers) { gambler ->
                 AdminGamblerListItemScreen(
                     gambler,
+                    winner = viewModel.winners.find { it.gamblerId == gambler.id },
                     onEdit = { toGamblerEdit(gambler.id )}
                 )
             }
