@@ -46,6 +46,7 @@ class AdminGamblerListViewModel @Inject constructor(
 
     init {
         gamblerUseCase.getWinners().onEach { winnersState ->
+            _state.value = AdminGamblerListState(UiState.Loading)
             if (winnersState is UiState.Success) {
                 winners = winnersState.data
                 gamblerUseCase.getGamblerList().onEach { gamblerListState ->
