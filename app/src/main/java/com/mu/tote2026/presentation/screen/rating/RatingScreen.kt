@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.presentation.components.AppProgressBar
+import com.mu.tote2026.presentation.components.AppTournamentIsFinished
 import com.mu.tote2026.presentation.navigation.Destinations.GamblerPhotoDestination
 import com.mu.tote2026.presentation.utils.FEMALE
 import com.mu.tote2026.presentation.utils.MALE
@@ -83,8 +84,13 @@ fun RatingScreen(
     }
 
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
+        if (viewModel.finish.finished) {
+            AppTournamentIsFinished(viewModel.finish.champion)
+        }
+
         if (viewModel.rateIsAbsent)
             RateIsAbsent()
 
