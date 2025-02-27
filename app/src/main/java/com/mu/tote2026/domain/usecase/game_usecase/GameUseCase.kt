@@ -10,6 +10,4 @@ data class GameUseCase(
     val getGamblerGameStake: GetGamblerGameStake,
     val deleteStakes: DeleteStakes,
     val saveStake: SaveStake,
-
-    val getGameSum: GetGameSum
 )

@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mu.tote2026.domain.model.CommonParamsModel
+import com.mu.tote2026.domain.model.PrizeFundModel
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,11 +22,11 @@ class AdminCommonParamsViewModel @Inject constructor(
     private val _state = MutableStateFlow(AdminCommonParamsState())
     var state = _state.asStateFlow()
 
-    var commonParams by mutableStateOf(CommonParamsModel())
+    var commonParams by mutableStateOf(PrizeFundModel())
         private set
 
     init {
-        gamblerUseCase.getCommonParams().onEach { commonParamsState ->
+        gamblerUseCase.getPrizeFund().onEach { commonParamsState ->
             _state.value = AdminCommonParamsState(commonParamsState)
 
             if (commonParamsState is UiState.Success) {
@@ -36,6 +36,6 @@ class AdminCommonParamsViewModel @Inject constructor(
     }
 
     data class AdminCommonParamsState(
-        val result: UiState<CommonParamsModel> = UiState.Default
+        val result: UiState<PrizeFundModel> = UiState.Default
     )
 }

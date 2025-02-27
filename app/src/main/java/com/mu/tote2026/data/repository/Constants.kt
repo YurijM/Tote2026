@@ -24,6 +24,7 @@ object Collections {
     const val STAKES = "stakes"
     const val GAMBLERS = "gamblers"
     const val COMMON = "common"
+    const val PRIZE_FUND = "prizeFund"
     const val WINNERS = "winners"
 }
 object Errors {
@@ -37,7 +38,6 @@ object Errors {
     const val GAMBLER_PHOTO_URL_GET_ERROR = "Ошибка получения url фото участника после сохранения"
     const val GAMBLER_PHOTO_SAVE_ERROR = "Ошибка сохранения фото участника"
     const val GAMBLER_SAVE_ERROR = "Ошибка сохранения данных участника"
-    const val GAME_SUM_GET_ERROR = "Ошибка чтения общих призовой суммы за игру"
-    const val COMMON_PARAMS_SAVE_ERROR = "Ошибка сохранения общих параметров"
+    const val PRIZE_FUND_SAVE_ERROR = "Ошибка сохранения сумм призового фонда"
     const val WINNER_SAVE_ERROR = "Ошибка сохранения выигрыша победителя"
 }

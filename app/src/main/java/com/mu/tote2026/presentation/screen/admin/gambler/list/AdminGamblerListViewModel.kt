@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.data.repository.GROUP_GAMES_COUNT
 import com.mu.tote2026.data.repository.PLAYOFF_GAMES_COUNT
-import com.mu.tote2026.domain.model.CommonParamsModel
+import com.mu.tote2026.domain.model.PrizeFundModel
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.model.WinnerModel
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
@@ -41,7 +41,7 @@ class AdminGamblerListViewModel @Inject constructor(
     private var matchesPlayed = 0
     private var matchesPlayedByGroup = 0
     private var matchesPlayedByPlayoff = 0
-    private var commonParams = CommonParamsModel()
+    private var commonParams = PrizeFundModel()
     var winners = listOf<WinnerModel>()
 
     init {
@@ -78,7 +78,7 @@ class AdminGamblerListViewModel @Inject constructor(
                     matchesPlayedByPlayoff = 0
                 }
 
-                gamblerUseCase.getCommonParams().onEach { commonParamsState ->
+                gamblerUseCase.getPrizeFund().onEach { commonParamsState ->
                     if (commonParamsState is UiState.Success) {
                         commonParams = commonParamsState.data
                         winnerPlayed = matchesPlayedByGroup * (commonParams.groupPrizeFund / GROUP_GAMES_COUNT) +

@@ -12,7 +12,7 @@ import com.mu.tote2026.data.repository.PLAYOFF_GAMES_COUNT
 import com.mu.tote2026.data.repository.Result.DEFEAT
 import com.mu.tote2026.data.repository.Result.DRAW
 import com.mu.tote2026.data.repository.Result.WIN
-import com.mu.tote2026.domain.model.CommonParamsModel
+import com.mu.tote2026.domain.model.PrizeFundModel
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
@@ -52,7 +52,7 @@ class GameViewModel @Inject constructor(
     private val isNewGame = args.id == NEW_DOC
 
     var game by mutableStateOf(GameModel())
-    private var commonParams by mutableStateOf(CommonParamsModel())
+    private var commonParams by mutableStateOf(PrizeFundModel())
     private var gamblers = mutableListOf<GamblerModel>()
     private var prevWinners = listOf<WinnerModel>()
     private var games = mutableListOf<GameModel>()
@@ -98,9 +98,9 @@ class GameViewModel @Inject constructor(
                 startTime = game.start.asTime().ifBlank { "00:00" }
                 enabled = checkValues()
 
-                gameUseCase.getGameSum().onEach { gameSumState ->
-                    if (gameSumState is UiState.Success) {
-                        commonParams = gameSumState.data
+                gamblerUseCase.getPrizeFund().onEach { prizeFundState ->
+                    if (prizeFundState is UiState.Success) {
+                        commonParams = prizeFundState.data
 
                         /*if (game.start.toLong() < currentTimeMillis()
                             && game.goal1.isBlank() && game.goal2.isBlank()

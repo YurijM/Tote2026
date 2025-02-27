@@ -6,8 +6,8 @@ data class GamblerUseCase(
     val saveGambler: SaveGambler,
     val saveGamblerPhoto: SaveGamblerPhoto,
 
-    val getCommonParams: GetCommonParams,
-    val saveCommonParams: SaveCommonParams,
+    val getPrizeFund: GetPrizeFund,
+    val savePrizeFund: SavePrizeFund,
 
     val getWinners: GetWinners,
     val saveWinner: SaveWinner,

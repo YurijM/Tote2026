@@ -47,13 +47,12 @@
     <string name="admin_team_list">Список команд</string>
     <string name="admin_game_list">Список игр</string>
     <string name="admin_stake_list">Список ставок</string>
-    <string name="admin_common_params">Общие параметры</string>
+    <string name="admin_prize_fund">Призовой фонд</string>
     <string name="admin_finish">Окончание турнира</string>
     <string name="prize_fund">общий призовой фонд</string>
     <string name="winner_played">разыгранная сумма</string>
     <string name="cash_in_hand">на руки</string>
     <string name="rested_prize_fund">оставшаяся сумма</string>
-    <string name="common_params">Общие параметры</string>
 
     <string name="email_delete">Удаление email</string>
     <string name="want_delete_email">Вы действительно хотите удалить email \"%1$s\"?</string>
