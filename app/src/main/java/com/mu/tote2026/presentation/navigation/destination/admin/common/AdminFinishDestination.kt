@@ -5,8 +5,12 @@ import androidx.navigation.compose.composable
 import com.mu.tote2026.presentation.screen.admin.finish.AdminFinishScreen
 import com.mu.tote2026.presentation.utils.Route.ADMIN_FINISH_SCREEN
 
-fun NavGraphBuilder.adminFinish() {
+fun NavGraphBuilder.adminFinish(
+    toAdmin: () -> Unit
+) {
     composable(ADMIN_FINISH_SCREEN) {
-        AdminFinishScreen()
+        AdminFinishScreen(
+            toAdmin = toAdmin
+        )
     }
 }

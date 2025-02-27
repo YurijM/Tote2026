@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
@@ -27,7 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mu.tote2024.presentation.screen.admin.finish.AdminFinishEvent
 import com.mu.tote2026.R
 import com.mu.tote2026.presentation.components.AppOutlinedTextField
 import com.mu.tote2026.presentation.components.OkAndCancel
@@ -35,7 +35,9 @@ import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.ui.common.UiState
 
 @Composable
-fun AdminFinishScreen() {
+fun AdminFinishScreen(
+    toAdmin: () -> Unit
+) {
     val viewModel: AdminFinishViewModel = hiltViewModel()
 
     val isLoading = remember { mutableStateOf(false) }
@@ -48,8 +50,7 @@ fun AdminFinishScreen() {
 
         is UiState.Success -> {
             isLoading.value = false
-            /*isLoaded = true
-            if (viewModel.isExit) toAdmin()*/
+            if (viewModel.exit) toAdmin()
         }
 
         is UiState.Error -> {
@@ -81,7 +82,9 @@ fun AdminFinishScreen() {
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(top = 8.dp)
+                        .wrapContentWidth()
+                        .padding(
+                            top = 8.dp)
                         .toggleable(
                             value = viewModel.finish.finished,
                             onValueChange = { newValue ->
@@ -92,38 +95,34 @@ fun AdminFinishScreen() {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(
-                        text = stringResource(R.string.tournament_finished),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(end = 4.dp),
-                    )
                     Checkbox(
                         checked = viewModel.finish.finished,
                         onCheckedChange = null
                     )
+                    Text(
+                        modifier = Modifier.padding(start = 4.dp),
+                        text = stringResource(R.string.tournament_finished),
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
                 }
                 AppOutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = 8.dp,
-                            end = 8.dp,
-                            bottom = 8.dp,
-                        ),
                     label = stringResource(id = R.string.admin_finish),
                     value = viewModel.finish.champion,
                     onChange = { newValue ->
                         viewModel.onEvent(AdminFinishEvent.OnChampionChange(newValue))
                     },
                     error = "",
-                )
+                    modifier = Modifier.padding(
+                        horizontal = 20.dp,
+                        vertical = 8.dp
+                    ))
                 HorizontalDivider(
                     thickness = 1.dp
                 )
                 OkAndCancel(
                     enabledOk = true,
                     onOK = { viewModel.onEvent(AdminFinishEvent.OnSave) },
-                    onCancel = { viewModel.onEvent(AdminFinishEvent.OnCancel) }
+                    onCancel = { toAdmin() }
                 )
             }
         }

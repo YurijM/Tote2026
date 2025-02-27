@@ -20,6 +20,7 @@ import com.mu.tote2026.presentation.navigation.destination.admin.group.adminGrou
 import com.mu.tote2026.presentation.navigation.destination.admin.group.navigateToAdminGroup
 import com.mu.tote2026.presentation.navigation.destination.admin.group.navigateToAdminGroupList
 import com.mu.tote2026.presentation.navigation.destination.admin.main.adminMain
+import com.mu.tote2026.presentation.navigation.destination.admin.main.navigateToAdminMain
 import com.mu.tote2026.presentation.navigation.destination.admin.stake.adminStakeList
 import com.mu.tote2026.presentation.navigation.destination.admin.team.adminTeamList
 import com.mu.tote2026.presentation.navigation.destination.game.game
@@ -113,6 +114,8 @@ fun NavGraphMain(
         adminGameList()
         adminStakeList()
         adminPrizeFund()
-        adminFinish()
+        adminFinish(
+            toAdmin = { navMainController.navigateToAdminMain() }
+        )
     }
 }

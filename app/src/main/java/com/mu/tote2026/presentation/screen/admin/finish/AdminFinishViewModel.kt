@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mu.tote2024.presentation.screen.admin.finish.AdminFinishEvent
 import com.mu.tote2026.domain.model.FinishModel
 import com.mu.tote2026.domain.usecase.common_usecase.CommonUseCase
 import com.mu.tote2026.ui.common.UiState
@@ -25,6 +24,8 @@ class AdminFinishViewModel @Inject constructor(
     val state: StateFlow<AdminFinishState> = _state.asStateFlow()
 
     var finish by mutableStateOf(FinishModel())
+        private set
+    var exit by mutableStateOf(false)
         private set
 
     init {
@@ -50,14 +51,9 @@ class AdminFinishViewModel @Inject constructor(
                 )
             }
 
-            is AdminFinishEvent.OnCancel -> {
-                _state.value = AdminFinishState(UiState.Success(finish))
-                //isExit = true
-            }
-
             is AdminFinishEvent.OnSave -> {
                 commonUseCase.saveFinish(finish).onEach { finishState ->
-                    //isExit = true
+                    exit = true
                     _state.value = AdminFinishState(finishState)
                 }.launchIn(viewModelScope)
             }
