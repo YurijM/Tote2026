@@ -1,4 +1,4 @@
-package com.mu.tote2026.presentation.screen.admin.common
+package com.mu.tote2026.presentation.screen.admin.prize_fund
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,26 +16,26 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class AdminCommonParamsViewModel @Inject constructor(
+class AdminPrizeFundViewModel @Inject constructor(
     gamblerUseCase: GamblerUseCase
 ) : ViewModel() {
-    private val _state = MutableStateFlow(AdminCommonParamsState())
+    private val _state = MutableStateFlow(AdminPrizeFundState())
     var state = _state.asStateFlow()
 
     var commonParams by mutableStateOf(PrizeFundModel())
         private set
 
     init {
-        gamblerUseCase.getPrizeFund().onEach { commonParamsState ->
-            _state.value = AdminCommonParamsState(commonParamsState)
+        gamblerUseCase.getPrizeFund().onEach { prizeFundState ->
+            _state.value = AdminPrizeFundState(prizeFundState)
 
-            if (commonParamsState is UiState.Success) {
-                commonParams = commonParamsState.data
+            if (prizeFundState is UiState.Success) {
+                commonParams = prizeFundState.data
             }
         }.launchIn(viewModelScope)
     }
 
-    data class AdminCommonParamsState(
+    data class AdminPrizeFundState(
         val result: UiState<PrizeFundModel> = UiState.Default
     )
 }

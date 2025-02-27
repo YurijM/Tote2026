@@ -58,6 +58,7 @@ dependencies {
     // Dagger Hilt
     implementation(libs.dagger.hilt)
     implementation(libs.hilt.navigation)
+    implementation(libs.androidx.navigation.common.ktx)
     ksp(libs.dagger.compiler.ksp)
     ksp(libs.hilt.compiler.ksp)
 

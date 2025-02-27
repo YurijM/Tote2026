@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.mu.tote2026.presentation.navigation.Destinations.RatingDestination
-import com.mu.tote2026.presentation.navigation.destination.admin.common_params.adminCommonParams
+import com.mu.tote2026.presentation.navigation.destination.admin.common_params.adminPrizeFund
 import com.mu.tote2026.presentation.navigation.destination.admin.email.adminEmail
 import com.mu.tote2026.presentation.navigation.destination.admin.email.adminEmailList
 import com.mu.tote2026.presentation.navigation.destination.admin.email.navigateToAdminEmail
@@ -111,6 +111,6 @@ fun NavGraphMain(
         )
         adminGameList()
         adminStakeList()
-        adminCommonParams()
+        adminPrizeFund()
     }
 }

@@ -163,7 +163,7 @@ class GamblerRepositoryImpl(
                 trySend(UiState.Success(commonPrizeFund))
             }
             .addOnFailureListener { error ->
-                trySend(UiState.Error( "saveCommonParams: ${error.message ?: PRIZE_FUND_SAVE_ERROR}"))
+                trySend(UiState.Error( "savePrizeFund: ${error.message ?: PRIZE_FUND_SAVE_ERROR}"))
             }
 
         awaitClose {

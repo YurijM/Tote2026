@@ -1,4 +1,4 @@
-package com.mu.tote2026.presentation.screen.admin.common
+package com.mu.tote2026.presentation.screen.admin.prize_fund
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -39,16 +39,16 @@ import com.mu.tote2026.ui.common.UiState
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun AdminCommonParamsScreen() {
+fun AdminPrizeFundScreen() {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
-    val viewModel: AdminCommonParamsViewModel = hiltViewModel()
+    val viewModel: AdminPrizeFundViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val result = state.result
 
     LaunchedEffect(key1 = result) {
-        toLog("AdminCommonParamsScreen result: $result")
+        toLog("AdminPrizeFundScreen result: $result")
         when (result) {
             is UiState.Loading -> {
                 isLoading = true

@@ -20,7 +20,7 @@ fun AdminMainScreen(
         AdminNavItem.AdminTeamItem,
         AdminNavItem.AdminGameItem,
         AdminNavItem.AdminStakeItem,
-        AdminNavItem.AdminCommonParamsItem,
+        AdminNavItem.AdminPrizeFundItem,
         AdminNavItem.AdminFinishItem,
     )
     LazyColumn(
