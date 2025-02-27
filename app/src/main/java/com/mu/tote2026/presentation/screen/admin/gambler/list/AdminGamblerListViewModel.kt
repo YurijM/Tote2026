@@ -11,6 +11,7 @@ import com.mu.tote2026.data.repository.PLAYOFF_GAMES_COUNT
 import com.mu.tote2026.domain.model.PrizeFundModel
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.model.WinnerModel
+import com.mu.tote2026.domain.usecase.common_usecase.CommonUseCase
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
 import com.mu.tote2026.ui.common.UiState
@@ -27,6 +28,7 @@ import kotlin.math.round
 class AdminGamblerListViewModel @Inject constructor(
     private val gamblerUseCase: GamblerUseCase,
     private val gameUseCase: GameUseCase,
+    private val commonUseCase: CommonUseCase,
 ) : ViewModel() {
     private val _state: MutableStateFlow<AdminGamblerListState> = MutableStateFlow(AdminGamblerListState())
     val state = _state.asStateFlow()
@@ -78,9 +80,9 @@ class AdminGamblerListViewModel @Inject constructor(
                     matchesPlayedByPlayoff = 0
                 }
 
-                gamblerUseCase.getPrizeFund().onEach { commonParamsState ->
-                    if (commonParamsState is UiState.Success) {
-                        commonParams = commonParamsState.data
+                commonUseCase.getPrizeFund().onEach { prizeFundState ->
+                    if (prizeFundState is UiState.Success) {
+                        commonParams = prizeFundState.data
                         winnerPlayed = matchesPlayedByGroup * (commonParams.groupPrizeFund / GROUP_GAMES_COUNT) +
                                 matchesPlayedByPlayoff * (commonParams.playoffPrizeFund / PLAYOFF_GAMES_COUNT) +
                                 commonParams.winnersPrizeFundByStake +

@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.model.GamblerModel
+import com.mu.tote2026.domain.usecase.common_usecase.CommonUseCase
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.presentation.utils.Errors.FIELD_CAN_NOT_BE_EMPTY
 import com.mu.tote2026.presentation.utils.Errors.FIELD_CAN_NOT_NEGATIVE
@@ -23,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AdminGamblerViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val gamblerUseCase: GamblerUseCase
+    private val gamblerUseCase: GamblerUseCase,
+    private val commonUseCase: CommonUseCase
 ) : ViewModel() {
     private val _state: MutableStateFlow<AdminGamblerState> = MutableStateFlow(AdminGamblerState())
     val state = _state.asStateFlow()
@@ -102,7 +104,7 @@ class AdminGamblerViewModel @Inject constructor(
                 scope.launch {
                     _state.value = AdminGamblerState(UiState.Loading)
                     gamblerUseCase.saveGambler(gambler).launchIn(scope)
-                    gamblerUseCase.savePrizeFund(prizeFund).launchIn(scope)
+                    commonUseCase.savePrizeFund(prizeFund).launchIn(scope)
                     gamblers.forEach { item ->
                         val rate = item.rate
                         val gambler = item.copy(

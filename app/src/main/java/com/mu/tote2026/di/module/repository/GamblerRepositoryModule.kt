@@ -6,13 +6,11 @@ import com.mu.tote2026.data.repository.GamblerRepositoryImpl
 import com.mu.tote2026.domain.repository.GamblerRepository
 import com.mu.tote2026.domain.usecase.gambler_usecase.DeleteWinners
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
-import com.mu.tote2026.domain.usecase.gambler_usecase.GetPrizeFund
 import com.mu.tote2026.domain.usecase.gambler_usecase.GetGambler
 import com.mu.tote2026.domain.usecase.gambler_usecase.GetGamblerList
 import com.mu.tote2026.domain.usecase.gambler_usecase.GetWinners
 import com.mu.tote2026.domain.usecase.gambler_usecase.SaveGambler
 import com.mu.tote2026.domain.usecase.gambler_usecase.SaveGamblerPhoto
-import com.mu.tote2026.domain.usecase.gambler_usecase.SavePrizeFund
 import com.mu.tote2026.domain.usecase.gambler_usecase.SaveWinner
 import dagger.Module
 import dagger.Provides
@@ -37,9 +35,6 @@ object GamblerRepositoryModule {
         getGambler = GetGambler(gamblerRepository),
         saveGambler = SaveGambler(gamblerRepository),
         saveGamblerPhoto = SaveGamblerPhoto(gamblerRepository),
-
-        getPrizeFund = GetPrizeFund(gamblerRepository),
-        savePrizeFund = SavePrizeFund(gamblerRepository),
 
         getWinners = GetWinners(gamblerRepository),
         saveWinner = SaveWinner(gamblerRepository),

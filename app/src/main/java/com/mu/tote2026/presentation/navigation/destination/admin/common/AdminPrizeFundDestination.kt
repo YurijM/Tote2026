@@ -1,4 +1,4 @@
-package com.mu.tote2026.presentation.navigation.destination.admin.common_params
+package com.mu.tote2026.presentation.navigation.destination.admin.common
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable

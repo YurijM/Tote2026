@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.model.PrizeFundModel
-import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
+import com.mu.tote2026.domain.usecase.common_usecase.CommonUseCase
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AdminPrizeFundViewModel @Inject constructor(
-    gamblerUseCase: GamblerUseCase
+    commonUseCase: CommonUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(AdminPrizeFundState())
     var state = _state.asStateFlow()
@@ -26,7 +26,7 @@ class AdminPrizeFundViewModel @Inject constructor(
         private set
 
     init {
-        gamblerUseCase.getPrizeFund().onEach { prizeFundState ->
+        commonUseCase.getPrizeFund().onEach { prizeFundState ->
             _state.value = AdminPrizeFundState(prizeFundState)
 
             if (prizeFundState is UiState.Success) {

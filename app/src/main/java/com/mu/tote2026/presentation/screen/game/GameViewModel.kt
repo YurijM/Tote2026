@@ -18,6 +18,7 @@ import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.domain.model.TeamModel
 import com.mu.tote2026.domain.model.WinnerModel
+import com.mu.tote2026.domain.usecase.common_usecase.CommonUseCase
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
 import com.mu.tote2026.domain.usecase.team_usecase.TeamUseCase
@@ -44,6 +45,7 @@ class GameViewModel @Inject constructor(
     private val gameUseCase: GameUseCase,
     private val teamUseCase: TeamUseCase,
     private val gamblerUseCase: GamblerUseCase,
+    private val commonUseCase: CommonUseCase,
 ) : ViewModel() {
     private val _state = MutableStateFlow(GameState())
     val state = _state.asStateFlow()
@@ -52,7 +54,7 @@ class GameViewModel @Inject constructor(
     private val isNewGame = args.id == NEW_DOC
 
     var game by mutableStateOf(GameModel())
-    private var commonParams by mutableStateOf(PrizeFundModel())
+    private var prizeFund by mutableStateOf(PrizeFundModel())
     private var gamblers = mutableListOf<GamblerModel>()
     private var prevWinners = listOf<WinnerModel>()
     private var games = mutableListOf<GameModel>()
@@ -98,9 +100,9 @@ class GameViewModel @Inject constructor(
                 startTime = game.start.asTime().ifBlank { "00:00" }
                 enabled = checkValues()
 
-                gamblerUseCase.getPrizeFund().onEach { prizeFundState ->
+                commonUseCase.getPrizeFund().onEach { prizeFundState ->
                     if (prizeFundState is UiState.Success) {
-                        commonParams = prizeFundState.data
+                        prizeFund = prizeFundState.data
 
                         /*if (game.start.toLong() < currentTimeMillis()
                             && game.goal1.isBlank() && game.goal2.isBlank()
@@ -362,9 +364,9 @@ class GameViewModel @Inject constructor(
         }
 
         val coefficient = if (game.groupId.toInt() <= GROUPS_COUNT) {
-            if (pointsSum > 0) commonParams.groupPrizeFund / GROUP_GAMES_COUNT.toDouble() / pointsSum else 0.0
+            if (pointsSum > 0) prizeFund.groupPrizeFund / GROUP_GAMES_COUNT.toDouble() / pointsSum else 0.0
         } else {
-            if (pointsSum > 0) commonParams.playoffPrizeFund / PLAYOFF_GAMES_COUNT.toDouble() / pointsSum else 0.0
+            if (pointsSum > 0) prizeFund.playoffPrizeFund / PLAYOFF_GAMES_COUNT.toDouble() / pointsSum else 0.0
         }
 
         game.stakes.forEachIndexed { idx, stake ->
@@ -598,14 +600,14 @@ class GameViewModel @Inject constructor(
                 coefficientWinner3 * winners.filter { it.place == 3 }.size
 
         winners.forEach { gambler ->
-            val placePrizeFund = commonParams.winnersPrizeFund / coefficientSum *
+            val placePrizeFund = prizeFund.winnersPrizeFund / coefficientSum *
                     when (gambler.place) {
                         1 -> coefficientWinner1
                         2 -> coefficientWinner2
                         else -> coefficientWinner3
                     }
 
-            val cashPrizeByStake = (commonParams.winnersPrizeFundByStake * gambler.ratePercent) / percentSum
+            val cashPrizeByStake = (prizeFund.winnersPrizeFundByStake * gambler.ratePercent) / percentSum
 
             val winner = WinnerModel(
                 gamblerId = gambler.id,

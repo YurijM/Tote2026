@@ -6,9 +6,6 @@ data class GamblerUseCase(
     val saveGambler: SaveGambler,
     val saveGamblerPhoto: SaveGamblerPhoto,
 
-    val getPrizeFund: GetPrizeFund,
-    val savePrizeFund: SavePrizeFund,
-
     val getWinners: GetWinners,
     val saveWinner: SaveWinner,
     val deleteWinners: DeleteWinners,

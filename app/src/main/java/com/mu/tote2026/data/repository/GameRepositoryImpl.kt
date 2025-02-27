@@ -250,23 +250,4 @@ class GameRepositoryImpl(
             close()
         }
     }
-
-    /*override fun getPrizeFund(): Flow<UiState<PrizeFundModel>> = callbackFlow {
-        trySend(UiState.Loading)
-
-        firestore.collection(COMMON).document(PRIZE_FUND).get()
-            .addOnSuccessListener { task ->
-                val common = task.toObject(PrizeFundModel::class.java) ?: PrizeFundModel()
-
-                trySend(UiState.Success(common))
-            }
-            .addOnFailureListener { error ->
-                trySend(UiState.Error(error.message ?: PRIZE_FUND_GET_ERROR))
-            }
-
-        awaitClose {
-            toLog("getPrizeFund: awaitClose")
-            close()
-        }
-    }*/
 }
