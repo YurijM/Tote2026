@@ -25,6 +25,7 @@ object Collections {
     const val GAMBLERS = "gamblers"
     const val COMMON = "common"
     const val PRIZE_FUND = "prizeFund"
+    const val FINISH = "finish"
     const val WINNERS = "winners"
 }
 object Errors {

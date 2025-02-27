@@ -2,8 +2,10 @@ package com.mu.tote2026.data.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.Collections.COMMON
+import com.mu.tote2026.data.repository.Collections.FINISH
 import com.mu.tote2026.data.repository.Collections.PRIZE_FUND
 import com.mu.tote2026.data.repository.Errors.PRIZE_FUND_SAVE_ERROR
+import com.mu.tote2026.domain.model.FinishModel
 import com.mu.tote2026.domain.model.PrizeFundModel
 import com.mu.tote2026.domain.repository.CommonRepository
 import com.mu.tote2026.presentation.utils.toLog
@@ -62,6 +64,41 @@ class CommonRepositoryImpl(
 
         awaitClose {
             toLog("savePrizeFund: awaitClose")
+            close()
+        }
+    }
+
+    override fun getFinish(): Flow<UiState<FinishModel>>  = callbackFlow {
+        trySend(UiState.Loading)
+
+        firestore.collection(COMMON).document(FINISH).get()
+            .addOnSuccessListener { task ->
+                val finish = task.toObject(FinishModel::class.java) ?: FinishModel()
+                trySend(UiState.Success(finish))
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error("getFinish: ${error.message ?: "error is not defined"}"))
+            }
+
+        awaitClose {
+            toLog("getFinish: awaitClose")
+            close()
+        }
+    }
+
+    override fun saveFinish(finish: FinishModel): Flow<UiState<FinishModel>>   = callbackFlow {
+        trySend(UiState.Loading)
+
+        firestore.collection(COMMON).document(FINISH).set(finish)
+            .addOnSuccessListener {
+                trySend(UiState.Success(finish))
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error( "saveFinish: ${error.message ?: "error is not defined"}"))
+            }
+
+        awaitClose {
+            toLog("saveFinish: awaitClose")
             close()
         }
     }

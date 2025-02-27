@@ -4,7 +4,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.CommonRepositoryImpl
 import com.mu.tote2026.domain.repository.CommonRepository
 import com.mu.tote2026.domain.usecase.common_usecase.CommonUseCase
+import com.mu.tote2026.domain.usecase.common_usecase.GetFinish
 import com.mu.tote2026.domain.usecase.common_usecase.GetPrizeFund
+import com.mu.tote2026.domain.usecase.common_usecase.SaveFinish
 import com.mu.tote2026.domain.usecase.common_usecase.SavePrizeFund
 import dagger.Module
 import dagger.Provides
@@ -26,5 +28,8 @@ object CommonRepositoryModule {
     fun provideCommonUseCase(commonRepository: CommonRepository) = CommonUseCase(
         getPrizeFund = GetPrizeFund(commonRepository),
         savePrizeFund = SavePrizeFund(commonRepository),
+
+        getFinish = GetFinish(commonRepository),
+        saveFinish = SaveFinish(commonRepository),
     )
 }

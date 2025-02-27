@@ -57,6 +57,8 @@
     <string name="email_delete">Удаление email</string>
     <string name="want_delete_email">Вы действительно хотите удалить email \"%1$s\"?</string>
 
+    <string name="tournament_finished">турнир закончился</string>
+
     <string name="group">Группа</string>
     <string name="item_no">Порядковый номер</string>
     <string name="group_delete">Удаление группы</string>
