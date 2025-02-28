@@ -71,17 +71,19 @@ class CommonRepositoryImpl(
     override fun getFinish(): Flow<UiState<FinishModel>>  = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(COMMON).document(FINISH).get()
-            .addOnSuccessListener { task ->
-                val finish = task.toObject(FinishModel::class.java) ?: FinishModel()
-                trySend(UiState.Success(finish))
-            }
-            .addOnFailureListener { error ->
-                trySend(UiState.Error("getFinish: ${error.message ?: "error is not defined"}"))
+        val listener = firestore.collection(COMMON).document(FINISH)
+            .addSnapshotListener { snapshot, exception ->
+                if (snapshot != null) {
+                    val finish = snapshot.toObject(FinishModel::class.java) ?: FinishModel()
+                    trySend(UiState.Success(finish))
+                } else {
+                    trySend(UiState.Error("getFinish: ${exception?.message ?: exception.toString()}"))
+                }
             }
 
         awaitClose {
             toLog("getFinish: awaitClose")
+            listener.remove()
             close()
         }
     }

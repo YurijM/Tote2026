@@ -12,7 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AppTournamentIsFinished(
+fun TournamentIsFinished(
     text: String
 ) {
     Card(
@@ -21,7 +21,7 @@ fun AppTournamentIsFinished(
         ),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.errorContainer,
-            contentColor = MaterialTheme.colorScheme.onErrorContainer
+            contentColor = MaterialTheme.colorScheme.error
         ),
         modifier = Modifier
             .fillMaxWidth(.95f)
@@ -30,7 +30,7 @@ fun AppTournamentIsFinished(
         Text(
             text = text,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             maxLines = 2,
             modifier = Modifier
                 .fillMaxWidth()
