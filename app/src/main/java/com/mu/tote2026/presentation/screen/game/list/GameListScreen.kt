@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -97,8 +98,10 @@ fun GameListScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         LazyColumn {
+            var newGroup = false
             GROUPS.takeLast(GROUPS.size - GROUPS_COUNT).reversed().forEach { group ->
                 if (games.any { it.group == group }) {
+                    newGroup = true
                     item {
                         Text(
                             text = group,
@@ -111,6 +114,16 @@ fun GameListScreen(
                 //items(games.filter { it.group == group }.sortedByDescending { it.id.toInt() }) { game ->
                 items(games.filter { it.group == group }.sortedBy { it.id.toInt() }) { game ->
                     GameItem(game) { toGameEdit(GameDestination(game.id)) }
+                }
+                if (newGroup) {
+                    newGroup = false
+                    item {
+                        HorizontalDivider(
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        )
+                    }
                 }
             }
             items(GROUPS.take(GROUPS_COUNT)) { group ->
