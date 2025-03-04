@@ -39,6 +39,7 @@ import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.TournamentIsFinished
+import com.mu.tote2026.presentation.components.WinnersPanel
 import com.mu.tote2026.presentation.navigation.Destinations.GamblerPhotoDestination
 import com.mu.tote2026.presentation.utils.FEMALE
 import com.mu.tote2026.presentation.utils.MALE
@@ -61,6 +62,7 @@ fun RatingScreen(
     val state by viewModel.state.collectAsState()
     val result = state.result
     var gamblers by remember { mutableStateOf<List<GamblerModel>>(listOf()) }
+    var winners by remember { mutableStateOf<List<GamblerModel>>(listOf()) }
 
     LaunchedEffect(key1 = result) {
         toLog("RatingScreen result: $result")
@@ -72,6 +74,7 @@ fun RatingScreen(
             is UiState.Success -> {
                 isLoading = false
                 gamblers = result.data
+                winners = gamblers.filter { it.place <= 3 }.sortedBy { it.place }
             }
 
             is UiState.Error -> {
@@ -89,6 +92,7 @@ fun RatingScreen(
     ) {
         if (viewModel.finish.finished) {
             TournamentIsFinished(viewModel.finish.champion)
+            WinnersPanel(winners)
         }
 
         if (viewModel.rateIsAbsent)
