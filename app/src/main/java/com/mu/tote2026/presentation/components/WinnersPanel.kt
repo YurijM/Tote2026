@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import coil.compose.SubcomposeAsyncImage
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GamblerModel
@@ -33,6 +35,7 @@ import com.mu.tote2026.ui.theme.ColorDraw
 import com.mu.tote2026.ui.theme.ColorUp
 import kotlin.math.round
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun WinnersPanel(
     winners: List<GamblerModel>
@@ -71,11 +74,25 @@ fun WinnersPanel(
                         },
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
+                        lineHeight =.75.em,
                         modifier = Modifier
                             .padding(
-                                horizontal = 8.dp,
-                                vertical = 4.dp,
+                                top = 4.dp,
+                                start = 8.dp,
+                                end = 8.dp,
                             )
+                    )
+                    Text(
+                        text = "(" + String.format("%.2f", winner.points) + ")",
+                        color = when (winner.place) {
+                            1 -> ColorUp
+                            2 -> ColorDraw
+                            else -> ColorDown
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Bold,
+                        lineHeight = .75.em,
+                        modifier = Modifier.padding(bottom = 4.dp)
                     )
                     SubcomposeAsyncImage(
                         model = winner.photoUrl,
