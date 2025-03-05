@@ -125,6 +125,7 @@ class StakeViewModel @Inject constructor(
                                     .sortedWith(
                                         compareBy<GameModel> { it.team1 == game.team2 || it.team2 == game.team2 }
                                             .thenBy { it.team1 == game.team1 || it.team2 == game.team1 }
+                                            .thenBy { it.id.toInt() }
                                     )
                             }
                         }.launchIn(viewModelScope)

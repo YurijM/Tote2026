@@ -154,24 +154,22 @@ fun StakeScreen(
                         fontWeight = FontWeight.Bold
                     )
                 }
+                var isDivided = false
                 items(viewModel.teamGames) { game ->
+                    if (!isDivided && (viewModel.game.team1 !in listOf(game.team1, game.team2))) {
+                        isDivided = true
+                        HorizontalDivider(thickness = 1.dp)
+                    }
                     GamesPlayed(
                         game = game,
                         team1 = viewModel.game.team1,
                         team2 = viewModel.game.team2
                     )
                 }
+                item {
+                    HorizontalDivider(thickness = 1.dp)
+                }
             }
-
-            /*val stringDate = "14.06.2025 22:00"
-            val formatter = DateTimeFormatter.ofPattern("dd.MM.y HH:mm")
-            val dt = LocalDate.parse(stringDate, formatter)
-
-            toLog("LocalDateTime.now().toLocalDate(): ${LocalDateTime.now().toLocalDate()}")
-            toLog("dt.minusDays(10): ${dt.minusDays(10)}")*/
-
-            //val formatter = SimpleDateFormat("dd.MM.y HH:mm", Locale.getDefault())
-            //val date = LocalDateTime.parse("14.06.2025 22:00", formatter)
 
             if (viewModel.canGenerated) {
                 item {
