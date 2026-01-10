@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.mu.tote2024.presentation.components.AppFabAdd
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.EmailModel
@@ -125,7 +125,7 @@ fun AdminEmailListScreen(
         val context = LocalContext.current
         val message = error.ifBlank {
             viewModel.message.value
-        }.toString()
+        }
 
         Toast.makeText(context, errorTranslate(message), Toast.LENGTH_LONG).show()
     }

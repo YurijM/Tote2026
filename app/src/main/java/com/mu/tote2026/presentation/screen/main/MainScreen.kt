@@ -1,6 +1,7 @@
 package com.mu.tote2026.presentation.screen.main
 
 import android.app.Activity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -15,7 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mu.tote2026.presentation.components.AppProgressBar
@@ -37,7 +38,7 @@ fun MainScreen(
     val navBackStackEntry by navMainController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val context = LocalContext.current as Activity
+    val context = LocalActivity.current as Activity
 
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }

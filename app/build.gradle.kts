@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.gms)
     alias(libs.plugins.ksp)
     alias(libs.plugins.dagger.hilt)
@@ -11,12 +11,12 @@ plugins {
 
 android {
     namespace = "com.mu.tote2026"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.mu.tote2026"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -33,12 +33,18 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        compilerOptions {
+            jvmToolchain(17)
+            freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
+        }
     }
+    /*kotlinOptions {
+        jvmTarget = "17"
+    }*/
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -47,9 +53,9 @@ android {
 }
 
 dependencies {
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.serialization.json)
 
-   // Firebase
+    // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
@@ -61,6 +67,7 @@ dependencies {
     implementation(libs.androidx.navigation.common.ktx)
     ksp(libs.dagger.compiler.ksp)
     ksp(libs.hilt.compiler.ksp)
+    ksp(libs.metadata.jvm)
 
     // Navigation
     implementation(libs.androidx.navigation)
@@ -75,6 +82,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
