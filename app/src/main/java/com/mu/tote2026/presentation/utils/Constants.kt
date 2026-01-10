@@ -12,8 +12,8 @@ const val MALE = "мужской"
 const val FEMALE = "женский"
 
 const val START = "14.06.2025"
-val GROUPS = listOf("A", "B", "C", "D", "E", "F", "1/8 финала", "1/4 финала", "1/2 финала", "Финал")
-const val GROUPS_COUNT = 6
+val GROUPS = listOf("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "1/16 финала", "1/8 финала", "1/4 финала", "1/2 финала", "Финал")
+const val GROUPS_COUNT = 12
 
 const val BRUSH = "brush"
 

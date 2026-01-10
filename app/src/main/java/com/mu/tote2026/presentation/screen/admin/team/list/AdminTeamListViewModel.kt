@@ -55,146 +55,290 @@ class AdminTeamListViewModel @Inject constructor(
         TeamModel(
             group = "A",
             itemNo = "1",
-            team = "Германия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fger.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Мексика",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fmex.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "A",
             itemNo = "2",
-            team = "Шотландия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fsco.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "ЮАР",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fsaf.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "A",
             itemNo = "3",
-            team = "Венгрия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fhun.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Южная Корея",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fkor.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
-        TeamModel(
+        /*TeamModel(
             group = "A",
             itemNo = "4",
             team = "Швейцария",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fsui.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
-        ),
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fsui.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),*/
         TeamModel(
             group = "B",
             itemNo = "1",
-            team = "Испания",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fesp.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Канада",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fcan.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "B",
             itemNo = "2",
-            team = "Хорватия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fcro.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Катар",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fqat.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "B",
             itemNo = "3",
-            team = "Италия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fita.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Швейцария",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fswi.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
-        TeamModel(
+        /*TeamModel(
             group = "B",
             itemNo = "4",
             team = "Албания",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Falb.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
-        ),
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Falb.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),*/
         TeamModel(
             group = "C",
             itemNo = "1",
-            team = "Словения",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fsvn.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Бразилия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fbra.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "C",
             itemNo = "2",
-            team = "Дания",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fden.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Марокко",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fmar.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "C",
             itemNo = "3",
-            team = "Сербия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fsrb.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Гаити",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fhai.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "C",
             itemNo = "4",
-            team = "Англия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Feng.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Шотландия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fsco.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "D",
             itemNo = "1",
-            team = "Нидерланды",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fned.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "США",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fusa.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "D",
             itemNo = "2",
-            team = "Франция",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Ffra.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Парагвай",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fpar.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "D",
             itemNo = "3",
-            team = "Польша",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fpol.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Австралия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Faus.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
-        TeamModel(
+        /*TeamModel(
             group = "D",
             itemNo = "4",
             team = "Австрия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Faut.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
-        ),
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Faut.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),*/
         TeamModel(
             group = "E",
             itemNo = "1",
-            team = "Украина",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fukr.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Германия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fger.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "E",
             itemNo = "2",
-            team = "Словакия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fsvk.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Кюрасао",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fcur.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "E",
             itemNo = "3",
-            team = "Бельгия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fbel.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Кот-д'Ивуар",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fivo.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "E",
             itemNo = "4",
-            team = "Румыния",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Frou.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Эквадор",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fecu.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "F",
             itemNo = "1",
-            team = "Португалия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fpor.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Нидерланды",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fnet.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "F",
             itemNo = "2",
-            team = "Чехия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fcze.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Япония",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fjap.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
         TeamModel(
             group = "F",
             itemNo = "3",
-            team = "Грузия",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fgeo.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            team = "Тунис",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Ftun.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
-        TeamModel(
+        /*TeamModel(
             group = "F",
             itemNo = "4",
             team = "Турция",
-            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Ftur.png?alt=media&token=8d3ae0ab-1fb4-46ed-9805-7cb962f1a7f7"
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Ftur.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),*/
+        TeamModel(
+            group = "G",
+            itemNo = "1",
+            team = "Бельгия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fbel.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "G",
+            itemNo = "2",
+            team = "Египет",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fegy.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "G",
+            itemNo = "3",
+            team = "Иран",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fira.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "G",
+            itemNo = "4",
+            team = "Новая Зеландия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fnze.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "H",
+            itemNo = "1",
+            team = "Испания",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fspa.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "H",
+            itemNo = "2",
+            team = "Кабо-Верде",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fcve.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "H",
+            itemNo = "3",
+            team = "Саудовская Аравия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fsar.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "H",
+            itemNo = "4",
+            team = "Уругвай",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Furu.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "I",
+            itemNo = "1",
+            team = "Франция",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Ffra.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "I",
+            itemNo = "2",
+            team = "Сенегал",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fsen.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "I",
+            itemNo = "3",
+            team = "Норвегия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fnor.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        /*TeamModel(
+            group = "I",
+            itemNo = "4",
+            team = "Норвегия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fnor.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),*/
+        TeamModel(
+            group = "J",
+            itemNo = "1",
+            team = "Аргентина",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Farg.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "J",
+            itemNo = "2",
+            team = "Алжир",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Falg.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "J",
+            itemNo = "3",
+            team = "Австрия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Faut.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "J",
+            itemNo = "4",
+            team = "Иордания",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fjor.png?alt=media&token=00313549-9495-4def-a3b1-ef7d7d99904a"
+        ),
+        TeamModel(
+            group = "K",
+            itemNo = "1",
+            team = "Португалия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fpor.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "K",
+            itemNo = "2",
+            team = "Узбекистан",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fuzb.png?alt=media&token=3e6e48df-e1e9-4322-91f6-1f8ffb45fa7c"
+        ),
+        TeamModel(
+            group = "K",
+            itemNo = "3",
+            team = "Колумбия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fcol.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        /*TeamModel(
+            group = "K",
+            itemNo = "4",
+            team = "Колумбия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fcol.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),*/
+        TeamModel(
+            group = "L",
+            itemNo = "1",
+            team = "Англия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Feng.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "L",
+            itemNo = "2",
+            team = "Хорватия",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fcro.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "L",
+            itemNo = "3",
+            team = "Гана",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fgha.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
+        ),
+        TeamModel(
+            group = "L",
+            itemNo = "4",
+            team = "Панама",
+            flag = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fpan.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4"
         ),
     )
 }

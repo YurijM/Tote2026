@@ -163,10 +163,12 @@ class GameViewModel @Inject constructor(
             }
 
             is GameEvent.OnTeamChange -> {
+                val team = teams.first { it.team == event.team }
+
                 game = if (event.teamNo == 1)
-                    game.copy(team1 = event.team, flag1 = teams.first { it.team == event.team }.flag)
+                    game.copy(team1 = event.team, team1ItemNo = team.itemNo, flag1 = team.flag)
                 else
-                    game.copy(team2 = event.team, flag2 = teams.first { it.team == event.team }.flag)
+                    game.copy(team2 = event.team, team2ItemNo = team.itemNo, flag2 = team.flag)
                 enabled = checkValues()
             }
 
