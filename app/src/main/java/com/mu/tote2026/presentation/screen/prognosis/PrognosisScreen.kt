@@ -59,7 +59,7 @@ fun PrognosisScreen() {
     val viewModel: PrognosisViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val result = state.result
-    var games by remember { mutableStateOf<List<GameModel>>(listOf()) }
+    var games by remember { mutableStateOf(listOf(GameModel(id = "0"))) }
 
     LaunchedEffect(key1 = result) {
         toLog("PrognosisScreen $result")
@@ -97,7 +97,7 @@ fun PrognosisScreen() {
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
             )
-        } else {
+        } else if (games[0].id != "0") {
             LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
