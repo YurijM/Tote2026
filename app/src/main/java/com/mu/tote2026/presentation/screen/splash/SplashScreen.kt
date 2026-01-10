@@ -2,6 +2,10 @@ package com.mu.tote2026.presentation.screen.splash
 
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,10 +43,18 @@ fun SplashScreen(
     toAuth: () -> Unit,
     toMain: () -> Unit
 ) {
-    val scale = remember {
+    val infiniteTransition = rememberInfiniteTransition()
+    val angle = infiniteTransition.animateFloat(
+        initialValue = 0F,
+        targetValue = 360F,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2000, easing = LinearEasing)
+        )
+    )
+    val scaleText = remember {
         Animatable(0f)
     }
-    val scaleText = remember {
+    val scaleAuthor = remember {
         Animatable(0f)
     }
 
@@ -61,12 +74,12 @@ fun SplashScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        scale.animateTo(
+        scaleAuthor.animateTo(
             targetValue = 1f,
             animationSpec = tween(
-                durationMillis = 3000,
+                durationMillis = 2000,
                 easing = {
-                    OvershootInterpolator(14f).getInterpolation(it)
+                    OvershootInterpolator(10f).getInterpolation(it)
                 }
             )
         )
@@ -92,9 +105,10 @@ fun SplashScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                modifier = Modifier.scale(scale.value),
                 painter = painterResource(id = R.drawable.author),
                 contentDescription = "Logo",
+                modifier = Modifier.scale(scaleAuthor.value)
+                    .rotate(angle.value),
             )
             AssistChip(
                 modifier = Modifier

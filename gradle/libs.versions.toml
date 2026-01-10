@@ -28,6 +28,8 @@ metadataJvm = "2.3.0-Beta1"
 
 navigationCommonKtx = "2.9.6"
 
+animationCore = "1.10.0"
+
 [libraries]
 serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serializationJson" }
 metadata-jvm = { group = "org.jetbrains.kotlin", name = "kotlin-metadata-jvm", version.ref = "metadataJvm" }
@@ -42,6 +44,8 @@ hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", v
 dagger-compiler-ksp = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "daggerCompiler" }
 hilt-compiler-ksp = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "daggerCompiler" }
 androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
+
+androidx-compose-animation-core = { group = "androidx.compose.animation", name = "animation-core", version.ref = "animationCore" }
 
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
