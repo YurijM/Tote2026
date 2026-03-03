@@ -22,7 +22,10 @@ import com.mu.tote2026.presentation.navigation.destination.admin.group.navigateT
 import com.mu.tote2026.presentation.navigation.destination.admin.main.adminMain
 import com.mu.tote2026.presentation.navigation.destination.admin.main.navigateToAdminMain
 import com.mu.tote2026.presentation.navigation.destination.admin.stake.adminStakeList
+import com.mu.tote2026.presentation.navigation.destination.admin.team.adminTeam
 import com.mu.tote2026.presentation.navigation.destination.admin.team.adminTeamList
+import com.mu.tote2026.presentation.navigation.destination.admin.team.navigateToAdminTeam
+import com.mu.tote2026.presentation.navigation.destination.admin.team.navigateToAdminTeamList
 import com.mu.tote2026.presentation.navigation.destination.game.game
 import com.mu.tote2026.presentation.navigation.destination.game.games
 import com.mu.tote2026.presentation.navigation.destination.game.groupGames
@@ -102,7 +105,14 @@ fun NavGraphMain(
         adminGroup(
             toAdminGroupList = { navMainController.navigateToAdminGroupList() }
         )
-        adminTeamList()
+        adminTeamList(
+            toTeamEdit = { id ->
+                navMainController.navigateToAdminTeam(id)
+            }
+        )
+        adminTeam(
+            toAdminTeamList = { navMainController.navigateToAdminTeamList() }
+        )
         adminGamblerList(
             toGamblerEdit = { id ->
                 navMainController.navigateToAdminGambler(id)

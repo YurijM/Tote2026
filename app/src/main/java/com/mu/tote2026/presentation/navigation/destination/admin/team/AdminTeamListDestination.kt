@@ -5,8 +5,12 @@ import androidx.navigation.compose.composable
 import com.mu.tote2026.presentation.screen.admin.team.list.AdminTeamListScreen
 import com.mu.tote2026.presentation.utils.Route.ADMIN_TEAM_LIST_SCREEN
 
-fun NavGraphBuilder.adminTeamList() {
+fun NavGraphBuilder.adminTeamList(
+    toTeamEdit: (String) -> Unit
+) {
     composable(ADMIN_TEAM_LIST_SCREEN) {
-        AdminTeamListScreen()
+        AdminTeamListScreen(
+            toTeamEdit = toTeamEdit
+        )
     }
 }

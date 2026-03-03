@@ -32,7 +32,9 @@ import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
 @Composable
-fun AdminTeamListScreen() {
+fun AdminTeamListScreen(
+    toTeamEdit: (String) -> Unit
+) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
@@ -85,7 +87,14 @@ fun AdminTeamListScreen() {
                 .padding(bottom = 8.dp)
         ) {
             items(teams) { team ->
-                AdminTeamListItemScreen(team)
+                AdminTeamListItemScreen(
+                    team,
+                    onEdit = { toTeamEdit(team.team) },
+                    onDelete = {}, /*{
+                        currentEmail = email
+                        openDialog = true
+                    }*/
+                )
             }
         }
     }

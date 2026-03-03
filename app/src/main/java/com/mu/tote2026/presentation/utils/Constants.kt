@@ -30,6 +30,7 @@ object Route {
     const val ADMIN_GAMBLER_LIST_SCREEN = "admin_gambler_list_screen"
     const val ADMIN_GAMBLER_SCREEN = "admin_gambler_screen"
     const val ADMIN_TEAM_LIST_SCREEN = "admin_team_list_screen"
+    const val ADMIN_TEAM_SCREEN = "admin_team_screen"
     const val ADMIN_GAME_LIST_SCREEN = "admin_game_list_screen"
     const val ADMIN_STAKE_LIST_SCREEN = "admin_stake_list_screen"
     const val ADMIN_PRIZE_FUND_SCREEN = "admin_prize_fund_screen"
