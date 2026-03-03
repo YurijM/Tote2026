@@ -22,11 +22,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.mu.tote2024.presentation.components.AppFabAdd
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.TeamModel
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.Title
+import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
@@ -98,6 +100,10 @@ fun AdminTeamListScreen(
             }
         }
     }
+    AppFabAdd(
+        alignment = Alignment.BottomCenter,
+        onAdd = { toTeamEdit(NEW_DOC) }
+    )
 
     if (isLoading) {
         AppProgressBar()

@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun AppFabAdd(
+    alignment: Alignment = Alignment.BottomEnd,
     onAdd: () -> Unit
 ) {
     Box(
@@ -24,7 +25,7 @@ fun AppFabAdd(
             .padding(end = 8.dp, bottom = 8.dp)
     ) {
         FloatingActionButton(
-            modifier = Modifier.align(alignment = Alignment.BottomEnd),
+            modifier = Modifier.align(alignment = alignment),
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             contentColor = MaterialTheme.colorScheme.onSurface,
             shape = CircleShape,
