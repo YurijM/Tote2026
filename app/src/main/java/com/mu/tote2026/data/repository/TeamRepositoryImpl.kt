@@ -1,7 +1,11 @@
 package com.mu.tote2026.data.repository
 
+import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.mu.tote2026.data.repository.Collections.TEAMS
+import com.mu.tote2026.data.repository.Errors.TEAM_FLAG_SAVE_ERROR
+import com.mu.tote2026.data.repository.Errors.TEAM_FLAG_URL_GET_ERROR
 import com.mu.tote2026.domain.model.TeamModel
 import com.mu.tote2026.domain.repository.TeamRepository
 import com.mu.tote2026.presentation.utils.toLog
@@ -11,7 +15,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
 class TeamRepositoryImpl(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val storage: FirebaseStorage
 ) : TeamRepository {
     override fun getTeamList(): Flow<UiState<List<TeamModel>>> = callbackFlow {
         trySend(UiState.Loading)
@@ -75,6 +80,31 @@ class TeamRepositoryImpl(
             close()
         }
     }
+
+    override fun saveTeamFlag(id: String, uri: Uri): Flow<UiState<String>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        val path = storage.reference.child(FOLDER_FLAGS).child(id)
+        path.putFile(uri)
+            .addOnSuccessListener {
+                path.downloadUrl
+                    .addOnSuccessListener { uriFirebase ->
+                        trySend(UiState.Success(uriFirebase.toString()))
+                    }
+                    .addOnFailureListener { error ->
+                        trySend(UiState.Error(error.message ?: TEAM_FLAG_URL_GET_ERROR))
+                    }
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error(error.message ?: TEAM_FLAG_SAVE_ERROR))
+            }
+
+        awaitClose {
+            toLog("saveTeamFlag: awaitClose")
+            close()
+        }
+    }
+
 
     override fun deleteTeam(id: String): Flow<UiState<Boolean>> = callbackFlow {
         trySend(UiState.Loading)

@@ -4,5 +4,6 @@ data class TeamUseCase(
     val getTeamList: GetTeamList,
     val getTeam: GetTeam,
     val saveTeam: SaveTeam,
+    val saveTeamFlag: SaveTeamFlag,
     val deleteTeam: DeleteTeam,
 )

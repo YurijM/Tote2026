@@ -1,12 +1,14 @@
 package com.mu.tote2026.di.module.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.mu.tote2026.data.repository.TeamRepositoryImpl
 import com.mu.tote2026.domain.repository.TeamRepository
 import com.mu.tote2026.domain.usecase.team_usecase.DeleteTeam
 import com.mu.tote2026.domain.usecase.team_usecase.GetTeam
 import com.mu.tote2026.domain.usecase.team_usecase.GetTeamList
 import com.mu.tote2026.domain.usecase.team_usecase.SaveTeam
+import com.mu.tote2026.domain.usecase.team_usecase.SaveTeamFlag
 import com.mu.tote2026.domain.usecase.team_usecase.TeamUseCase
 import dagger.Module
 import dagger.Provides
@@ -20,8 +22,9 @@ object TeamRepositoryModule {
     @Provides
     @Singleton
     fun provideTeamRepository(
-        firestore: FirebaseFirestore
-    ) : TeamRepository = TeamRepositoryImpl(firestore)
+        firestore: FirebaseFirestore,
+        storage: FirebaseStorage
+    ) : TeamRepository = TeamRepositoryImpl(firestore, storage)
 
     @Provides
     @Singleton
@@ -29,6 +32,7 @@ object TeamRepositoryModule {
         getTeamList = GetTeamList(teamRepository),
         getTeam = GetTeam(teamRepository),
         saveTeam = SaveTeam(teamRepository),
+        saveTeamFlag = SaveTeamFlag(teamRepository),
         deleteTeam = DeleteTeam(teamRepository),
     )
 }

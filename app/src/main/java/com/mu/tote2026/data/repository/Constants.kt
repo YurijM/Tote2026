@@ -9,6 +9,7 @@ const val GROUP_GAMES_COUNT = 36
 const val PLAYOFF_GAMES_COUNT = 15
 
 const val FOLDER_GAMBLER_PHOTO = "gambler_photo"
+const val FOLDER_FLAGS = "flags"
 
 object Result {
     const val WIN = "win"
@@ -39,6 +40,8 @@ object Errors {
     const val GAMBLER_PHOTO_URL_GET_ERROR = "Ошибка получения url фото участника после сохранения"
     const val GAMBLER_PHOTO_SAVE_ERROR = "Ошибка сохранения фото участника"
     const val GAMBLER_SAVE_ERROR = "Ошибка сохранения данных участника"
+    const val TEAM_FLAG_URL_GET_ERROR = "Ошибка получения url флага"
+    const val TEAM_FLAG_SAVE_ERROR = "Ошибка сохранения флага"
     const val PRIZE_FUND_SAVE_ERROR = "Ошибка сохранения сумм призового фонда"
     const val WINNER_SAVE_ERROR = "Ошибка сохранения выигрыша победителя"
 }
