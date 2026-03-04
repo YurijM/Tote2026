@@ -4,6 +4,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -29,6 +30,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mu.tote2026.R
 
@@ -38,6 +40,7 @@ fun AppDropDownList(
     list: List<String>,
     label: String,
     selectedItem: String,
+    width: Dp = 0.dp,
     onClick: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -47,7 +50,9 @@ fun AppDropDownList(
         expanded = expanded,
         onExpandedChange = {
             expanded = !expanded
-        }
+        },
+        modifier = if (width != 0.dp) Modifier.width(width)
+        else Modifier
     ) {
         BasicTextField(
             value = selectedItem,
@@ -78,7 +83,7 @@ fun AppDropDownList(
                 singleLine = false,
                 visualTransformation = VisualTransformation.None,
                 interactionSource = interactionSource,
-                trailingIcon =  {
+                trailingIcon = {
                     Icon(
                         imageVector = Icons.Filled.ArrowDropDown,
                         contentDescription = null,
