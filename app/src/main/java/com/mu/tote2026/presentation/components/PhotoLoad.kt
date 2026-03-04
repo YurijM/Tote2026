@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
@@ -29,6 +30,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.rememberAsyncImagePainter
@@ -39,6 +41,7 @@ import com.mu.tote2026.ui.theme.Color2
 fun PhotoLoad(
     modifier: Modifier = Modifier,
     photoUrl: String = "",
+    size: Dp = dimensionResource(id = R.dimen.profile_photo_size),
     onSelect: (uri: Uri) -> Unit,
 ) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
@@ -52,15 +55,17 @@ fun PhotoLoad(
     }
 
     Column(
-        modifier = modifier.padding(top = 4.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp)
     ) {
         if (imageUri != null) {
             Image(
                 painter = rememberAsyncImagePainter(model = imageUri),
                 contentDescription = null,
                 modifier = Modifier
-                    .requiredSize(dimensionResource(id = R.dimen.profile_photo_size))
+                    .requiredSize(size)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
@@ -70,7 +75,7 @@ fun PhotoLoad(
                     model = photoUrl,
                     contentDescription = null,
                     modifier = Modifier
-                        .requiredSize(dimensionResource(id = R.dimen.profile_photo_size))
+                        .requiredSize(size)
                         .clip(RoundedCornerShape(8.dp)),
                     contentScale = ContentScale.Crop,
                     loading = {
@@ -87,8 +92,8 @@ fun PhotoLoad(
             } else {
                 Image(
                     painter = painterResource(id = R.drawable.noname),
-                    contentDescription = "gambler",
-                    modifier = Modifier.width(dimensionResource(id = R.dimen.profile_photo_size)),
+                    contentDescription = "noname",
+                    modifier = Modifier.width(size),
                     contentScale = ContentScale.Crop,
                     colorFilter = ColorFilter.tint(Color2)
                 )
