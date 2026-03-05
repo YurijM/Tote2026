@@ -5,6 +5,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.mu.tote2026.data.repository.TeamRepositoryImpl
 import com.mu.tote2026.domain.repository.TeamRepository
 import com.mu.tote2026.domain.usecase.team_usecase.DeleteTeam
+import com.mu.tote2026.domain.usecase.team_usecase.DeleteTeamFlag
 import com.mu.tote2026.domain.usecase.team_usecase.GetTeam
 import com.mu.tote2026.domain.usecase.team_usecase.GetTeamList
 import com.mu.tote2026.domain.usecase.team_usecase.SaveTeam
@@ -34,5 +35,6 @@ object TeamRepositoryModule {
         saveTeam = SaveTeam(teamRepository),
         saveTeamFlag = SaveTeamFlag(teamRepository),
         deleteTeam = DeleteTeam(teamRepository),
+        deleteTeamFlag = DeleteTeamFlag(teamRepository),
     )
 }

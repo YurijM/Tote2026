@@ -105,7 +105,6 @@ class TeamRepositoryImpl(
         }
     }
 
-
     override fun deleteTeam(id: String): Flow<UiState<Boolean>> = callbackFlow {
         trySend(UiState.Loading)
 
@@ -119,6 +118,38 @@ class TeamRepositoryImpl(
 
         awaitClose {
             toLog("deleteTeam awaitClose")
+            close()
+        }
+    }
+
+    override fun deleteTeamFlag(id: String): Flow<UiState<Boolean>> = callbackFlow {
+        trySend(UiState.Loading)
+
+        val path = storage.reference.child(FOLDER_FLAGS).child(id)
+        path.delete()
+            .addOnSuccessListener {
+                trySend(UiState.Success(true))
+                //toLog("Файл $path удалён")
+            }
+            .addOnFailureListener { error ->
+                trySend(UiState.Error(error.message ?: "deleteTeamFlag: error is not defined"))
+            }
+
+        /*path = storage.reference.child(FOLDER_FLAGS)
+        path.listAll()
+            .addOnSuccessListener { (items, prefixes) ->
+                //toLog("prefixes: ${prefixes.size}")
+                for (item in items) {
+                    toLog("item: $item")
+                }
+            }
+            .addOnFailureListener { error ->
+                toLog("error - ${error.message}")
+            }*/
+
+
+        awaitClose {
+            toLog("deleteTeamFlag awaitClose")
             close()
         }
     }

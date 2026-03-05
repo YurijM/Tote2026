@@ -11,4 +11,5 @@ interface TeamRepository {
     fun saveTeam(team: TeamModel): Flow<UiState<TeamModel>>
     fun saveTeamFlag(id: String, uri: Uri): Flow<UiState<String>>
     fun deleteTeam(id: String): Flow<UiState<Boolean>>
+    fun deleteTeamFlag(id: String): Flow<UiState<Boolean>>
 }
