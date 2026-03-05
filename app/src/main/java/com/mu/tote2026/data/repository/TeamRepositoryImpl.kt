@@ -129,7 +129,6 @@ class TeamRepositoryImpl(
         path.delete()
             .addOnSuccessListener {
                 trySend(UiState.Success(true))
-                //toLog("Файл $path удалён")
             }
             .addOnFailureListener { error ->
                 trySend(UiState.Error(error.message ?: "deleteTeamFlag: error is not defined"))
@@ -146,7 +145,6 @@ class TeamRepositoryImpl(
             .addOnFailureListener { error ->
                 toLog("error - ${error.message}")
             }*/
-
 
         awaitClose {
             toLog("deleteTeamFlag awaitClose")

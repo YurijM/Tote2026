@@ -26,6 +26,7 @@ import com.mu.tote2024.presentation.components.AppFabAdd
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.TeamModel
 import com.mu.tote2026.presentation.components.AppProgressBar
+import com.mu.tote2026.presentation.components.ApplicationDialog
 import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.NEW_DOC
@@ -35,15 +36,18 @@ import com.mu.tote2026.ui.common.UiState
 
 @Composable
 fun AdminTeamListScreen(
+    viewModel: AdminTeamListViewModel = hiltViewModel(),
     toTeamEdit: (String) -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
-    val viewModel: AdminTeamListViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val result = state.result
     var teams by remember { mutableStateOf<List<TeamModel>>(listOf()) }
+
+    var currentTeam by remember { mutableStateOf(TeamModel()) }
+    var openDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = result) {
         toLog("AdminTeamListViewModel result: $result")
@@ -92,10 +96,10 @@ fun AdminTeamListScreen(
                 AdminTeamListItemScreen(
                     team,
                     onEdit = { toTeamEdit(team.team) },
-                    onDelete = {}, /*{
-                        currentEmail = email
+                    onDelete = {
+                        currentTeam = team
                         openDialog = true
-                    }*/
+                    }
                 )
             }
         }
@@ -105,12 +109,33 @@ fun AdminTeamListScreen(
         onAdd = { toTeamEdit(NEW_DOC) }
     )
 
+    if (openDialog) {
+        ApplicationDialog(
+            title = stringResource(R.string.team_delete),
+            text = stringResource(R.string.want_delete_team, currentTeam.team),
+            titleOK = stringResource(R.string.yes),
+            titleCancel = stringResource(R.string.no),
+            showCancel = true,
+            onDismiss = { openDialog = false },
+            onOK = {
+                openDialog = false
+                viewModel.onEvent((AdminTeamListEvent.OnDelete(currentTeam)))
+            },
+            onCancel = { openDialog = false }
+        )
+    }
+
     if (isLoading) {
         AppProgressBar()
     }
 
-    if (error.isNotBlank()) {
+
+    if (error.isNotBlank() || viewModel.message.value.isNotBlank()) {
         val context = LocalContext.current
-        Toast.makeText(context, errorTranslate(error), Toast.LENGTH_LONG).show()
+        val message = error.ifBlank {
+            viewModel.message.value
+        }
+
+        Toast.makeText(context, errorTranslate(message), Toast.LENGTH_LONG).show()
     }
 }

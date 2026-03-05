@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.screen.admin.team.list
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.model.TeamModel
@@ -19,6 +20,9 @@ class AdminTeamListViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableStateFlow(AdminTeamListState())
     val state = _state.asStateFlow()
+
+    var message = mutableStateOf("")
+        private set
 
     init {
         teamUseCase.getTeamList().onEach { teamListState ->
@@ -43,6 +47,19 @@ class AdminTeamListViewModel @Inject constructor(
                         teamUseCase.saveTeam(team).launchIn(viewModelScope)
                     }
                 }
+            }
+
+            is AdminTeamListEvent.OnDelete -> {
+                teamUseCase.deleteTeam(event.team.team).onEach { deleteState ->
+                    if (deleteState is UiState.Success) {
+                        teamUseCase.deleteTeamFlag(event.team.team).launchIn(viewModelScope)
+                        message.value = "Комада ${event.team.team} удалена"
+                    } else if (deleteState is UiState.Error) {
+                        message.value = deleteState.error
+                    }
+                }.launchIn(viewModelScope)
+
+                message.value = ""
             }
         }
     }
