@@ -28,12 +28,15 @@ import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.GameItem
 import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.Title
+import com.mu.tote2026.presentation.navigation.Destinations.GameDestination
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
 @Composable
-fun AdminGameListScreen() {
+fun AdminGameListScreen(
+    toGameEdit: (GameDestination) -> Unit
+) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
@@ -86,7 +89,8 @@ fun AdminGameListScreen() {
                 .padding(vertical = 8.dp)
         ) {
             items(games) { game ->
-                GameItem(game, onEdit = {})
+                //GameItem(game, onEdit = {})
+                GameItem(game) { toGameEdit(GameDestination(game.id)) }
             }
         }
     }

@@ -121,7 +121,11 @@ fun NavGraphMain(
         adminGambler(
             toAdminGamblerList = { navMainController.navigateToAdminGamblerList() }
         )
-        adminGameList()
+        adminGameList(
+            toGameEdit = { args ->
+                navMainController.navigateToGame(args)
+            }
+        )
         adminStakeList()
         adminPrizeFund()
         adminFinish(
