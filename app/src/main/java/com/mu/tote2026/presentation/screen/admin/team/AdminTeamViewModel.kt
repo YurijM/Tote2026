@@ -42,7 +42,7 @@ class AdminTeamViewModel @Inject constructor(
     var teamError by mutableStateOf("")
     var groupError by mutableStateOf("")
     var itemNoError by mutableStateOf("")
-    var flagUrlError by mutableStateOf("")
+    //var flagUrlError by mutableStateOf("")
 
     var exit by mutableStateOf(false)
 
@@ -83,7 +83,7 @@ class AdminTeamViewModel @Inject constructor(
             is AdminTeamEvent.OnFlagChange -> {
                 team = team.copy(flag = event.uri.toString())
                 flagUri = event.uri
-                enabledSaveButton = checkValues()
+                //enabledSaveButton = checkValues()
             }
 
             is AdminTeamEvent.OnSave -> {
@@ -116,12 +116,12 @@ class AdminTeamViewModel @Inject constructor(
         teamError = checkIsFieldEmpty(team.team)
         groupError = checkIsFieldEmpty(team.group)
         itemNoError = checkIsFieldEmpty(team.itemNo)
-        flagUrlError = checkIsFieldEmpty(team.flag)
+        //flagUrlError = checkIsFieldEmpty(team.flag)
 
         return teamError.isBlank() &&
                 groupError.isBlank() &&
-                itemNoError.isBlank() &&
-                flagUrlError.isBlank()
+                itemNoError.isBlank() //&&
+                //flagUrlError.isBlank()
     }
 
     data class AdminTeamState(
