@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.mu.tote2024.presentation.components.AppFabAdd
 import com.mu.tote2026.R
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.presentation.components.AppProgressBar
@@ -29,6 +30,7 @@ import com.mu.tote2026.presentation.components.GameItem
 import com.mu.tote2026.presentation.components.OkAndCancel
 import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.navigation.Destinations.GameDestination
+import com.mu.tote2026.presentation.utils.NEW_DOC
 import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
@@ -89,11 +91,15 @@ fun AdminGameListScreen(
                 .padding(vertical = 8.dp)
         ) {
             items(games) { game ->
-                //GameItem(game, onEdit = {})
                 GameItem(game) { toGameEdit(GameDestination(game.id, true)) }
             }
         }
     }
+
+    AppFabAdd(
+        alignment = Alignment.BottomCenter,
+        onAdd = { toGameEdit(GameDestination(NEW_DOC, true)) }
+    )
 
     if (isLoading) {
         AppProgressBar()
