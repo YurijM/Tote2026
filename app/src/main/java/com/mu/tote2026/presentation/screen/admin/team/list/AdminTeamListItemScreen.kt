@@ -35,7 +35,7 @@ fun AdminTeamListItemScreen(
             containerColor = MaterialTheme.colorScheme.surface
         ),
         modifier = Modifier
-            .fillMaxWidth(.85f)
+            .fillMaxWidth(.9f)
             .padding(vertical = 8.dp)
     ) {
         Row(
@@ -66,15 +66,6 @@ fun AdminTeamListItemScreen(
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 8.dp)) {
-                /*IconButton(
-                    onClick = { onEdit() },
-                    modifier = Modifier.weight(1f).size(24.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "editTeam"
-                    )
-                }*/
                 IconButton(
                     onClick = { onDelete() },
                     modifier = Modifier.size(24.dp),
