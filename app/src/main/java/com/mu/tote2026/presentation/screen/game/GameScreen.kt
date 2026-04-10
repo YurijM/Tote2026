@@ -1,5 +1,6 @@
 package com.mu.tote2026.presentation.screen.game
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,6 +33,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.mu.tote2026.R
 import com.mu.tote2026.data.repository.GAMBLER
 import com.mu.tote2026.presentation.components.AddTime
+import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.ByPenalty
 import com.mu.tote2026.presentation.components.GameIdAndGroup
 import com.mu.tote2026.presentation.components.OkAndCancel
@@ -44,6 +47,7 @@ import com.mu.tote2026.presentation.utils.GROUPS_COUNT
 import com.mu.tote2026.presentation.utils.asDate
 import com.mu.tote2026.presentation.utils.asDateTime
 import com.mu.tote2026.presentation.utils.convertDateTimeToTimestamp
+import com.mu.tote2026.presentation.utils.errorTranslate
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import java.util.Calendar
@@ -53,7 +57,8 @@ import java.util.Calendar
 @Composable
 fun GameScreen(
     toGroupGamesList: (GroupGamesDestination) -> Unit,
-    toGameList: () -> Unit
+    toGameList: () -> Unit,
+    toAdminGames: () -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
@@ -73,7 +78,9 @@ fun GameScreen(
                 isLoading = false
 
                 if (viewModel.exit) {
-                    if (viewModel.game.groupId.toInt() <= GROUPS_COUNT)
+                    if (viewModel.isAdmin)
+                        toAdminGames()
+                    else if (viewModel.game.group.isNotBlank() && viewModel.game.groupId.toInt() <= GROUPS_COUNT)
                         toGroupGamesList(GroupGamesDestination(viewModel.game.group))
                     else
                         toGameList()
@@ -197,10 +204,18 @@ fun GameScreen(
                         titleOk = stringResource(id = R.string.save),
                         enabledOk = viewModel.enabled,
                         onOK = { viewModel.onEvent(GameEvent.OnSave) },
-                        onCancel = { if (viewModel.game.group.isNotBlank() && viewModel.game.groupId.toInt() <= GROUPS_COUNT)
+                        /*onCancel = { if (viewModel.game.group.isNotBlank() && viewModel.game.groupId.toInt() <= GROUPS_COUNT)
                             toGroupGamesList(GroupGamesDestination(viewModel.game.group))
                         else
                             toGameList()
+                        }*/
+                        onCancel = {
+                            if (viewModel.isAdmin)
+                                toAdminGames()
+                            else if (viewModel.game.group.isNotBlank() && viewModel.game.groupId.toInt() <= GROUPS_COUNT)
+                                toGroupGamesList(GroupGamesDestination(viewModel.game.group))
+                            else
+                                toGameList()
                         }
                     )
                 }
@@ -270,5 +285,14 @@ fun GameScreen(
                 onClickCancel = { showTimePicker = false }
             )
         }
+    }
+
+    if (isLoading) {
+        AppProgressBar()
+    }
+
+    if (error.isNotBlank()) {
+        val context = LocalContext.current
+        Toast.makeText(context, errorTranslate(error), Toast.LENGTH_LONG).show()
     }
 }

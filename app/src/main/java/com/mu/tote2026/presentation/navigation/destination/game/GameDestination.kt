@@ -10,12 +10,14 @@ import com.mu.tote2026.presentation.screen.game.GameScreen
 @OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.game(
     toGroupGamesList: (GroupGamesDestination) -> Unit,
-    toGameList: () -> Unit
+    toGameList: () -> Unit,
+    toAdminGames: () -> Unit
 ) {
-    composable<GameDestination> { backStackEntry ->
+    composable<GameDestination> {
         GameScreen(
             toGroupGamesList = toGroupGamesList,
-            toGameList = toGameList
+            toGameList = toGameList,
+            toAdminGames = toAdminGames
         )
     }
 }

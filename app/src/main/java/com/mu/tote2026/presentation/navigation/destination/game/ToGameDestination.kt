@@ -6,5 +6,5 @@ import com.mu.tote2026.presentation.navigation.Destinations.GameDestination
 fun NavController.navigateToGame(
     args: GameDestination
 ) {
-    navigate(GameDestination(args.id))
+    navigate(GameDestination(args.id, args.isAdmin))
 }

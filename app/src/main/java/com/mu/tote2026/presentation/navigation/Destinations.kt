@@ -37,6 +37,7 @@ sealed class Destinations {
     ): Destinations()
     @Serializable
     data class GameDestination(
-        val id: String = ""
+        val id: String = "",
+        val isAdmin: Boolean = false
     ): Destinations()
 }

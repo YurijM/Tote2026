@@ -90,7 +90,7 @@ fun AdminGameListScreen(
         ) {
             items(games) { game ->
                 //GameItem(game, onEdit = {})
-                GameItem(game) { toGameEdit(GameDestination(game.id)) }
+                GameItem(game) { toGameEdit(GameDestination(game.id, true)) }
             }
         }
     }

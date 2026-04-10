@@ -53,6 +53,8 @@ class GameViewModel @Inject constructor(
     private val args = savedStateHandle.toRoute<GameDestination>()
     private val isNewGame = args.id == NEW_DOC
 
+    val isAdmin = args.isAdmin
+
     var game by mutableStateOf(GameModel())
     private var prizeFund by mutableStateOf(PrizeFundModel())
     private var gamblers = mutableListOf<GamblerModel>()
