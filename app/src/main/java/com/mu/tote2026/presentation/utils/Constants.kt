@@ -8,6 +8,8 @@ const val DEBUG_TAG = "tote2026"
 const val YEAR_START = 2024
 const val MIN_PASSWORD_LENGTH = 6
 
+const val DIR_DOCS = "Tote-2026"
+
 const val MALE = "мужской"
 const val FEMALE = "женский"
 

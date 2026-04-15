@@ -1,10 +1,16 @@
 package com.mu.tote2026.presentation.screen.admin.game
 
+import android.os.Environment
+import android.widget.Toast
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
-import com.mu.tote2026.presentation.utils.convertDateTimeToTimestamp
+import com.mu.tote2026.presentation.utils.DIR_DOCS
+import com.mu.tote2026.presentation.utils.createExtFile
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +18,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.io.FileOutputStream
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,13 +29,18 @@ class AdminGameListViewModel @Inject constructor(
     private val _state = MutableStateFlow(AdminGameListState())
     val state = _state.asStateFlow()
 
+    //var games = listOf<GameModel>()
+    var games by mutableStateOf<List<GameModel>>(listOf())
+
     init {
         gameUseCase.getGameList().onEach { gameListState ->
             _state.value = AdminGameListState(gameListState)
 
             if (gameListState is UiState.Success) {
+                games = gameListState.data.sortedBy { it.id.toInt() }
                 _state.value = AdminGameListState(
-                    UiState.Success(gameListState.data.sortedBy { it.id.toInt() })
+                    //UiState.Success(gameListState.data.sortedBy { it.id.toInt() })
+                    UiState.Success(games)
                 )
             }
         }.launchIn(viewModelScope)
@@ -47,11 +60,58 @@ class AdminGameListViewModel @Inject constructor(
                     gameUseCase.deleteGame(game.id).onEach { deleteGameState ->
                         toLog("deleteGame: ${game.id}")
                         if (deleteGameState is UiState.Success) {
-                            gameUseCase.saveGame(game).onEach() {
+                            gameUseCase.saveGame(game).onEach {
                                 toLog("saveGame: ${game.id}")
                             }.launchIn(viewModelScope)
                         }
                     }.launchIn(viewModelScope)
+                }
+            }
+
+            is AdminGameListEvent.OnUnload -> {
+                var writeResult = ""
+                val filename = "games.txt"
+
+                val file = createExtFile(filename)
+
+                val fullPath = "${Environment.DIRECTORY_DOWNLOADS}/ $DIR_DOCS/ $filename"
+
+                var fileOutputStream: FileOutputStream? = null
+                try {
+                    fileOutputStream = FileOutputStream(file, true)
+
+                    games.forEach { game ->
+                        //val data = "${game.team1} - ${game.team2}\n"
+                        val data = "GameModel(\n" +
+                                "\tid = \"${game.id}\",\n" +
+                                "\tstart = \"${game.start}\",\n" +
+                                "\tgroup = \"${game.group}\",\n" +
+                                "\tgroupId = \"${game.groupId}\",\n" +
+                                "\tteam1 = \"${game.team1}\",\n" +
+                                "\tteam1ItemNo = \"${game.team1ItemNo}\",\n" +
+                                "\tflag1 = \"${game.flag1}\",\n" +
+                                "\tteam2 = \"${game.team2}\",\n" +
+                                "\tteam2ItemNo = \"${game.team2ItemNo}\",\n" +
+                                "\tflag2 = \"${game.flag2}\"\n" +
+                                "),\n"
+                        fileOutputStream.write(data.toByteArray())
+                    }
+                    writeResult = "Создан файл $fullPath"
+                } catch (e: Exception) {
+                    //e.printStackTrace()
+                    writeResult = "Ошибка ${e.message}"
+                } finally {
+                    if (fileOutputStream != null) {
+                        try {
+                            fileOutputStream.close()
+                        } catch (e: IOException) {
+                            //e.printStackTrace()
+                            writeResult = "Ошибка ${e.message}"
+                        }
+                    }
+                    if (writeResult.isNotBlank()) {
+                        Toast.makeText(event.context, writeResult, Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
@@ -61,7 +121,7 @@ class AdminGameListViewModel @Inject constructor(
         val result: UiState<List<GameModel>> = UiState.Default
     )
 
-    val games = listOf(
+    /*val games = listOf(
         GameModel(
             id = "1",
             start = convertDateTimeToTimestamp("11.06.2026 22:00"),
@@ -98,5 +158,5 @@ class AdminGameListViewModel @Inject constructor(
             team2ItemNo = "3",
             flag2 = "https://firebasestorage.googleapis.com/v0/b/tote2026-d3cab.appspot.com/o/flags%2Fswi.png?alt=media&token=c54503ca-3b35-4018-97cc-4eb58b42e6e4",
         ),
-    )
+    )*/
 }

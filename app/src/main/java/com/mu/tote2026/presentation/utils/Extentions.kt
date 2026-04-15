@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Environment
 import android.util.Log
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -19,6 +20,7 @@ import com.mu.tote2026.presentation.utils.Errors.INCORRECT_EMAIL
 import com.mu.tote2026.presentation.utils.Errors.PASSWORDS_DO_NOT_MATCH
 import com.mu.tote2026.presentation.utils.Errors.PROGNOSIS_IS_ABSENT
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -325,4 +327,21 @@ fun resultToString(
             }
         }
     }
+}
+
+fun createExtFile(filename: String, dir: String = ""): File {
+    var path: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+
+    path = File(path, DIR_DOCS)
+    if (!path.exists()) path.mkdir()
+
+    if (dir.isNotBlank()) {
+        path = File(path, dir)
+        if (!path.exists()) path.mkdir()
+    }
+
+    val file = File(path, filename)
+    file.writeText("")
+
+    return file
 }

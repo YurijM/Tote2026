@@ -42,6 +42,8 @@ fun AdminGameListScreen(
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
 
+    val context = LocalContext.current
+
     val viewModel: AdminGameListViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val result = state.result
@@ -74,10 +76,11 @@ fun AdminGameListScreen(
         Title(stringResource(R.string.admin_game_list))
         OkAndCancel(
             titleOk = stringResource(R.string.load),
+            titleCancel = stringResource(R.string.unload),
             enabledOk = true,
-            showCancel = false,
+            showCancel = true,
             onOK = { viewModel.onEvent(AdminGameListEvent.OnLoad) },
-            onCancel = {}
+            onCancel = { viewModel.onEvent(AdminGameListEvent.OnUnload(context)) }
         )
         HorizontalDivider(
             thickness = 1.dp,
