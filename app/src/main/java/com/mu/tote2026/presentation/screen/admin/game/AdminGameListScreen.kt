@@ -79,7 +79,7 @@ fun AdminGameListScreen(
             titleCancel = stringResource(R.string.unload),
             enabledOk = true,
             showCancel = true,
-            onOK = { viewModel.onEvent(AdminGameListEvent.OnLoad) },
+            onOK = { viewModel.onEvent(AdminGameListEvent.OnLoad(context)) },
             onCancel = { viewModel.onEvent(AdminGameListEvent.OnUnload(context)) }
         )
         HorizontalDivider(

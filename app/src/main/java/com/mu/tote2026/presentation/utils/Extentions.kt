@@ -329,7 +329,7 @@ fun resultToString(
     }
 }
 
-fun createExtFile(filename: String, dir: String = ""): File {
+fun createExtFile(filename: String, dir: String = "", writable: Boolean = false): File {
     var path: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
 
     path = File(path, DIR_DOCS)
@@ -341,7 +341,8 @@ fun createExtFile(filename: String, dir: String = ""): File {
     }
 
     val file = File(path, filename)
-    file.writeText("")
+
+    if (writable) file.writeText("")
 
     return file
 }

@@ -18,13 +18,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
 class AdminGameListViewModel @Inject constructor(
-    private val gameUseCase: GameUseCase
+    val gameUseCase: GameUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(AdminGameListState())
     val state = _state.asStateFlow()
@@ -49,13 +50,67 @@ class AdminGameListViewModel @Inject constructor(
     fun onEvent(event: AdminGameListEvent) {
         when (event) {
             is AdminGameListEvent.OnLoad -> {
-                /*games.forEach { game ->
-                    gameUseCase.deleteGame(game.id).launchIn(viewModelScope)
+                var writeResult = ""
+                val filename = "games.txt"
+
+                val fullPath = "${Environment.DIRECTORY_DOWNLOADS}/ $DIR_DOCS/ $filename"
+
+                val file = createExtFile(filename)
+                var fileInputStream: FileInputStream? = null
+
+                try {
+                    fileInputStream = file.inputStream()
+                    //val lines = mutableListOf<String>()
+
+                    var game = GameModel()
+
+                    file.bufferedReader().useLines { lines ->
+                        lines.forEach { line ->
+                            if (line.contains("GameModel")) {
+                                game = GameModel()
+                            } else if (line.contains(")")) {
+                                toLog("game: $game")
+                            } else {
+                                val start = line.indexOf(" = ")
+                                val end = line.indexOf(",")
+                                val field = line.substring(0, start).trim()
+                                val value = line.substring(start + 3, end).trim()
+                                toLog("field: $field, value: $value")
+
+                                when (field) {
+                                    "id" -> game = game.copy(id = value)
+                                    "start" -> game = game.copy(start = value)
+                                    "group" -> game = game.copy(group = value)
+                                    "groupId" -> game = game.copy(groupId = value)
+                                    "team1" -> game = game.copy(team1 = value)
+                                    "team1ItemNo" -> game = game.copy(team1ItemNo = value)
+                                    "flag1" -> game = game.copy(flag1 = value)
+                                    "team2" -> game = game.copy(team2 = value)
+                                    "team2ItemNo" -> game = game.copy(team2ItemNo = value)
+                                    "flag2" -> game = game.copy(flag2 = value)
+                                }
+                            }
+                        }
+                    }
+                    writeResult = "Файл $fullPath загружен"
+                } catch (e: Exception) {
+                    //e.printStackTrace()
+                    writeResult = "Ошибка ${e.message}"
+                } finally {
+                    if (fileInputStream != null) {
+                        try {
+                            fileInputStream.close()
+                        } catch (e: IOException) {
+                            //e.printStackTrace()
+                            writeResult = "Ошибка ${e.message}"
+                        }
+                    }
+                    if (writeResult.isNotBlank()) {
+                        Toast.makeText(event.context, writeResult, Toast.LENGTH_LONG).show()
+                    }
                 }
-                games.forEach { game ->
-                    gameUseCase.saveGame(game).launchIn(viewModelScope)
-                }*/
-                games.forEach { game ->
+
+                /*games.forEach { game ->
                     toLog("game: ${game.id}")
                     gameUseCase.deleteGame(game.id).onEach { deleteGameState ->
                         toLog("deleteGame: ${game.id}")
@@ -65,14 +120,14 @@ class AdminGameListViewModel @Inject constructor(
                             }.launchIn(viewModelScope)
                         }
                     }.launchIn(viewModelScope)
-                }
+                }*/
             }
 
             is AdminGameListEvent.OnUnload -> {
                 var writeResult = ""
                 val filename = "games.txt"
 
-                val file = createExtFile(filename)
+                val file = createExtFile(filename, "", true)
 
                 val fullPath = "${Environment.DIRECTORY_DOWNLOADS}/ $DIR_DOCS/ $filename"
 
@@ -92,7 +147,7 @@ class AdminGameListViewModel @Inject constructor(
                                 "\tflag1 = \"${game.flag1}\",\n" +
                                 "\tteam2 = \"${game.team2}\",\n" +
                                 "\tteam2ItemNo = \"${game.team2ItemNo}\",\n" +
-                                "\tflag2 = \"${game.flag2}\"\n" +
+                                "\tflag2 = \"${game.flag2}\",\n" +
                                 "),\n"
                         fileOutputStream.write(data.toByteArray())
                     }

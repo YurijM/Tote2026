@@ -4,5 +4,5 @@ import android.content.Context
 
 sealed class AdminGameListEvent {
     data class OnUnload(val context: Context) : AdminGameListEvent()
-    data object OnLoad : AdminGameListEvent()
+    data class OnLoad(val context: Context) : AdminGameListEvent()
 }
