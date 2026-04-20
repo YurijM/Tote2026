@@ -30,7 +30,6 @@ class AdminGameListViewModel @Inject constructor(
     private val _state = MutableStateFlow(AdminGameListState())
     val state = _state.asStateFlow()
 
-    //var games = listOf<GameModel>()
     var games by mutableStateOf<List<GameModel>>(listOf())
 
     init {
@@ -69,13 +68,24 @@ class AdminGameListViewModel @Inject constructor(
                             if (line.contains("GameModel")) {
                                 game = GameModel()
                             } else if (line.contains(")")) {
-                                toLog("game: $game")
+                                gameUseCase.saveGame(game).onEach { gameSaveState ->
+                                    when (gameSaveState) {
+                                        is UiState.Success -> {
+                                            toLog("Игра ${game.id} добавлена")
+                                        }
+                                        is UiState.Error -> {
+                                            val error = UiState.Error(gameSaveState.error)
+                                            Toast.makeText(event.context, error.error, Toast.LENGTH_LONG).show()
+                                            toLog("error: ${error.error}")
+                                        }
+                                        else -> {}
+                                    }
+                                }.launchIn(viewModelScope)
                             } else {
                                 val start = line.indexOf(" = ")
                                 val end = line.indexOf(",")
                                 val field = line.substring(0, start).trim()
                                 val value = line.substring(start + 3, end).trim()
-                                toLog("field: $field, value: $value")
 
                                 when (field) {
                                     "id" -> game = game.copy(id = value)
@@ -138,16 +148,16 @@ class AdminGameListViewModel @Inject constructor(
                     games.forEach { game ->
                         //val data = "${game.team1} - ${game.team2}\n"
                         val data = "GameModel(\n" +
-                                "\tid = \"${game.id}\",\n" +
-                                "\tstart = \"${game.start}\",\n" +
-                                "\tgroup = \"${game.group}\",\n" +
-                                "\tgroupId = \"${game.groupId}\",\n" +
-                                "\tteam1 = \"${game.team1}\",\n" +
-                                "\tteam1ItemNo = \"${game.team1ItemNo}\",\n" +
-                                "\tflag1 = \"${game.flag1}\",\n" +
-                                "\tteam2 = \"${game.team2}\",\n" +
-                                "\tteam2ItemNo = \"${game.team2ItemNo}\",\n" +
-                                "\tflag2 = \"${game.flag2}\",\n" +
+                                "\tid = ${game.id},\n" +
+                                "\tstart = ${game.start},\n" +
+                                "\tgroup = ${game.group},\n" +
+                                "\tgroupId = ${game.groupId},\n" +
+                                "\tteam1 = ${game.team1},\n" +
+                                "\tteam1ItemNo = ${game.team1ItemNo},\n" +
+                                "\tflag1 = ${game.flag1},\n" +
+                                "\tteam2 = ${game.team2},\n" +
+                                "\tteam2ItemNo = ${game.team2ItemNo},\n" +
+                                "\tflag2 = ${game.flag2},\n" +
                                 "),\n"
                         fileOutputStream.write(data.toByteArray())
                     }

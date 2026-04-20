@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FieldValue.arrayRemove
 import com.google.firebase.firestore.FieldValue.arrayUnion
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mu.tote2026.data.repository.Collections.GAMES
+import com.mu.tote2026.data.repository.Collections.GAMES_TEST
 import com.mu.tote2026.data.repository.Collections.STAKES
 import com.mu.tote2026.domain.model.GameModel
 import com.mu.tote2026.domain.model.StakeModel
@@ -63,7 +64,8 @@ class GameRepositoryImpl(
     override fun saveGame(game: GameModel): Flow<UiState<GameModel>> = callbackFlow {
         trySend(UiState.Loading)
 
-        firestore.collection(GAMES).document(game.id).set(game)
+        //firestore.collection(GAMES).document(game.id).set(game)
+        firestore.collection(GAMES_TEST).document(game.id).set(game)
             .addOnSuccessListener {
                 trySend(UiState.Success(game))
             }
@@ -87,21 +89,17 @@ class GameRepositoryImpl(
                 if (document != null) {
                     game.delete()
                         .addOnSuccessListener {
-                            toLog("1")
                             trySend(UiState.Success(true))
                         }
                         .addOnFailureListener { error ->
-                            toLog("2")
                             trySend(UiState.Error(error.message ?: "deleteGame: error is not defined"))
                         }
                 } else {
-                    toLog("3")
                     trySend(UiState.Success(true))
                 }
             }
             .addOnFailureListener { error ->
-                toLog("4")
-                trySend(UiState.Success(true))
+                trySend(UiState.Error(error.message ?: "deleteGame.getGame: error is not defined"))
             }
 
         /*firestore.collection(GAMES).document(id).delete()
