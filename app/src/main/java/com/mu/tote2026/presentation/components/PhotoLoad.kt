@@ -4,10 +4,8 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
@@ -15,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,8 +25,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
@@ -99,13 +94,13 @@ fun PhotoLoad(
                 )
             }
         }
-        Spacer(modifier = Modifier.requiredSize(12.dp))
-        Text(
-            text = stringResource(id = (if (photoUrl.isBlank()) R.string.load_photo else R.string.change_photo)),
-            modifier = Modifier.clickable {
-                launcher.launch("image/*")
-            },
-            textDecoration = TextDecoration.Underline,
-        )
     }
 }
+/*
+Spacer(modifier = Modifier.requiredSize(12.dp))
+Text(
+text = stringResource(id = (if (photoUrl.isBlank()) R.string.load_photo else R.string.change_photo)),
+modifier = Modifier.clickable { launcher.launch("image/*") },*/
+textDecoration = TextDecoration.Underline,
+)
+*/

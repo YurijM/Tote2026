@@ -117,7 +117,7 @@ class ProfileViewModel @Inject constructor(
         genderError = checkIsFieldEmpty(gambler.gender)
 
         return nicknameError.isNullOrBlank() &&
-                photoUrlError.isNullOrBlank() &&
+                //photoUrlError.isNullOrBlank() &&
                 genderError.isNullOrBlank()
     }
 

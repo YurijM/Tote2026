@@ -82,8 +82,8 @@ fun bitmapToByteArray(
 fun errorTranslate(error: String): String = translateList.find { it.eng == error }?.rus ?: error
 
 fun GamblerModel.checkProfile(): Boolean = this.nickname.isNotBlank() &&
-        this.gender.isNotBlank() &&
-        this.photoUrl.isNotBlank()
+        this.gender.isNotBlank() /*&&
+        this.photoUrl.isNotBlank()*/
 
 fun convertDateTimeToTimestamp(datetime: String, toLocale: Boolean = false): String {
     val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())

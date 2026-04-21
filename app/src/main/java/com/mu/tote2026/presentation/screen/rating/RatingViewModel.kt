@@ -32,6 +32,9 @@ class RatingViewModel @Inject constructor(
     var rateIsAbsent = false
         private set
 
+    var winnerSum = 0.0
+        private set
+
     init {
         commonUseCase.getFinish().onEach { finishState ->
             if (finishState is UiState.Success)
@@ -54,6 +57,7 @@ class RatingViewModel @Inject constructor(
                             )
                     )
                 )
+                winnerSum = ratingState.data.sumOf { it.cashPrize }
             }
         }.launchIn(viewModelScope)
     }

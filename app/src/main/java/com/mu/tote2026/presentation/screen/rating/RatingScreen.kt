@@ -98,12 +98,14 @@ fun RatingScreen(
         if (viewModel.rateIsAbsent)
             RateIsAbsent()
 
-        GenderDuel(
-            femalePoints = gamblers.filter { it.gender == FEMALE }.sumOf { it.points }
-                    / gamblers.filter { it.gender == FEMALE }.size.toDouble(),
-            malePoints = gamblers.filter { it.gender == MALE }.sumOf { it.points }
-                    / gamblers.filter { it.gender == MALE }.size.toDouble()
-        )
+        if (viewModel.winnerSum > 0) {
+            GenderDuel(
+                femalePoints = gamblers.filter { it.gender == FEMALE }.sumOf { it.points }
+                        / gamblers.filter { it.gender == FEMALE }.size.toDouble(),
+                malePoints = gamblers.filter { it.gender == MALE }.sumOf { it.points }
+                        / gamblers.filter { it.gender == MALE }.size.toDouble()
+            )
+        }
 
         HorizontalDivider(
             thickness = 1.dp,
