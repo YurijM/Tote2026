@@ -294,7 +294,7 @@ fun resultToString(
         "$goal1 : $goal2"
     } else PROGNOSIS_IS_ABSENT
 
-    val addTimeResult = if (addGoal1.isNotBlank() &&addGoal2.isNotBlank()) {
+    val addTimeResult = if (addGoal1.isNotBlank() && addGoal2.isNotBlank()) {
         "$addGoal1 : $addGoal2"
     } else ""
 

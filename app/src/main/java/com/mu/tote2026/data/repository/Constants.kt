@@ -18,7 +18,6 @@ object Result {
 }
 
 object Collections {
-    const val GAMES_TEST = "games-test"
     const val EMAILS = "emails"
     const val GROUPS = "groups"
     const val TEAMS = "teams"
