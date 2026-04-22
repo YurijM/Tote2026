@@ -85,13 +85,15 @@ class AdminGamblerListViewModel @Inject constructor(
                         commonParams = prizeFundState.data
                         winnerPlayed = matchesPlayedByGroup * (commonParams.groupPrizeFund / GROUP_GAMES_COUNT) +
                                 matchesPlayedByPlayoff * (commonParams.playoffPrizeFund / PLAYOFF_GAMES_COUNT) +
-                                commonParams.winnersPrizeFundByStake +
-                                commonParams.winnersPrizeFund
+                                if (matchesPlayedByGroup > 0) {
+                                    commonParams.winnersPrizeFundByStake + commonParams.winnersPrizeFund
+                                } else 0.0
                         restedPrizeFund = commonParams.prizeFund -
                                 matchesPlayedByGroup * (commonParams.groupPrizeFund / GROUP_GAMES_COUNT) -
                                 matchesPlayedByPlayoff * (commonParams.playoffPrizeFund / PLAYOFF_GAMES_COUNT) -
-                                commonParams.winnersPrizeFundByStake -
-                                commonParams.winnersPrizeFund
+                                if (matchesPlayedByGroup > 0) {
+                                    commonParams.winnersPrizeFundByStake + commonParams.winnersPrizeFund
+                                } else 0.0
                     }
                 }.launchIn(viewModelScope)
             }

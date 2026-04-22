@@ -92,9 +92,11 @@ class ProfileViewModel @Inject constructor(
                     }.launchIn(viewModelScope)
                 } else {
                     gamblerUseCase.saveGambler(gambler).onEach { gamblerState ->
-                        _state.value = GamblerState(gamblerState)
-                        if (gamblerState is UiState.Success) {
+                        _state.value = if (gamblerState is UiState.Success) {
                             exit = true
+                            GamblerState(gamblerState)
+                        } else {
+                            GamblerState(gamblerState)
                         }
                     }.launchIn(viewModelScope)
                 }
