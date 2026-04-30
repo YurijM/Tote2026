@@ -13,7 +13,7 @@ const val DIR_DOCS = "Tote-2026"
 const val MALE = "мужской"
 const val FEMALE = "женский"
 
-const val START = "14.06.2025"
+const val START = "11.06.2026"
 val GROUPS = listOf("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "1/16 финала", "1/8 финала", "1/4 финала", "1/2 финала", "Финал")
 const val GROUPS_COUNT = 12
 
