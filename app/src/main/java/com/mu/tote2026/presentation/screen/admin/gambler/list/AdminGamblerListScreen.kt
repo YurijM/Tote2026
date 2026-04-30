@@ -42,7 +42,6 @@ fun AdminGamblerListScreen(
     toGamblerEdit: (String) -> Unit
 ) {
     var isLoading by remember { mutableStateOf(false) }
-    var error by remember { mutableStateOf("") }
 
     val viewModel: AdminGamblerListViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
@@ -63,7 +62,6 @@ fun AdminGamblerListScreen(
 
             is UiState.Error -> {
                 isLoading = false
-                error = result.error
             }
 
             else -> {}
@@ -74,7 +72,7 @@ fun AdminGamblerListScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        Title(stringResource(R.string.admin_gambler_list))
+        Title("${stringResource(R.string.admin_gambler_list)} (${gamblers.size})")
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
