@@ -99,11 +99,13 @@ fun RatingScreen(
             RateIsAbsent()
 
         if (viewModel.winnerSum > 0) {
+            val manCount = gamblers.filter { it.gender == MALE }.size.toDouble()
+            val womanCount = gamblers.filter { it.gender == FEMALE }.size.toDouble()
             GenderDuel(
-                femalePoints = gamblers.filter { it.gender == FEMALE }.sumOf { it.points }
-                        / gamblers.filter { it.gender == FEMALE }.size.toDouble(),
-                malePoints = gamblers.filter { it.gender == MALE }.sumOf { it.points }
-                        / gamblers.filter { it.gender == MALE }.size.toDouble()
+                femalePoints = gamblers.filter { it.gender == FEMALE }.sumOf { it.points } / womanCount,
+                femaleCashPrize = gamblers.filter { it.gender == FEMALE }.sumOf { it.cashPrize } / womanCount,
+                malePoints = gamblers.filter { it.gender == MALE }.sumOf { it.points } / manCount,
+                maleCashPrize = gamblers.filter { it.gender == MALE }.sumOf { it.cashPrize } / manCount
             )
         }
 
@@ -147,7 +149,9 @@ fun RatingScreen(
 @Composable
 fun GenderDuel(
     femalePoints: Double,
-    malePoints: Double
+    femaleCashPrize: Double,
+    malePoints: Double,
+    maleCashPrize: Double
 ) {
     Row(
         modifier = Modifier
@@ -166,7 +170,7 @@ fun GenderDuel(
                 ),
                 label = {
                     Text(
-                        text = String.format("%.2f", femalePoints),
+                        text = "${String.format("%.2f", femalePoints)} (${femaleCashPrize.toInt()} руб.)",
                         fontWeight = FontWeight.Bold,
                         color = ColorUp
                     )
@@ -193,7 +197,7 @@ fun GenderDuel(
                 ),
                 label = {
                     Text(
-                        text = String.format("%.2f", malePoints),
+                        text = "${String.format("%.2f", malePoints)} (${maleCashPrize.toInt()} руб.)",
                         fontWeight = FontWeight.Bold,
                         color = ColorDown
                     )
