@@ -1,6 +1,7 @@
 package com.mu.tote2026.presentation.screen.admin.game
 
 import android.content.ContentValues
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
@@ -22,7 +23,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.io.IOException
 import javax.inject.Inject
 
@@ -34,6 +34,12 @@ class AdminGameListViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     var games by mutableStateOf<List<GameModel>>(listOf())
+
+    val filename = "games.txt"
+    val fullPath = "${Environment.DIRECTORY_DOWNLOADS}/ $DIR_DOCS/ $filename"
+
+    var contentValues: ContentValues = ContentValues()
+    var dstUri: Uri? = null
 
     init {
         gameUseCase.getGameList().onEach { gameListState ->
@@ -54,15 +60,15 @@ class AdminGameListViewModel @Inject constructor(
         when (event) {
             is AdminGameListEvent.OnLoad -> {
                 var writeResult = ""
-                val filename = "games.txt"
+                //val filename = "games.txt"
 
-                val fullPath = "${Environment.DIRECTORY_DOWNLOADS}/ $DIR_DOCS/ $filename"
+                //val fullPath = "${Environment.DIRECTORY_DOWNLOADS}/ $DIR_DOCS/ $filename"
 
-                val contentValues = ContentValues().apply {
+                /*val contentValues = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
                     put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_DOWNLOADS}/$DIR_DOCS") // указание подкаталога
                 }
-                val dstUri = event.context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+                val dstUri = event.context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)*/
                 toLog("dstUri: $dstUri")
 
                 if (dstUri != null) {
@@ -71,7 +77,7 @@ class AdminGameListViewModel @Inject constructor(
 
                     try {
                         //fileInputStream = file.inputStream()
-                        fileInputStream = (event.context.contentResolver.openInputStream(dstUri) as FileInputStream)
+                        fileInputStream = (event.context.contentResolver.openInputStream(dstUri!!) as FileInputStream)
                         toLog("fileInputStream: $fileInputStream")
 
                         var game = GameModel()
@@ -83,7 +89,7 @@ class AdminGameListViewModel @Inject constructor(
                                 if (line.contains("GameModel")) {
                                     game = GameModel()
                                 } else if (line.contains(")")) {
-                                    /*gameUseCase.saveGame(game).onEach { gameSaveState ->
+                                    gameUseCase.saveGame(game).onEach { gameSaveState ->
                                         when (gameSaveState) {
                                             is UiState.Success -> {
                                                 toLog("Игра ${game.id} добавлена")
@@ -97,7 +103,7 @@ class AdminGameListViewModel @Inject constructor(
 
                                             else -> {}
                                         }
-                                    }.launchIn(viewModelScope)*/
+                                    }.launchIn(viewModelScope)
                                     toLog("game: $game")
                                 } else {
                                     val start = line.indexOf(" = ")
@@ -134,6 +140,7 @@ class AdminGameListViewModel @Inject constructor(
                             }
                         }
                         if (writeResult.isNotBlank()) {
+                            toLog("writeResult: $writeResult")
                             Toast.makeText(event.context, writeResult, Toast.LENGTH_LONG).show()
                         }
                     }
@@ -154,23 +161,23 @@ class AdminGameListViewModel @Inject constructor(
 
             is AdminGameListEvent.OnUnload -> {
                 var writeResult = ""
-                val filename = "games.txt"
-                val fullPath = "${Environment.DIRECTORY_DOWNLOADS}/ $DIR_DOCS/ $filename"
+                //val filename = "games.txt"
+                //val fullPath = "${Environment.DIRECTORY_DOWNLOADS}/ $DIR_DOCS/ $filename"
 
-                val contentValues = ContentValues().apply {
+                contentValues = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
                     put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_DOWNLOADS}/$DIR_DOCS") // указание подкаталога
                 }
-                val dstUri = event.context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+                dstUri = event.context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
                 toLog("dstUri: $dstUri")
 
-                if (dstUri != null) {
+                /*if (dstUri != null) {
                     //val file = createExtFile(filename, "", true)
 
                     var fileOutputStream: FileOutputStream? = null
                     try {
                         //fileOutputStream = FileOutputStream(file, true)
-                        fileOutputStream = (event.context.contentResolver.openOutputStream(dstUri) as FileOutputStream)
+                        fileOutputStream = (event.context.contentResolver.openOutputStream(dstUri!!) as FileOutputStream)
                         games.forEach { game ->
                             val data = "GameModel(\n" +
                                     "\tid = ${game.id},\n" +
@@ -203,7 +210,7 @@ class AdminGameListViewModel @Inject constructor(
                             Toast.makeText(event.context, writeResult, Toast.LENGTH_LONG).show()
                         }
                     }
-                }
+                }*/
             }
         }
     }

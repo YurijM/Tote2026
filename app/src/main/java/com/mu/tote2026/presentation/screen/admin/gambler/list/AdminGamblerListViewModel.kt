@@ -14,6 +14,7 @@ import com.mu.tote2026.domain.model.WinnerModel
 import com.mu.tote2026.domain.usecase.common_usecase.CommonUseCase
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
+import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,6 +60,8 @@ class AdminGamblerListViewModel @Inject constructor(
                         _state.value = gamblers
                         prizeFund = gamblerListState.data.sumOf { it.rate }
                         cashInHand = round(gamblerListState.data.sumOf { it.cashPrize }).toInt()
+                        toLog("prizeFund (общий призовой фонд): $prizeFund")
+                        toLog("cashInHand (на руки): $cashInHand")
                         calc()
                     } else {
                         _state.value = AdminGamblerListState(gamblerListState)
@@ -72,6 +75,7 @@ class AdminGamblerListViewModel @Inject constructor(
         gameUseCase.getGameList().onEach { gameListState ->
             if (gameListState is UiState.Success) {
                 matchesPlayed = gameListState.data.filter { it.start.toLong() < currentTimeMillis() }.size
+                toLog("matchesPlayed: $matchesPlayed")
                 if (matchesPlayed > GROUP_GAMES_COUNT) {
                     matchesPlayedByGroup = GROUP_GAMES_COUNT
                     matchesPlayedByPlayoff = matchesPlayed - matchesPlayedByGroup
@@ -88,6 +92,8 @@ class AdminGamblerListViewModel @Inject constructor(
                                 if (matchesPlayedByGroup > 0) {
                                     commonParams.winnersPrizeFundByStake + commonParams.winnersPrizeFund
                                 } else 0.0
+                        toLog("winnerPlayed (разыгранная сумма): $winnerPlayed")
+                        toLog("restedPrizeFund (оставшаяся сумма): $winnerPlayed")
                         restedPrizeFund = commonParams.prizeFund -
                                 matchesPlayedByGroup * (commonParams.groupPrizeFund / GROUP_GAMES_COUNT) -
                                 matchesPlayedByPlayoff * (commonParams.playoffPrizeFund / PLAYOFF_GAMES_COUNT) -

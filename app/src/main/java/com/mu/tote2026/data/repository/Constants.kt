@@ -5,8 +5,8 @@ import com.mu.tote2026.domain.model.GamblerModel
 var CURRENT_ID = ""
 var GAMBLER = GamblerModel()
 
-const val GROUP_GAMES_COUNT = 36
-const val PLAYOFF_GAMES_COUNT = 15
+const val GROUP_GAMES_COUNT = 72
+const val PLAYOFF_GAMES_COUNT = 32
 
 const val FOLDER_GAMBLER_PHOTO = "gambler_photo"
 const val FOLDER_FLAGS = "flags"
