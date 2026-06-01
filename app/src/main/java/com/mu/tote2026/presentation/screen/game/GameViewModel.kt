@@ -190,6 +190,7 @@ class GameViewModel @Inject constructor(
 
             is GameEvent.OnByPenaltyChange -> {
                 game = game.copy(byPenalty = event.team)
+                setStakePoints()
                 enabled = checkValues()
             }
 

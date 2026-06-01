@@ -88,7 +88,7 @@ class StakeViewModel @Inject constructor(
 
                 val formatter = DateTimeFormatter.ofPattern("dd.MM.y")
                 val dt = LocalDate.parse(START, formatter)
-                canGenerated = LocalDateTime.now().toLocalDate() < dt.minusDays(10)
+                canGenerated = LocalDateTime.now().toLocalDate() < dt.minusDays(5)
 
                 val args = savedStateHandle.toRoute<StakeDestination>()
                 gameUseCase.getGamblerGameStake(args.gameId, args.gamblerId).onEach { gameState ->
