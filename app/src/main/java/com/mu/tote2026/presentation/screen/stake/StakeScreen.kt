@@ -1,7 +1,5 @@
 package com.mu.tote2026.presentation.screen.stake
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,9 +27,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.mu.tote2026.R
+import com.mu.tote2026.presentation.components.AddTime
 import com.mu.tote2026.presentation.components.AppProgressBar
 import com.mu.tote2026.presentation.components.ByPenalty
-import com.mu.tote2026.presentation.components.AddTime
 import com.mu.tote2026.presentation.components.GameInfo
 import com.mu.tote2026.presentation.components.GamesPlayed
 import com.mu.tote2026.presentation.components.MainTime
@@ -41,7 +39,6 @@ import com.mu.tote2026.presentation.components.Title
 import com.mu.tote2026.presentation.utils.toLog
 import com.mu.tote2026.ui.common.UiState
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun StakeScreen(
     toStakeList: () -> Unit
