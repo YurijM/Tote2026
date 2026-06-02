@@ -11,12 +11,12 @@ plugins {
 
 android {
     namespace = "com.mu.tote2026"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.mu.tote2026"
-        minSdk = 24
-        targetSdk = 36
+        minSdk = 29
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 
