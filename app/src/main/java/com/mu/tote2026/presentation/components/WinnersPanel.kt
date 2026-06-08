@@ -1,6 +1,7 @@
 package com.mu.tote2026.presentation.components
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,8 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -50,6 +53,11 @@ fun WinnersPanel(
         modifier = Modifier.fillMaxWidth()
     ) {
         items(winners) { winner ->
+            val colorWin = when (winner.place) {
+                1 -> ColorUp
+                2 -> ColorDraw
+                else -> ColorDown
+            }
             Card(
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 8.dp
@@ -67,11 +75,7 @@ fun WinnersPanel(
                 ) {
                     Text(
                         text = winner.nickname,
-                        color = when (winner.place) {
-                            1 -> ColorUp
-                            2 -> ColorDraw
-                            else -> ColorDown
-                        },
+                        color = colorWin,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                         lineHeight =.75.em,
@@ -84,41 +88,43 @@ fun WinnersPanel(
                     )
                     Text(
                         text = "(" + String.format("%.2f", winner.points) + ")",
-                        color = when (winner.place) {
-                            1 -> ColorUp
-                            2 -> ColorDraw
-                            else -> ColorDown
-                        },
+                        color = colorWin,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Bold,
                         lineHeight = .75.em,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
-                    SubcomposeAsyncImage(
-                        model = winner.photoUrl,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        loading = {
-                            Box(
-                                modifier = Modifier.size(48.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator(
-                                    strokeWidth = 2.dp
-                                )
-                            }
-                        },
-                        modifier = Modifier
-                            .requiredSize(dimensionResource(id = R.dimen.winner_photo_size))
-                            .clip(RoundedCornerShape(8.dp))
-                    )
+                    if (winner.photoUrl.isNotBlank()) {
+                        SubcomposeAsyncImage(
+                            model = winner.photoUrl,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            loading = {
+                                Box(
+                                    modifier = Modifier.size(48.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator(
+                                        strokeWidth = 2.dp
+                                    )
+                                }
+                            },
+                            modifier = Modifier
+                                .requiredSize(dimensionResource(id = R.dimen.winner_photo_size))
+                                .clip(RoundedCornerShape(8.dp))
+                        )
+                    } else {
+                        Image(
+                            painter = painterResource(id = R.drawable.noname),
+                            contentDescription = "noname",
+                            modifier = Modifier.width(dimensionResource(id = R.dimen.winner_photo_size)),
+                            contentScale = ContentScale.Crop,
+                            colorFilter = ColorFilter.tint(colorWin)
+                        )
+                    }
                     Text(
                         text = "${round(winner.cashPrize).toInt()} руб.",
-                        color = when (winner.place) {
-                            1 -> ColorUp
-                            2 -> ColorDraw
-                            else -> ColorDown
-                        },
+                        color = colorWin,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
                             .padding(
