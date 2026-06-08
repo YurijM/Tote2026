@@ -32,6 +32,7 @@
     <string name="error_unauthorized_email">"Неразрешённый email"</string>
     <string name="error_field_contains_less_than_n_chars">"Поле содержит меньше %1$d символов"</string>
     <string name="error_passwords_do_not_match">"Значения паролей не совпадают"</string>
+    <string name="error_game_is_started_already">Ставку поменять нельзя, т.к. матч уже начался"</string>
 
     <string name="profile">Профиль</string>
     <string name="gambler_rate">ставка %1$d руб.</string>
