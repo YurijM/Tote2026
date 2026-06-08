@@ -39,19 +39,20 @@ class CommonRepositoryImpl(
     override fun savePrizeFund(prizeFund: Int): Flow<UiState<PrizeFundModel>>  = callbackFlow {
         trySend(UiState.Loading)
 
-        //val winnersPrizeFund = (prizeFund.toDouble() * 2.0 / 9.0)
-        val winnersPrizeFund = (prizeFund.toDouble() / 6.0)
+        /*val winnersPrizeFund = (prizeFund.toDouble() / 6.0)
         val commonPrizeFund = PrizeFundModel(
             prizeFund = prizeFund,
             groupPrizeFund = prizeFund.toDouble() / 3.0,
             playoffPrizeFund = prizeFund.toDouble() / 3.0,
             winnersPrizeFund = winnersPrizeFund,
             winnersPrizeFundByStake = winnersPrizeFund,
-            //winnersPrizeFund = winnersPrizeFund,
-            //place1PrizeFund = winnersPrizeFund / 2.0,
-            //place2PrizeFund = winnersPrizeFund / 3.0,
-            //place3PrizeFund = winnersPrizeFund / 6.0,
-            //winnersPrizeFundByStake = prizeFund.toDouble() / 9.0,
+        )*/
+        val commonPrizeFund = PrizeFundModel(
+            prizeFund = prizeFund,
+            groupPrizeFund = prizeFund.toDouble() / 4.0,
+            playoffPrizeFund = prizeFund.toDouble() / 4.0,
+            winnersPrizeFund = prizeFund.toDouble() / 3.0,
+            winnersPrizeFundByStake = prizeFund.toDouble() / 6.0,
         )
 
         firestore.collection(COMMON).document(PRIZE_FUND).set(commonPrizeFund)
