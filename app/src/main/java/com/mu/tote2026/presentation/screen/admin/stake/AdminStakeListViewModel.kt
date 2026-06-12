@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mu.tote2026.domain.model.GamblerModel
 import com.mu.tote2026.domain.model.GameModel
+import com.mu.tote2026.domain.model.StakeModel
 import com.mu.tote2026.domain.usecase.gambler_usecase.GamblerUseCase
 import com.mu.tote2026.domain.usecase.game_usecase.GameUseCase
 import com.mu.tote2026.ui.common.UiState
@@ -35,15 +36,32 @@ class AdminStakeListViewModel @Inject constructor(
                     .filter { it.start.toLong() > currentTimeMillis() }
                     .sortedBy { it.id.toInt() }.toMutableList()
 
-                _state.value = AdminStakeListState(
+                /*_state.value = AdminStakeListState(
                     UiState.Success(games)
-                )
+                )*/
 
                 gamblerUseCase.getGamblerList().onEach { gamblerListState ->
                     if (gamblerListState is UiState.Success) {
                         gamblers = gamblerListState.data
                             .filter { it.rate > 0 }
+                            .sortedBy { it.nickname }
                     }
+
+                    games.forEachIndexed { index, game ->
+                        gamblers.forEach { gambler ->
+                            if (game.stakes.find { it.gamblerNickname == gambler.nickname} == null) {
+                                games[index].stakes.add(
+                                    StakeModel(
+                                        gamblerNickname = gambler.nickname,
+                                    )
+                                )
+                            }
+                        }
+                    }
+
+                    _state.value = AdminStakeListState(
+                        UiState.Success(games)
+                    )
                 }.launchIn(viewModelScope)
             }
         }.launchIn(viewModelScope)
